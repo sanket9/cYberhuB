@@ -128,15 +128,15 @@ export class AddUserComponent implements OnInit {
       this.allPermisions = false;
     }
   }
-  changeSelectBox() {
-    var e = <HTMLInputElement>event.target;
-    if (e.checked) {
-      console.log("checked");
-      // this.allCheck = true;
-    } else {
-      console.log("not checked");
-      this.allPermisions = false;
-    }
+  checkIfAllSelected(name, index) {
+    
+    // let data = {
+    //   name: name.trim(),
+    //   value: true
+    // }
+        
+    this.logDetails.modules[index]["permissions"][name] = true;
+    console.log(this.logDetails);
   }
 
   finish() {
@@ -166,7 +166,7 @@ export class AddUserComponent implements OnInit {
       .get(`${environment.apiUrl}role/rolelist`)
       .map(res => res.json())
       .subscribe(data => {
-        console.log(data);
+        // console.log(data);
         this.roles = data.data;
       });
   }
@@ -208,6 +208,8 @@ export class AddUserComponent implements OnInit {
       id: this.result.id,
       name: this.result.name
     };
+    console.log(this.logDetails);
+    this.logDetails.modules = [];
   }
 
   getallModules() {
@@ -240,10 +242,24 @@ export class AddUserComponent implements OnInit {
     }
   }
 
-  checkModule(event, id){
-    
-    console.log(event.source._elementRef.nativeElement.textContent);
-    
+  checkModule(event, id) {
+    if (event.checked) {
+      let data = {
+        id: id,
+        name: event.source._elementRef.nativeElement.textContent.trim(),
+        permissions: []
+      };
+      this.logDetails["modules"].push(data);
+
+    } else {
+      let module = this.logDetails.modules.find(x => x.id == id);
+      this.logDetails.modules.splice(
+        this.logDetails.modules.indexOf(module),
+        1
+      );
+    }
+    console.log(this.logDetails);
+    // console.log(event.source._elementRef.nativeElement.textContent);
   }
 }
 export interface Element {

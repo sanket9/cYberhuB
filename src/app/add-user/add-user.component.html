@@ -171,187 +171,45 @@
                 
               </div>
             </div> -->
+            </div>
             <div class="wizard-tab">
-                <div id="accordion">
-                  <div class="card">
-                    <div class="card-header" id="headingOne">
-                      <h5 class="mb-0">
-                        <button mat-raised-button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                          aria-controls="collapseOne">
-                          Principal
-                        </button>
-                      </h5>
-                    </div>
-                
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                      <div class="card-body card-one">
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" [checked]="allCheck" (change)="changeSelectBox($event)">
-                            Add
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" [checked]="allCheck" (change)="changeSelectBox($event)">
-                            Edit
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" [checked]="allCheck" type="checkbox" (change)="changeSelectBox($event)">
-                            View
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" [checked]="allCheck" type="checkbox" (change)="changeSelectBox($event)">
-                            Delete
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" [checked]="allPermisions" type="checkbox" (change)="checkAll($event)">
-                            All Permission
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
+                <mat-accordion *ngIf="logDetails">
+                  <mat-expansion-panel *ngFor="let item of logDetails.modules; let i = index"
+                   [expanded]= "i == 0 ? true : false">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title >
+                        {{item.name}}
+                      </mat-panel-title>
+                   
+                    </mat-expansion-panel-header> 
+                    <div class="row">
+                      <div class="form-check col-md-4 pl-2">
+                        <mat-checkbox (click)="checkIfAllSelected('add', i)" 
+                        >Add</mat-checkbox>
+                      </div>
+                      <div class="form-check col-md-4 pl-2">
+                        <mat-checkbox (click)="checkIfAllSelected('edit', i)">Edit</mat-checkbox>
+                      </div>
+                      <div class="form-check col-md-4 pl-2">
+                        <mat-checkbox>View</mat-checkbox>
+                      </div>
+                      <div class="form-check col-md-4 pl-2">
+                        <mat-checkbox>Delete</mat-checkbox>
+                      </div>
+                      <div class="form-check col-md-4 pl-2">
+                        <mat-checkbox>All</mat-checkbox>
                       </div>
                     </div>
-                  </div>
-                  <div class="card">
-                    <div class="card-header" id="headingTwo">
-                      <h5 class="mb-0">
-                        <button mat-raised-button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
-                          aria-controls="collapseTwo">
-                          Register
-                        </button>
-                      </h5>
-                    </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                      <div class="card-body">
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            Add
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" >
-                            Edit
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            View
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" >
-                            Delete
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" (change)="checkAll($event)">
-                            All Permission
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card">
-                    <div class="card-header" id="headingThree">
-                      <h5 class="mb-0">
-                        <button mat-raised-button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
-                          aria-controls="collapseThree">
-                          Exam Sell
-                        </button>
-                      </h5>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                      <div class="card-body">
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            Add
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            Edit
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            View
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            Delete
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check pb-3">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" (change)="checkAll($event)">
-                            All Permission
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              </div>
+
+                    <!-- <div class="form-check pb-3" >
+                      
+                      <mat-checkbox>Edit</mat-checkbox>
+                      <mat-checkbox>Update</mat-checkbox>
+                      <mat-checkbox>Delete</mat-checkbox>
+                      <mat-checkbox>Delete</mat-checkbox>
+                    </div> -->
+                  </mat-expansion-panel>
+                </mat-accordion>
             </div>
            
           </div>
