@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
-import { BrowserModule  } from '@angular/platform-browser';
+// import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
@@ -10,14 +10,21 @@ const routes: Routes =[
     path: '',
     component: LoginComponent,
     pathMatch: 'full',
-  }, {
+  }, 
+  {
     path: '',
     component: AdminLayoutComponent,
     children: [
         {
       path: '',
       loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
-  }]},
+        }
+      ]
+  },
+  // {
+  //   path: "notice-management",
+  //   loadChildren: './notice-management/notice-management.module#NoticeManagementModule'
+  // }
   
     // { path: 'dashboard',      component: DashboardComponent },
     // { path: 'user-profile',   component: UserProfileComponent },
@@ -33,7 +40,7 @@ const routes: Routes =[
 @NgModule({
   imports: [
     CommonModule,
-    BrowserModule,
+    // BrowserModule,
     RouterModule.forRoot(routes)
   ],
   exports: [

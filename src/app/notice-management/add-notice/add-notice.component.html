@@ -1,0 +1,47 @@
+<div class="main-content">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a [routerLink]="['/dashboard']" class="text-success">
+            <i class="material-icons">home</i>
+            Dashboard
+          </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          Notice Mangament
+        </li>
+      </ol>
+    </nav>
+    <div class="container-fluid">
+      <!-- <div class="row page-title"> -->     
+      <!-- </div> -->
+      <div class="card">
+          <div class="card-header card-header-danger">
+              <h4 class="card-title">Add Notice</h4>
+              <p class="card-category">Add a Notice</p>
+          </div>
+          <div class="card-body">
+            <form id="add-notice-form">
+              <div class="row">
+                <div class="col-md-6">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Title" type="text" name="title">
+                    </mat-form-field>
+                </div>
+                
+                <div class="col-md-6">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Sub Title" type="text" name="subTitle">
+                    </mat-form-field>
+                </div>
+                
+                <div class="col-md-6">
+                    <mat-form-field class="example-full-width">
+                        <textarea matInput placeholder="Description" name="description"></textarea>
+                    </mat-form-field>
+                </div>
+              </div>
+            </form>
+          </div>
+    </div>
+  </div>

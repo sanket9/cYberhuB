@@ -12,11 +12,14 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent,
         data: { PageName: "Login Page" }
     },
-    { path: 'user-profile',   component: UserProfileComponent },
-    { path: 'table-list',     component: TableListComponent },
+    { path: 'user-profile', component: UserProfileComponent },
+    { path: 'table-list', component: TableListComponent },
     { path: 'add-user', component: AddUserComponent },
-    { path: 'notifications',  component: NotificationsComponent },
+    { path: 'notifications', component: NotificationsComponent },
     { path: 'notice', component: NoticeManagementComponent },
-    { path: 'add-user-details', component: AddDetailsComponent },
-   
+    {
+      path: "notice-management",
+      loadChildren: '../../notice-management/notice-management.module#NoticeManagementModule'
+    },
+    { path: 'add-user-details', component: AddDetailsComponent },   
 ];

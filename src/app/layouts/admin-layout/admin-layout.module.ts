@@ -10,8 +10,10 @@ import { NotificationsComponent } from '../../notifications/notifications.compon
 import { AddUserComponent } from '../../add-user/add-user.component';
 import { NoticeManagementComponent } from "../../notice-management/notice-management.component";
 import { AddDetailsComponent } from '../../add-details/add-details.component';
+// import { BrowserModule } from '@angular/platform-browser';
 
 import {
+  MatFormFieldModule,
   MatButtonModule,
   MatInputModule,
   MatRippleModule,
@@ -22,13 +24,17 @@ import {
   MatCheckboxModule,
   MatCardModule,
   MatIconModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatGridListModule
 } from "@angular/material";
+
 @NgModule({
   imports: [
     CommonModule,
+    // BrowserModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
+    MatFormFieldModule,
     MatButtonModule,
     MatRippleModule,
     MatInputModule,
@@ -39,8 +45,10 @@ import {
     MatCheckboxModule,
     MatCardModule,
     MatIconModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatGridListModule
   ],
+
   declarations: [
     DashboardComponent,
     UserProfileComponent,
