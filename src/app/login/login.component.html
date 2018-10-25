@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="background"></div>
+  <div class="container">
+    <!-- <div class="row">
+      <app-header></app-header>
+    </div> -->
+    <div class="row">
+      <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3" style="margin: 0 auto" >
+        <div class="card">
+          <div class="card-header">
+            <h4>Login</h4>
+            <!-- <div class="social-btns">
+              <button mat-icon-button><i class="fa fa-facebook-square"></i></button>
+              <button mat-icon-button><i class="fa fa-twitter"></i></button>
+              <button mat-icon-button><i class="fa fa-google-plus"></i></button>
+            </div> -->
+            <p class="tip text-light">Login With Username and Password</p>
+          </div>          
+          <div class="card-form">
+            <p class="text-center text-danger" *ngIf="showErrors">Email or Password Not Match</p>
+            <form [formGroup]="loginForm">
+              <div class="form-row">
+                <i class="material-icons">email</i>
+                <mat-input-container color="accent">
+                  <input type="text" matInput formControlName="username" 
+                  name="username" placeholder="Username" />
+                </mat-input-container>
+                <mat-error *ngIf="loginForm.controls.username.hasError('required') && 
+                        loginForm.controls.username.touched">
+                  <small>Username is <strong>required</strong></small> 
+                </mat-error>
+              </div>
+              <div class="form-row">
+                <i class="material-icons">lock_outline</i>
+                <mat-input-container color="accent">
+                  <input type="password" matInput formControlName="password" name="password" placeholder="Password" />
+                </mat-input-container>
+                <mat-error *ngIf="loginForm.controls.password.hasError('required') && 
+                                        loginForm.controls.password.touched">
+                  <small>Password is <strong>required</strong></small>
+                </mat-error>
+              </div>
+              
+            </form>            
+          </div>
+          <div class="card-footer">
+            <button mat-button [disabled]="!loginForm.valid" (click)="loginBtn()">LET'S GO</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
