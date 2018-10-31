@@ -1,0 +1,106 @@
+<div class="main-content">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a [routerLink]="['/dashboard']" class="text-success">
+            <i class="material-icons">home</i>
+            Dashboard
+          </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          Add Events
+        </li>
+  
+        <li class="float-right">
+  
+        </li>
+      </ol>
+    </nav>
+  
+    <div class="container-fluid">
+      <div class="row page-title">
+        <div class="col-md-10 col-md-offset-1">
+       
+            <div class="card">
+              <div class="card-header card-header-danger">
+                <h4 class="card-title">Add Events</h4>
+                <p class="card-category">Add an Events</p>
+              </div>
+              <div class="card-body">
+                <form class="pt-2" [formGroup]="eventaddForm" (submit)="bookadd(eventaddForm.value)">
+                  
+                  <div class="row">
+                    <div class="col-md-6">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Event Name" type="text" formControlName="event_name"
+                         name="event_name">
+                      </mat-form-field>
+                      <mat-error *ngIf="eventaddForm.controls.event_name.hasError('required') && 
+                                          eventaddForm.controls.event_name.touched">
+                        <small>Event Name is <strong>required</strong></small>
+                      </mat-error>
+                    </div>
+            
+                    <div class="col-md-6">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Event Location" type="text" formControlName="event_location" 
+                        name="event_location">
+                      </mat-form-field>
+                      <mat-error *ngIf="eventaddForm.controls.event_location.hasError('required') && 
+                                              eventaddForm.controls.event_location.touched">
+                          <small>Event Location is <strong>required</strong></small>
+                      </mat-error>
+                    </div>
+            
+                    <div class="col-md-6">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Event Description" type="text" formControlName="event_description" 
+                        name="event_description">
+                      </mat-form-field>
+                      <mat-error *ngIf="eventaddForm.controls.event_description.hasError('required') && 
+                             eventaddForm.controls.event_description.touched">
+                        <small>Event Description is <strong>required</strong></small>
+                      </mat-error>
+                    </div>
+                    <div class="col-md-6">
+                      <!-- <mat-form-field class="example-full-width">
+                        <input matInput placeholder="ISBN Code" type="text" formControlName="event_startdate" 
+                        name="event_startdate">
+                      </mat-form-field> -->
+                      <mat-form-field class="example-full-width">
+                          <input matInput [matDatepicker]="picker" placeholder="Choose a Start Date" formControlName="event_startdate" >
+                          <mat-datepicker-toggle matSuffix [for]="picker">
+                            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                          </mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                      <mat-error *ngIf="eventaddForm.controls.event_startdate.hasError('required') && 
+                             eventaddForm.controls.event_startdate.touched">
+                        <small>Event Startdate is <strong>required</strong></small>
+                      </mat-error>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="No of Copy Avalable" type="number" formControlName="event_enddate"
+                         name="event_enddate">
+                      </mat-form-field>
+                      <mat-error *ngIf="eventaddForm.controls.event_enddate.hasError('required') && 
+                                  eventaddForm.controls.event_enddate.touched">
+                        <small>Event Enddate is <strong>required</strong></small>
+                      </mat-error>
+                    </div>
+                    
+                  </div>
+                  <button mat-raised-button class="btn btn-light" type="submit" [disabled]="!eventaddForm.valid"
+                    [ngClass]="{'btn-success': eventaddForm.valid}"
+                  >Add Book</button>
+  
+                </form>
+              </div>
+            </div>
+         
+  
+        </div>
+      </div>
+    </div>
+  </div>

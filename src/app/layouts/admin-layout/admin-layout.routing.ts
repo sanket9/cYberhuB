@@ -25,5 +25,9 @@ export const AdminLayoutRoutes: Routes = [
         path: "library",
         loadChildren: "../../library-management/library-management.module#LibraryManagementModule"
     },
+    {
+        path: "event",
+        loadChildren: "../../event-management/event-management.module#EventManagementModule"
+    },
     { path: 'add-user-details', component: AddDetailsComponent },   
 ];

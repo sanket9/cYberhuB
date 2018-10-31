@@ -80,6 +80,21 @@ export class AddLibraryComponent implements OnInit {
       });
   }
 
+  uploadFile(event) {
+  	let elem = event.target;
+  	if(elem.files.length > 0) {
+  		let formData = new FormData();
+  		formData.append('file', elem.files[0]);
 
-  
+  		this.http.post(`${environment.apiUrl}library/libraryimport`, formData)
+  		.subscribe((data) => {
+
+  			let jsonResponse = data.json();
+  			
+  			console.log('Got some data from backend ', data);
+  		}, (error) => {
+  			console.log('Error! ', error);
+  		});
+  	}
+  }
 }

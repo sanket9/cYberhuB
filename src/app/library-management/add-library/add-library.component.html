@@ -99,10 +99,15 @@
               <p class="card-category">Bulk add </p>
             </div>
             <div class="card-body">
-              <form class="pt-2" [formGroup]="bookaddForm" (submit)="bookadd(bookaddForm.value)">
+              <form class="pt-2">
                 
+                <div class="col-md-6">
+                  <button mat-raised-button color="primary" 
+                  (click)="fileInput.click()" (change)="fileChange($event)">
+                    Add File</button>
+                    <input type="file" hidden #fileInput name="file" (change)="uploadFile($event)">
+                </div>
                 
-          
               </form>
             </div>
           </div>

@@ -1,0 +1,98 @@
+<div class="main-content">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a [routerLink]="['/dashboard']" class="text-success">
+            <i class="material-icons">home</i>
+            Dashboard
+          </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">        
+            All Books     
+        </li>
+      
+        <li class="float-right">
+          
+        </li>
+      </ol>
+    </nav>
+  
+    <div class="container-fluid">
+      <div class="row page-title">
+        <div class="col-md-12 col-md-offset-1">
+          <button mat-raised-button [routerLink]="['/event/add-event']">
+            <mat-icon>add</mat-icon> Add a Event
+          </button>
+          <div class="example-header">
+            <mat-form-field>
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter Data..">
+            </mat-form-field>
+          </div>
+          <mat-table #table [dataSource]="dataSource">
+            <!-- Checkbox Column -->
+            <!-- <ng-container matColumnDef="select">
+                  <mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                    </mat-checkbox>
+                  </mat-cell>
+                </ng-container> -->
+  
+              <!-- Position Column -->
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+              <mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </mat-cell>
+            </ng-container>
+          
+            <!-- Name Column -->
+            
+            <ng-container matColumnDef="event_name">
+              <mat-header-cell *matHeaderCellDef> Event Name </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.event_name}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="event_location">
+              <mat-header-cell *matHeaderCellDef> Event Location </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.event_location}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="event_description">
+              <mat-header-cell *matHeaderCellDef> Event Description </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.event_description}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="event_startdate">
+              <mat-header-cell *matHeaderCellDef> Event startdate </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.event_startdate}} ({{element.event_startime}}) </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="event_enddate">
+              <mat-header-cell *matHeaderCellDef> Event enddate </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.event_enddate}} ({{element.event_endtime}})</mat-cell>
+            </ng-container>
+            
+            <!-- Name Actions -->
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <button mat-icon-button type="button" matTooltip="Edit this" 
+                [matTooltipPosition]="'above'" 
+                class="btn btn-link btn-sm btn-just-icon" (click)="selectStaff(element.id)">
+                  <i class="material-icons">edit</i>
+                </button>
+                <!-- <button mat-icon-button >
+                  <mat-icon>remove_red_eye</mat-icon>
+                </button> -->
+              </mat-cell>
+            </ng-container>
+          
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            
+          </mat-table>
+          <mat-paginator #paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 25, 50,100]">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
