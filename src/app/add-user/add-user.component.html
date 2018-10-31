@@ -184,20 +184,29 @@
                     </mat-expansion-panel-header> 
                     <div class="row">
                       <div class="form-check col-md-4 pl-2">
-                        <mat-checkbox (click)="checkIfAllSelected('add', i)" 
+                        <mat-checkbox (change)="checkIfAllSelected($event,'add', i)" 
+                        [checked]="allPermisions"
                         >Add</mat-checkbox>
                       </div>
                       <div class="form-check col-md-4 pl-2">
-                        <mat-checkbox (click)="checkIfAllSelected('edit', i)">Edit</mat-checkbox>
+                        <mat-checkbox (change)="checkIfAllSelected($event, 'edit', i)"
+                        [checked]="allPermisions"
+                        >Edit</mat-checkbox>
                       </div>
                       <div class="form-check col-md-4 pl-2">
-                        <mat-checkbox>View</mat-checkbox>
+                        <mat-checkbox (change)="checkIfAllSelected($event, 'view', i)"
+                        [checked]="allPermisions"
+                        >View</mat-checkbox>
                       </div>
                       <div class="form-check col-md-4 pl-2">
-                        <mat-checkbox>Delete</mat-checkbox>
+                        <mat-checkbox (change)="checkIfAllSelected($event, 'delete', i)"
+                        [checked]="allPermisions"
+                        >Delete</mat-checkbox>
                       </div>
                       <div class="form-check col-md-4 pl-2">
-                        <mat-checkbox>All</mat-checkbox>
+                        <mat-checkbox (change)="checkIfAllSelected($event, 'all', i)"
+                        [checked]="allCheckButton[i]"
+                        >All</mat-checkbox>
                       </div>
                     </div>
 
@@ -215,7 +224,11 @@
           </div>
           <div class="wizard-footer">            
             <button id="preBtn" class="btn btn-danger" (click)="preOnClick()">Previous</button>
-            <button id="nextBtn" class="btn btn-success green-a200" (click)="nextOnClick()">Next</button>
+            <button id="nextBtn" class="btn btn-success green-a200" 
+              *ngIf="tabIndex == 0"
+              
+            (click)="nextOnClick()">Next1</button>
+            <button id="nextBtn" class="btn btn-success green-a200" *ngIf="tabIndex == 1" (click)="nextOnClick()">Next2</button>
             <button *ngIf="tabIndex == 2" class="btn btn-success float-right" (click)="finish()">Finish</button>
           </div>
         </div>

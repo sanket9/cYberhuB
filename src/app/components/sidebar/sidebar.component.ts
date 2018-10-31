@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Http, RequestOptions, Headers } from '@angular/http';
+import { environment } from "../../../environments/environment.prod";
+
+import "rxjs/add/observable/of";
 
 declare const $: any;
 declare interface RouteInfo {
@@ -14,7 +18,11 @@ export const ROUTES: RouteInfo[] = [
     { path: '/notifications', title: 'Notifications',  icon:'notifications', class: '' },
     { path: '/add-user', title: 'Add User', icon: 'person', class: '' },
     { path: '/notice', title: 'Notice', icon: 'event_available', class: '' },
-    { path: '/add-user-details', title: 'Add Details', icon: 'event_available', class: '' },
+    { path: '/library/index', title: 'Library', icon: 'event_available', class: '' },
+    { path: '/event/index', title: 'Events', icon: 'event_available', class: '' },
+    { path: '/routin/index', title: 'Routine', icon: 'event_available', class: '' },
+    { path: '/exam/index', title: 'Exam System', icon: 'event_available', class: '' },
+    // { path: '/add-user-details', title: 'Add Details', icon: 'event_available', class: '' },
 ];
 
 @Component({
@@ -25,15 +33,21 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
   menuItems: any[];
 
-  constructor() { }
+    constructor(public http: Http) { }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
+    // this.getRouts();
+    
   }
+//   getRouts(){
+//       this.http.get(`${environment.apiUrl}role/addpermission`);
+//   }
   isMobileMenu() {
       if ($(window).width() > 991) {
           return false;
       }
       return true;
   };
+
 }

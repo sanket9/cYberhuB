@@ -17,8 +17,8 @@ declare const $: any;
 })
 export class AddUserComponent implements OnInit {
   tabIndex = 0;
-  allCheck: boolean;
-  allPermisions: boolean;
+  allCheckButton: any[] = [];
+  allPermisions: boolean = false;
   items: any;
   roles;
   result;
@@ -117,30 +117,84 @@ export class AddUserComponent implements OnInit {
     (<HTMLElement>tabs[this.tabIndex]).style.display = "inherit";
   }
 
-  checkAll(event: any) {
-    var e = <HTMLInputElement>event.target;
-    if (e.checked) {
-      this.allCheck = true;
-      console.log(this.allCheck);
-    } else {
-      //this.allCheck = false;
-      console.log(this.allCheck);
-      this.allPermisions = false;
-    }
-  }
-  checkIfAllSelected(name, index) {
-    
+  // checkAll(event: any) {
+  //   var e = <HTMLInputElement>event.target;
+  //   if (e.checked) {
+  //     this.allCheck = true;
+  //     console.log(this.allCheck);
+  //   } else {
+  //     //this.allCheck = false;
+  //     console.log(this.allCheck);
+  //     this.allPermisions = false;
+  //   }
+  // }
+  checkIfAllSelected(event, name, index) {    
     // let data = {
     //   name: name.trim(),
     //   value: true
     // }
+    if (event.checked) {
+      if (name == 'all') {
+        for (let i = 0; i < this.logDetails.modules.length; i++) {
+          this.logDetails.modules[i].permissions.all = true;
+          this.logDetails.modules[i].permissions.add = true;
+          this.logDetails.modules[i].permissions.edit = true;
+          this.logDetails.modules[i].permissions.view = true;
+          this.logDetails.modules[i].permissions.delete = true;
+          this.allCheckButton[i] = true;
+        }
+        this.allPermisions = true;        
         
-    this.logDetails.modules[index]["permissions"][name] = true;
+      }else{
+        this.logDetails.modules[index].permissions[name] = true; 
+        if (this.logDetails.modules[index].permissions.add == true
+          && this.logDetails.modules[index].permissions.edit == true
+          && this.logDetails.modules[index].permissions.view == true
+          && this.logDetails.modules[index].permissions.delete ==true
+          )
+          {
+            this.allCheckButton[index] = true;
+          }
+      }
+         
+    }else{
+      // this.logDetails.modules[index]["permissions"].splice(
+      //   this.logDetails.modules[index]["permissions"].indexOf(this.logDetails.modules[index]["permissions"][name]), 1
+      // );
+      // console.log();   
+      if (name == 'all') {
+        this.allPermisions = false;
+        this.logDetails.modules[index].permissions[name] = false;
+        this.logDetails.modules[index].permissions.add = false;
+        this.logDetails.modules[index].permissions.edit = false;
+        this.logDetails.modules[index].permissions.view = false;
+        this.logDetails.modules[index].permissions.delete = false;
+        this.allCheckButton[index] = false;
+      } else {
+        this.logDetails.modules[index].permissions[name] = false;
+        this.logDetails.modules[index].permissions.all = false;
+        
+        this.allCheckButton[index] = false;
+      }
+        
+    }
+        
+    
     console.log(this.logDetails);
   }
 
   finish() {
-    this.router.navigate(["add-user-details"]);
+    this.http.post(`${environment.apiUrl}role/addpermission`,this.logDetails).map(res => res.json())
+    .subscribe(data => {
+      
+      if (data.length == this.logDetails.modules.length) {
+        console.log(data);
+        this.showNotification('top', 'right');
+        this.router.navigate(["add-user"]);
+      }
+      // 
+    })
+    
   }
 
   applyFilter(filterValue: string) {
@@ -206,9 +260,10 @@ export class AddUserComponent implements OnInit {
     this.address = this.result.address;
     this.logDetails.user = {
       id: this.result.id,
-      name: this.result.name
+      name: this.result.name,
+      user_type_id: this.result.user_type_id
     };
-    console.log(this.logDetails);
+    // console.log(this.result);
     this.logDetails.modules = [];
   }
 
@@ -217,7 +272,7 @@ export class AddUserComponent implements OnInit {
       .get(`${environment.apiUrl}user/moduledetails`)
       .map(res => res.json())
       .subscribe(data => {
-        console.log(data);
+        // console.log(data);
         this.modules = data.data;
       });
   }
@@ -247,7 +302,7 @@ export class AddUserComponent implements OnInit {
       let data = {
         id: id,
         name: event.source._elementRef.nativeElement.textContent.trim(),
-        permissions: []
+        permissions: {}
       };
       this.logDetails["modules"].push(data);
 
@@ -258,8 +313,38 @@ export class AddUserComponent implements OnInit {
         1
       );
     }
-    console.log(this.logDetails);
+    // console.log(this.logDetails);
     // console.log(event.source._elementRef.nativeElement.textContent);
+  }
+
+  //Botification model.
+  showNotification(from, align) {
+    const type = ['', 'info', 'success', 'warning', 'danger'];
+
+    const color = Math.floor((Math.random() * 4) + 1);
+
+    $.notify({
+      icon: "notifications",
+      message: "User Role Successfuly Created"
+
+    }, {
+        type: 'success',
+        timer: 2000,
+        placement: {
+          from: from,
+          align: align
+        },
+        template: '<div data-notify="container" class="col-xl-4 col-lg-4 col-11 col-sm-4 col-md-4 alert alert-{0} alert-with-icon" role="alert">' +
+          '<button mat-button  type="button" aria-hidden="true" class="close mat-button" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+          '<i class="material-icons" data-notify="icon">notifications</i> ' +
+          '<span data-notify="title">{1}</span> ' +
+          '<span data-notify="message">{2}</span>' +
+          '<div class="progress" data-notify="progressbar">' +
+          '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+          '</div>' +
+          '<a href="{3}" target="{4}" data-notify="url"></a>' +
+          '</div>'
+      });
   }
 }
 export interface Element {

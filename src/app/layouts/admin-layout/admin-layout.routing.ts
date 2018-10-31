@@ -21,5 +21,9 @@ export const AdminLayoutRoutes: Routes = [
       path: "notice-management",
       loadChildren: '../../notice-management/notice-management.module#NoticeManagementModule'
     },
+    {
+        path: "library",
+        loadChildren: "../../library-management/library-management.module#LibraryManagementModule"
+    },
     { path: 'add-user-details', component: AddDetailsComponent },   
 ];
