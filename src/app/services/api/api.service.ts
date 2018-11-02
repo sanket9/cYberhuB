@@ -9,13 +9,11 @@ export class ApiService {
 
   addNotice(newNoticeData) {
     let header = new HttpHeaders();
-    header.set("Content-Type", "*");
+    // header.set("Content-Type", "*");
     return this.http
-      .post(
-        "http://softechs.co.in/school_hub/notice/addnotice",
-        newNoticeData,
-        { headers: header }
-      )
+      .post("http://softechs.co.in/fileupload.php", newNoticeData, {
+        headers: header
+      })
       .map(res => {
         return res;
       });

@@ -25,7 +25,8 @@ import {
   MatCardModule,
   MatIconModule,
   MatExpansionModule,
-  MatGridListModule
+  MatGridListModule,
+  MatSlideToggleModule,
 } from "@angular/material";
 
 @NgModule({
@@ -46,7 +47,8 @@ import {
     MatCardModule,
     MatIconModule,
     MatExpansionModule,
-    MatGridListModule
+    MatGridListModule,
+    MatSlideToggleModule,
   ],
 
   declarations: [

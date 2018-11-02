@@ -54,10 +54,15 @@ export class AddNoticeComponent implements OnInit {
     });
   }
 
+
+
   onAddNoticeSubmit() {
     let addNoticeFormData = this.addNoticeForm.value;
+
+    console.log(this.slFile);
+
     let fd = new FormData();
-    fd.append("file", this.slFile, this.slFile.name);
+    fd.append("file", this.slFile);
     fd.append("notice_type_id", "1");
     fd.append("status", "1");
     fd.append("user_master_id", "7");
@@ -85,26 +90,67 @@ export class AddNoticeComponent implements OnInit {
     // console.log(addNoticeFormData);
     console.log(fd);
 
-    this.apiServ.addNotice(fd).subscribe((res: any) => {
-      console.log("Responce From Server : ", res);
+    // this.apiServ.addNotice(fd).subscribe((res: any) => {
+    //   console.log("Responce From Server : ", res);
+    // });
+    this.http.post("http://softechs.co.in/fileupload.php", fd)
+        .subscribe(data => {
+          // let jsonResponse = data.json();
+          console.log('Got some data from backend ', data);
+          // console.log("Got some data from backend ", jsonResponse);
+        }, (error) => {
+          console.log('Error! ', error);
     });
   }
 
-  onSelectFile(e) {
-    if (e.target.files && e.target.files[0]) {
-      this.slFile = e.dataTransfer
-        ? e.dataTransfer.files[0]
-        : e.target.files[0];
+
+
+
+  onSelectFile(event) {
+    // if (e.target.files && e.target.files[0]) {
+    //   this.slFile = e.dataTransfer
+    //     ? e.dataTransfer.files[0]
+    //     : e.target.files[0];
+
+
       // console.log(file);
       // let fd = new FormData();
       // fd.append("selectFile", file, file.name);
       // this.slFile = fd;
       // console.log(this.slFile);
+
+
+  // }
+
+
+    let elem = event.target;
+
+    if (elem.files.length > 0) {
+      // let formData = new FormData();
+      // formData.append('file', elem.files[0]);
+      this.slFile = elem.files[0];
     }
   }
 
   // onSelectFile(files: any) {
   //   console.log(files[0]);
   //   this.myFile = <File>files[0];
+  // }
+
+  // uploadFile(event) {
+  //   let elem = event.target;
+  //   if (elem.files.length > 0) {
+
+  //     let formData = new FormData();
+  //     formData.append('file', elem.files[0]);
+
+  //     this.http.post(`softechs.co.in/fileupload.php`, formData)
+  //       .subscribe(data => {
+  //         let jsonResponse = data.json();
+  //         console.log('Got some data from backend ', data);
+  //       }, (error) => {
+  //         console.log('Error! ', error);
+  //       });
+  //   }
   // }
 }

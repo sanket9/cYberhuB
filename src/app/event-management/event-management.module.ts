@@ -23,7 +23,8 @@ import {
   MatTabsModule,
   MatPaginatorModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatSlideToggleModule,
 } from "@angular/material";
 @NgModule({
   imports: [
@@ -45,9 +46,10 @@ import {
     MatTabsModule,
     MatPaginatorModule,
     MatDatepickerModule,
-    MatNativeDateModule 
+    MatNativeDateModule,
+    MatSlideToggleModule
   ],
-  providers: [MatDatepickerModule,NotificationService],
+  providers: [MatDatepickerModule, NotificationService],
   declarations: [AddEventComponent, ListEventsComponent, EditEventsComponent]
 })
-export class EventManagementModule { }
+export class EventManagementModule {}
