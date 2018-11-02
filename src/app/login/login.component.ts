@@ -4,6 +4,7 @@ import { Http, RequestOptions,Headers } from "@angular/http";
 import { environment } from "../../environments/environment.prod";
 import { FormControl, FormGroup, NgForm, Validators, FormGroupDirective } from "@angular/forms";
 import { ErrorStateMatcher } from '@angular/material/core';
+// import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
 import "rxjs/add/operator/map";
 
@@ -17,7 +18,16 @@ export class LoginComponent implements OnInit {
   username: FormControl;
   password: FormControl;
   showErrors: boolean = false;
-  constructor(public router: Router, public http: Http) {}
+  constructor(public router: Router, public http: Http,
+    ) {
+      // this.localStore.observe('key').subscribe(val => console.log(val));
+      
+      var status = localStorage.getItem('logedin');
+      if(status == "true"){
+        this.router.navigate(["dashboard"]);
+      }
+      
+  } 
 
   ngOnInit() {
     this.createFormControl();
@@ -32,7 +42,7 @@ export class LoginComponent implements OnInit {
       username: this.username,
       password: this.password
     });
-    console.log(this.loginForm);
+    // console.log(this.loginForm);
     
   }
   loginBtn() {
@@ -54,6 +64,7 @@ export class LoginComponent implements OnInit {
           this.showErrors = true;
         } else if (data.data.length > 0){
           this.router.navigate(["dashboard"]);
+          localStorage.setItem('logedin', "true")
         }
       });
     // this.router.navigate(["dashboard"]);
