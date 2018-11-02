@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 // import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './auth.guard';
+import {NgxWebstorageModule} from 'ngx-webstorage';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from "./login/login.component";
@@ -10,16 +12,18 @@ const routes: Routes =[
     path: '',
     component: LoginComponent,
     pathMatch: 'full',
+    
   }, 
   {
     path: '',
     component: AdminLayoutComponent,
     children: [
         {
-      path: '',
-      loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
-        }
-      ]
+        path: '',
+        loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule',
+        
+      }
+    ]
   },
   // {
   //   path: "notice-management",
@@ -41,7 +45,8 @@ const routes: Routes =[
   imports: [
     CommonModule,
     // BrowserModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    NgxWebstorageModule.forRoot()
   ],
   exports: [
   ],

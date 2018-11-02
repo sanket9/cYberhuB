@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from '../../auth.guard';
 
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { UserProfileComponent } from '../../user-profile/user-profile.component';
@@ -10,6 +11,7 @@ import { AddDetailsComponent } from "../../add-details/add-details.component";
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent,
+        canActivate: [AuthGuard],
         data: { PageName: "Login Page" }
     },
     { path: 'user-profile', component: UserProfileComponent },
