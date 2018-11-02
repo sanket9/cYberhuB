@@ -4,6 +4,7 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { Http, RequestOptions, Headers } from '@angular/http';
 import { Router } from "@angular/router";
 import { environment } from "../../../environments/environment.prod";
+import { NotificationService } from "../../services/notification.service";
 
 import "rxjs/add/observable/of";
 @Component({
@@ -26,7 +27,7 @@ export class ListEventsComponent implements OnInit {
 
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
-  constructor(public http: Http, public router: Router) { }
+  constructor(public http: Http, public router: Router,  public notification: NotificationService) { }
 
   ngOnInit() {
     this.getAllEvents();
@@ -55,6 +56,50 @@ export class ListEventsComponent implements OnInit {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     this.dataSource.filter = filterValue;
+  }
+  selectEvent(id: number){
+    let result = this.dataSource.data.find(itm => itm.id == id);
+    // console.log(result);
+
+    let q = btoa(JSON.stringify(result));
+    this.router.navigate(["event/edit-event"], { queryParams: {data: q} });
+  }
+
+  deleteEvent(id){
+    if(confirm("Are You Want to Delete this?")){
+      var headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      let options = new RequestOptions({ headers: headers });
+      let data = {
+        id: id
+      };
+    this.http
+      .post(`${environment.apiUrl}event/deleteevent`, data, options)
+      .map(res => res.json())
+      .subscribe(data => {
+        // console.log(data);
+        if (!data.error && data.data) {
+          this.notification.showNotification(
+            "top",
+            "right",
+            "success",
+            "Event Deleted SuccessFuly"
+          );
+          this.getAllEvents();
+        } else {
+          this.notification.showNotification(
+            "top",
+            "right",
+            "warning",
+            "Something Went Wrong"
+          );
+        }
+      });
+      
+    }else{
+      console.log("0");
+      
+    }
   }
 
 }

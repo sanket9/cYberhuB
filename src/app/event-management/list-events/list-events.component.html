@@ -77,13 +77,19 @@
               <mat-cell *matCellDef="let element">
                 <button mat-icon-button type="button" matTooltip="Edit this" 
                 [matTooltipPosition]="'above'" 
-                class="btn btn-link btn-sm btn-just-icon" (click)="selectStaff(element.id)">
+                class="btn btn-link btn-sm btn-just-icon" (click)="selectEvent(element.id)">
                   <i class="material-icons">edit</i>
                 </button>
                 <!-- <button mat-icon-button >
                   <mat-icon>remove_red_eye</mat-icon>
                 </button> -->
+                <button mat-icon-button type="button" matTooltip="Delete this" 
+                [matTooltipPosition]="'above'" 
+                class="btn btn-link btn-sm btn-just-icon" (click)="deleteEvent(element.id)">
+                  <i class="material-icons">delete</i>
+                </button>
               </mat-cell>
+              
             </ng-container>
           
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

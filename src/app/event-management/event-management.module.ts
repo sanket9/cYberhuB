@@ -6,6 +6,7 @@ import { AddEventComponent } from './add-event/add-event.component';
 import { ListEventsComponent } from './list-events/list-events.component';
 import { EditEventsComponent } from './edit-events/edit-events.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { NotificationService } from '../services/notification.service'
 
 import {
   MatFormFieldModule,
@@ -21,7 +22,8 @@ import {
   MatIconModule,
   MatTabsModule,
   MatPaginatorModule,
-  MatDatepickerModule
+  MatDatepickerModule,
+  MatNativeDateModule
 } from "@angular/material";
 @NgModule({
   imports: [
@@ -42,8 +44,10 @@ import {
     MatIconModule,
     MatTabsModule,
     MatPaginatorModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatNativeDateModule 
   ],
+  providers: [MatDatepickerModule,NotificationService],
   declarations: [AddEventComponent, ListEventsComponent, EditEventsComponent]
 })
 export class EventManagementModule { }

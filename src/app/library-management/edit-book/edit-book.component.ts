@@ -84,7 +84,7 @@ export class EditBookComponent implements OnInit {
       .post(`${environment.apiUrl}library/updatebook`, values, options)
       .map(res => res.json())
       .subscribe(data => {
-        console.log(data);
+        // console.log(data);
         if (!data.error && data.data) {
           this.notification.showNotification(
             "top",

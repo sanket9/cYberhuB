@@ -14,7 +14,7 @@ const routes: Routes = [
     component: AddEventComponent
   },
   {
-    path: "edit-events",
+    path: "edit-event",
     component: EditEventsComponent
   }
 ];
