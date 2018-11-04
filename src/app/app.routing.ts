@@ -1,44 +1,43 @@
-import { NgModule } from '@angular/core';
-import { CommonModule, } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 // import { BrowserModule  } from '@angular/platform-browser';
-import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from './auth.guard';
-import {NgxWebstorageModule} from 'ngx-webstorage';
+import { Routes, RouterModule } from "@angular/router";
+import { AuthGuard } from "./auth.guard";
+import { Ng2Webstorage } from "ngx-webstorage";
 
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
 import { LoginComponent } from "./login/login.component";
-const routes: Routes =[
+const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: LoginComponent,
-    pathMatch: 'full',
-    
-  }, 
+    pathMatch: "full"
+  },
   {
-    path: '',
+    path: "",
     component: AdminLayoutComponent,
     children: [
-        {
-        path: '',
-        loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule',
-        
+      {
+        path: "",
+        loadChildren:
+          "./layouts/admin-layout/admin-layout.module#AdminLayoutModule"
       }
     ]
-  },
+  }
   // {
   //   path: "notice-management",
   //   loadChildren: './notice-management/notice-management.module#NoticeManagementModule'
   // }
-  
-    // { path: 'dashboard',      component: DashboardComponent },
-    // { path: 'user-profile',   component: UserProfileComponent },
-    // { path: 'table-list',     component: TableListComponent },
-    // { path: 'typography',     component: TypographyComponent },
-    // { path: 'icons',          component: IconsComponent },
-    // { path: 'maps',           component: MapsComponent },
-    // { path: 'notifications',  component: NotificationsComponent },
-    // { path: 'upgrade',        component: UpgradeComponent },
-    // { path: '',               redirectTo: 'dashboard', pathMatch: 'full' }
+
+  // { path: 'dashboard',      component: DashboardComponent },
+  // { path: 'user-profile',   component: UserProfileComponent },
+  // { path: 'table-list',     component: TableListComponent },
+  // { path: 'typography',     component: TypographyComponent },
+  // { path: 'icons',          component: IconsComponent },
+  // { path: 'maps',           component: MapsComponent },
+  // { path: 'notifications',  component: NotificationsComponent },
+  // { path: 'upgrade',        component: UpgradeComponent },
+  // { path: '',               redirectTo: 'dashboard', pathMatch: 'full' }
 ];
 
 @NgModule({
@@ -46,9 +45,8 @@ const routes: Routes =[
     CommonModule,
     // BrowserModule,
     RouterModule.forRoot(routes),
-    NgxWebstorageModule.forRoot()
+    Ng2Webstorage
   ],
-  exports: [
-  ],
+  exports: []
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
