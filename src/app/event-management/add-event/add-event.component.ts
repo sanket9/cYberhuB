@@ -37,7 +37,7 @@ export class AddEventComponent implements OnInit {
   createFormControl() {
     this.event_name = new FormControl("", [Validators.required]);
     this.event_location = new FormControl("", [Validators.required]);
-    this.event_description = new FormControl("", [Validators.required]);
+    this.event_description = new FormControl("", [Validators.required, Validators.maxLength(300)]);
     this.event_startdate = new FormControl("", [Validators.required]);
     this.event_enddate = new FormControl("", [Validators.required]);
     this.event_starttime = new FormControl("", [Validators.required]);

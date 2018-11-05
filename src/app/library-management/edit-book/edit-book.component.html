@@ -61,6 +61,15 @@
                     </div>
                     <div class="col-md-6">
                       <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Edition" type="text" formControlName="edition" name="edition">
+                      </mat-form-field>
+                      <mat-error *ngIf="bookeditForm.controls.edition.hasError('required') && 
+                           bookeditForm.controls.edition.touched">
+                        <small>Edition is <strong>required</strong></small>
+                      </mat-error>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-form-field class="example-full-width">
                         <input matInput placeholder="ISBN Code" type="text" formControlName="isbn_code" name="isbn_code">
                       </mat-form-field>
                       <mat-error *ngIf="bookeditForm.controls.isbn_code.hasError('required') && 
@@ -76,6 +85,16 @@
                       <mat-error *ngIf="bookeditForm.controls.no_of_copy.hasError('required') && 
                                 bookeditForm.controls.no_of_copy.touched">
                         <small>No Of Copy is <strong>required</strong></small>
+                      </mat-error>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Book for Out" type="number" formControlName="book_for_out"
+                          name="book_for_out">
+                      </mat-form-field>
+                      <mat-error *ngIf="bookeditForm.controls.book_for_out.hasError('required') && 
+                                bookeditForm.controls.book_for_out.touched">
+                        <small>This is <strong>required</strong></small>
                       </mat-error>
                     </div>
                   </div>

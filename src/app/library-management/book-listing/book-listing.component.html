@@ -64,7 +64,7 @@
           </ng-container>
           <ng-container matColumnDef="no_copy">
             <mat-header-cell *matHeaderCellDef> Copy Left </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.no_copy}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{(element.no_copy - element.book_for_out)}} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="isbn_code">
             <mat-header-cell *matHeaderCellDef> ISBN_no </mat-header-cell>

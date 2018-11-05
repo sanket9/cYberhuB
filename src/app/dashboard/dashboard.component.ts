@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import * as Chartist from 'chartist';
 import { Route, ActivatedRoute } from "@angular/router";
 import { Http, RequestOptions, Headers } from "@angular/http";
+import { environment } from "../../environments/environment.prod";
+
 @Component({
   selector: "app-dashboard",
   templateUrl: "./dashboard.component.html",
@@ -10,7 +12,7 @@ import { Http, RequestOptions, Headers } from "@angular/http";
 export class DashboardComponent implements OnInit {
 
   shiftLists: any;
-
+  orgShiftLists: any;
   constructor(public route: ActivatedRoute, public http: Http) {}
   startAnimationForLineChart(chart) {
     // let seq: any, delays: any, durations: any;
@@ -142,21 +144,45 @@ export class DashboardComponent implements OnInit {
   }
 
   getShiftsNames() {
-
     let header = new Headers();
     header.set("Content-Type", "application/json");
-
-    this.http.get("http://softechs.co.in/school_hub/shift/shiftlist", {headers: header}).map(res => {
-        return res.json();
-    }).subscribe(data => {
+    let data = {
+      org_id: 2
+    }
+    this.http.post(`${environment.apiUrl}shift/orgshiftlist`, data)
+    .map(res => res.json()).subscribe(data => {
         // let jsonResponse = data.json();
-        // console.log("shift lists : ", data);
-        this.shiftLists = data;
-        // console.log("Got some data from backend ", jsonResponse);
+        console.log(data);
+        this.orgShiftLists = data.data;
       },
       error => {
         console.log("Error! ", error);
       }
     );
+
+    this.http.get(`${environment.apiUrl}shift/shiftlist`).map(res => res.json())
+    .subscribe(data => {
+      console.log(data);
+      this.shiftLists = data.data;
+    })
+  }
+
+  shiftchange(e){
+    console.log(e);
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+    let data = {
+      org_id: 2,
+      shift_id: e.source._elementRef.nativeElement.id
+    };    
+    if(e.checked){
+      this.http.post(`${environment.apiUrl}shift/addorgshift`, data)
+      .map(res => res.json()).subscribe(data => {
+        console.log(data);
+        
+      })
+    }else{
+      
+    }
   }
 }

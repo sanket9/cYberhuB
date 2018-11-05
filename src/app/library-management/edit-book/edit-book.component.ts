@@ -18,7 +18,9 @@ export class EditBookComponent implements OnInit {
   authorname: FormControl;
   publishername: FormControl;
   isbn_code: FormControl;
+  edition: FormControl;
   no_of_copy: FormControl;
+  book_for_out: FormControl;
   showErrors: boolean = false;
   routedData: any;
   constructor(
@@ -36,9 +38,16 @@ export class EditBookComponent implements OnInit {
         this.location.replaceState(this.location
             .path()
             .split("?")[0], "");
-        let result = atob(data.data);
-        result = JSON.parse(result);
-        this.routedData = result;
+            if(data.data){
+              let result = atob(data.data);
+              result = JSON.parse(result);
+              this.routedData = result;
+            }else{
+              this.router.navigate(["library/index"]);
+            }
+        
+        console.log(this.routedData);
+        
       });
     }
 
@@ -57,10 +66,16 @@ export class EditBookComponent implements OnInit {
     this.publishername = new FormControl(this.routedData.publisher_name, [
       Validators.required
     ]);
+    this.edition = new FormControl(this.routedData.edition, [
+      Validators.required
+    ]);
     this.isbn_code = new FormControl(this.routedData.isbn_code, [
       Validators.required
     ]);
     this.no_of_copy = new FormControl(this.routedData.no_copy, [
+      Validators.required
+    ]);
+    this.book_for_out = new FormControl(this.routedData.book_for_out, [
       Validators.required
     ]);
   }
@@ -70,8 +85,10 @@ export class EditBookComponent implements OnInit {
       bookname: this.bookname,
       authorname: this.authorname,
       publishername: this.publishername,
+      edition: this.edition,
       isbn_code: this.isbn_code,
-      no_of_copy: this.no_of_copy
+      no_of_copy: this.no_of_copy,
+      book_for_out: this.book_for_out
     });
   }
   bookUpdate(values) {

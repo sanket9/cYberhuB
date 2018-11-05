@@ -65,6 +65,16 @@
                   </div>
                   <div class="col-md-6">
                     <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Edition" type="text" formControlName="edition" 
+                      name="edition">
+                    </mat-form-field>
+                    <mat-error *ngIf="bookaddForm.controls.edition.hasError('required') && 
+                           bookaddForm.controls.edition.touched">
+                      <small>Edition is <strong>required</strong></small>
+                    </mat-error>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-form-field class="example-full-width">
                       <input matInput placeholder="ISBN Code" type="text" formControlName="isbn_code" 
                       name="isbn_code">
                     </mat-form-field>
@@ -75,12 +85,22 @@
                   </div>
                   <div class="col-md-6">
                     <mat-form-field class="example-full-width">
-                      <input matInput placeholder="No of Copy Avalable" type="number" formControlName="no_of_copy"
+                      <input matInput placeholder="No of Copy Total" type="number" formControlName="no_of_copy"
                        name="no_of_copy">
                     </mat-form-field>
                     <mat-error *ngIf="bookaddForm.controls.no_of_copy.hasError('required') && 
                                 bookaddForm.controls.no_of_copy.touched">
                       <small>No Of Copy is <strong>required</strong></small>
+                    </mat-error>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="No of Book Out" type="text" formControlName="book_for_out" 
+                      name="edition">
+                    </mat-form-field>
+                    <mat-error *ngIf="bookaddForm.controls.book_for_out.hasError('required') && 
+                           bookaddForm.controls.book_for_out.touched">
+                      <small>This is <strong>required</strong></small>
                     </mat-error>
                   </div>
                 </div>

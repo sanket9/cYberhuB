@@ -17,7 +17,9 @@ export class AddLibraryComponent implements OnInit {
   authorname: FormControl;
   publishername: FormControl;
   isbn_code: FormControl;
+  edition: FormControl;
   no_of_copy: FormControl;
+  book_for_out: FormControl;
   showErrors: boolean = false;
 
   constructor(
@@ -36,6 +38,8 @@ export class AddLibraryComponent implements OnInit {
     this.authorname = new FormControl("", [Validators.required]);
     this.publishername = new FormControl("", [Validators.required]);
     this.isbn_code = new FormControl("", [Validators.required]);
+    this.edition = new FormControl("", [Validators.required]);
+    this.book_for_out = new FormControl("", [Validators.required]);
     this.no_of_copy = new FormControl("", [Validators.required]);
   }
 
@@ -44,13 +48,15 @@ export class AddLibraryComponent implements OnInit {
       bookname: this.bookname,
       authorname: this.authorname,
       publishername: this.publishername,
+      edition: this.edition,
       isbn_code: this.isbn_code,
+      book_for_out: this.book_for_out,
       no_of_copy: this.no_of_copy
     });
     // console.log(this.bookaddForm);
   }
 
-  bookadd(values) {
+  bookadd(values) {    
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
