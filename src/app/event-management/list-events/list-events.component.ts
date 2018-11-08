@@ -5,6 +5,7 @@ import { Http, RequestOptions, Headers } from '@angular/http';
 import { Router } from "@angular/router";
 import { environment } from "../../../environments/environment.prod";
 import { NotificationService } from "../../services/notification.service";
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
 import "rxjs/add/observable/of";
 @Component({
@@ -27,7 +28,8 @@ export class ListEventsComponent implements OnInit {
 
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
-  constructor(public http: Http, public router: Router,  public notification: NotificationService) { }
+  constructor(public http: Http, public router: Router,  
+    public notification: NotificationService, public SessionStore: SessionStorageService) { }
 
   ngOnInit() {
     this.getAllEvents();
@@ -40,8 +42,11 @@ export class ListEventsComponent implements OnInit {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
+    var status = this.SessionStore.retrieve('user-data');
+    // console.log(status);
+    
     let data = {
-      org_id: 2
+      org_id: status[0].org_code
     };
     this.http
       .post(`${environment.apiUrl}event/eventdetails`, data, options)

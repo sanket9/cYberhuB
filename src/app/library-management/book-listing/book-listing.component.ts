@@ -4,6 +4,7 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { Http, RequestOptions, Headers } from '@angular/http';
 import { Router } from "@angular/router";
 import { environment } from "../../../environments/environment.prod";
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
 import "rxjs/add/observable/of";
 
@@ -27,7 +28,7 @@ export class BookListingComponent implements OnInit {
 
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
-  constructor(public http: Http, public router: Router) {}
+  constructor(public http: Http, public router: Router, public SessionStore: SessionStorageService,) {}
 
   ngOnInit() {
     this.getAllBooks();
@@ -36,11 +37,12 @@ export class BookListingComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
   getAllBooks() {
+    var status = this.SessionStore.retrieve('user-data');
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
     let data = {
-      master_id: 2
+      master_id: status[0].master_id
     };
     this.http
       .post(`${environment.apiUrl}library/librarydetails`, data, options)

@@ -21,15 +21,23 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'notice', component: NoticeManagementComponent },
     {
       path: "notice-management",
+      canActivate: [AuthGuard],
       loadChildren: '../../notice-management/notice-management.module#NoticeManagementModule'
     },
     {
         path: "library",
+        canActivate: [AuthGuard],
         loadChildren: "../../library-management/library-management.module#LibraryManagementModule"
     },
     {
         path: "event",
+        canActivate: [AuthGuard],
         loadChildren: "../../event-management/event-management.module#EventManagementModule"
+    },
+    {
+        path: "exam",
+        canActivate: [AuthGuard],
+        loadChildren: "../../exam-management/exam-management.module#ExamManagementModule"
     },
     { path: 'add-user-details', component: AddDetailsComponent },   
 ];

@@ -5,6 +5,7 @@ import { FormControl, FormGroup, NgForm, Validators, FormGroupDirective } from "
 import { Router, ActivatedRoute } from '@angular/router'
 import { ErrorStateMatcher } from '@angular/material/core';
 import { NotificationService } from '../../services/notification.service'
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
 @Component({
   selector: "app-add-library",
@@ -25,6 +26,7 @@ export class AddLibraryComponent implements OnInit {
   constructor(
     public http: Http,
     public notification: NotificationService,
+    public SessionStore: SessionStorageService,
     public router: Router
   ) {}
 
@@ -56,11 +58,12 @@ export class AddLibraryComponent implements OnInit {
     // console.log(this.bookaddForm);
   }
 
-  bookadd(values) {    
+  bookadd(values) {  
+    var status = this.SessionStore.retrieve('user-data');  
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
-    values.org_id = 2;
+    values.org_id = status[0].org_code;
     // console.log(this.bookaddForm);
     this.http
       .post(`${environment.apiUrl}library/addbook`, values, options)

@@ -4,7 +4,9 @@ import { environment } from "../../../environments/environment.prod";
 import { FormControl, FormGroup, NgForm, Validators, FormGroupDirective } from "@angular/forms";
 import { Router, ActivatedRoute } from '@angular/router'
 import { ErrorStateMatcher } from '@angular/material/core';
-import { NotificationService } from '../../services/notification.service'
+import { NotificationService } from '../../services/notification.service';
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
+
 declare var $: any;
 
 @Component({
@@ -27,6 +29,7 @@ export class AddEventComponent implements OnInit {
 
   constructor( public http: Http,
     public notification: NotificationService,
+    public SessionStore: SessionStorageService,
     public router: Router) { }
 
   ngOnInit() {
@@ -58,12 +61,13 @@ export class AddEventComponent implements OnInit {
   }
 
   eventadd(value){
+    var status = this.SessionStore.retrieve('user-data');
     console.log(value);
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
-    value.org_id = 2;
-    value.master_id = 2;
+    value.org_id = status[0].org_code;
+    value.master_id = status[0].master_id;
 
     this.http.post(`${environment.apiUrl}/event/addevent`, value, options).map(res => res.json())
     .subscribe(data => {
