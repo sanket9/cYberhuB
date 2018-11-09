@@ -11,10 +11,11 @@ import { environment } from "../../environments/environment.prod";
 })
 export class DashboardComponent implements OnInit {
   shiftLists: any;
-  orgShiftLists: any;
+  orgShiftLists: any = [];
   examPatList: any;
   orgExamPatList: any;
-  
+  checkshift: any;
+  checkedBtn: any [];
 
   constructor(public route: ActivatedRoute, public http: Http) {}
   startAnimationForLineChart(chart) {
@@ -153,15 +154,28 @@ export class DashboardComponent implements OnInit {
     let data = {
       org_id: 2
     };
-
+    this.checkshift = [];
     this.http
       .post(`${environment.apiUrl}shift/orgshiftlist`, data)
       .map(res => res.json())
       .subscribe(
         data => {
           // let jsonResponse = data.json();
-          // console.log("Org shift list ", data.data);
+          console.log("Org shift list ", data.data);
           this.orgShiftLists = data.data;
+          console.log(this.orgShiftLists[0].draw);
+          console.log(this.orgShiftLists[1].draw);
+          console.log(this.orgShiftLists[2].draw);
+          
+          this.orgShiftLists.forEach(element => {
+            if (element.orgshift.length > 0) {
+              this.checkshift.push(true)
+            }else{
+              this.checkshift.push(false);
+            }
+          });
+          console.log(this.checkshift);
+          
         }
         // error => {
         //   console.log("Error! ", error);
@@ -179,6 +193,7 @@ export class DashboardComponent implements OnInit {
 
   // shift change function
   shiftchange(e) {
+    console.log(this.checkedBtn);
     // console.log('check value :', e.checked);
     let header = new Headers();
     header.set("Content-Type", "application/json");
@@ -197,7 +212,7 @@ export class DashboardComponent implements OnInit {
         .map(res => res.json())
         .subscribe(
           data => {
-            console.log("After add success :", data);
+            console.log("After add shift success :", data);
           },
           error => {
             console.log("Error! ", error);
@@ -208,25 +223,41 @@ export class DashboardComponent implements OnInit {
     //if check is false
     if (!e.checked) {
       console.log("delete function called");
-
-      let data = { id: e.source._elementRef.nativeElement.id };
+      // console.log(eleid);
+      
+      let data = { 
+          id: e.source._elementRef.nativeElement.id
+       };
 
       this.http
         .post(`${environment.apiUrl}shift/orgshiftdelete`, data)
         .map(res => res.json())
         .subscribe(
           data => {
-            console.log("After delete success :", data);
+            console.log("After delete shift success :", data);
           },
           error => {
             console.log("Error! ", error);
           }
         );
     }
+
+    // this.getShiftsNames();
   }
 
 
-
+  canbeChecked(id){
+    console.log(this.shiftLists[0].id);
+    
+    if (this.shiftLists[id].draw === 'ttt') {
+      // console.log('true');      
+      return true
+    }else{
+      // console.log('false');      
+      return false
+    }
+    
+  }
 
   //get exam pattern types
   getExamTypeNames() {
@@ -250,7 +281,7 @@ export class DashboardComponent implements OnInit {
       .get(`${environment.apiUrl}exampattern/exampatternlist`)
       .map(res => res.json())
       .subscribe(data => {
-        console.log("exam pattern lists ", data.data);
+        // console.log("exam pattern lists ", data.data);
         this.examPatList = data.data;
       });
   }
@@ -262,7 +293,7 @@ export class DashboardComponent implements OnInit {
 
     //if check is ture
     if (e.checked) {
-      console.log("add function called");
+      // console.log("add function called");
 
       let data = {
         org_id: 2,
@@ -274,16 +305,16 @@ export class DashboardComponent implements OnInit {
         .map(res => res.json())
         .subscribe(
           data => {
-            console.log("After add success :", data);
+            // console.log("After add success :", data);
           },
           error => {
-            console.log("Error! ", error);
+            // console.log("Error! ", error);
       });
     }
 
     //if check is false
     if (!e.checked) {
-      console.log("delete function called");
+      // console.log("delete function called");
 
       let data = { id: e.source._elementRef.nativeElement.id };
 
@@ -292,10 +323,10 @@ export class DashboardComponent implements OnInit {
         .map(res => res.json())
         .subscribe(
           data => {
-            console.log("After delete success :", data);
+            // console.log("After delete success :", data);
           },
           error => {
-            console.log("Error! ", error);
+            // console.log("Error! ", error);
           }
         );
     }
