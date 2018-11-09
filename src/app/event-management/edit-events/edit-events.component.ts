@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { ErrorStateMatcher } from "@angular/material/core";
 import { NotificationService } from "../../services/notification.service";
 import { Location } from "@angular/common";
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
 @Component({
   selector: 'app-edit-events',
@@ -77,7 +78,7 @@ export class EditEventsComponent implements OnInit {
     // console.log(this.bookaddForm);
   }
   eventUpdate(value){
-    console.log(value);
+    // console.log(value);
     
     var headers = new Headers();
     headers.append("Content-Type", "application/json");

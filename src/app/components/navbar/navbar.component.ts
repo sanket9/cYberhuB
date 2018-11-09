@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
 @Component({
   selector: 'app-navbar',
@@ -16,7 +17,8 @@ export class NavbarComponent implements OnInit {
     private sidebarVisible: boolean;
     title: string = 'Dashboard';
     
-    constructor(location: Location, private element: ElementRef, private router: Router, public route: ActivatedRoute ) {
+    constructor(location: Location, private element: ElementRef, private router: Router,
+         public route: ActivatedRoute, public SessionStore: SessionStorageService ) {
       this.location = location;
           this.sidebarVisible = false;
     }
@@ -111,6 +113,11 @@ export class NavbarComponent implements OnInit {
         }
     };
 
+
+    logout(){
+        this.SessionStore.clear('user-data');
+        this.router.navigate(['/'])
+    }
     // getTitle(){
     //   var titlee = this.location.prepareExternalUrl(this.location.path());
     //   if(titlee.charAt(0) === '#'){
