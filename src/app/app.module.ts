@@ -24,6 +24,7 @@ import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.compon
 import { LoginComponent } from "./login/login.component";
 import { AuthGuard } from "./auth.guard";
 import { Ng2Webstorage } from "ngx-webstorage";
+import { ClassListComponent } from './class-list/class-list.component';
 
 @NgModule({
   imports: [

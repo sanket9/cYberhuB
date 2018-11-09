@@ -10,6 +10,7 @@ import { NotificationsComponent } from '../../notifications/notifications.compon
 import { AddUserComponent } from '../../add-user/add-user.component';
 import { NoticeManagementComponent } from "../../notice-management/notice-management.component";
 import { AddDetailsComponent } from '../../add-details/add-details.component';
+import { ClassListComponent } from "app/class-list/class-list.component";
 // import { BrowserModule } from '@angular/platform-browser';
 
 import {
@@ -28,6 +29,7 @@ import {
   MatGridListModule,
   MatSlideToggleModule,
 } from "@angular/material";
+
 
 @NgModule({
   imports: [
@@ -58,7 +60,8 @@ import {
     NotificationsComponent,
     AddUserComponent,
     NoticeManagementComponent,
-    AddDetailsComponent
+    AddDetailsComponent,
+    ClassListComponent
   ]
 })
 export class AdminLayoutModule {}

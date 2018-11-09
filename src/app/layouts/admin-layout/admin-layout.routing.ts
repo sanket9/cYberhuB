@@ -8,6 +8,7 @@ import { NotificationsComponent } from '../../notifications/notifications.compon
 import { AddUserComponent } from '../../add-user/add-user.component';
 import { NoticeManagementComponent } from "../../notice-management/notice-management.component";
 import { AddDetailsComponent } from "../../add-details/add-details.component";
+import { ClassListComponent } from 'app/class-list/class-list.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent,
@@ -19,6 +20,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'add-user', component: AddUserComponent },
     { path: 'notifications', component: NotificationsComponent },
     { path: 'notice', component: NoticeManagementComponent },
+    { path: 'addClass', component: ClassListComponent },
     {
       path: "notice-management",
       loadChildren: '../../notice-management/notice-management.module#NoticeManagementModule'

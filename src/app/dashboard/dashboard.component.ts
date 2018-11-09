@@ -10,9 +10,12 @@ import { environment } from "../../environments/environment.prod";
   styleUrls: ["./dashboard.component.css"]
 })
 export class DashboardComponent implements OnInit {
-
   shiftLists: any;
   orgShiftLists: any;
+  examPatList: any;
+  orgExamPatList: any;
+  
+
   constructor(public route: ActivatedRoute, public http: Http) {}
   startAnimationForLineChart(chart) {
     // let seq: any, delays: any, durations: any;
@@ -68,6 +71,7 @@ export class DashboardComponent implements OnInit {
   }
   ngOnInit() {
     this.getShiftsNames();
+    this.getExamTypeNames(); 
 
     /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
@@ -148,41 +152,159 @@ export class DashboardComponent implements OnInit {
     header.set("Content-Type", "application/json");
     let data = {
       org_id: 2
-    }
-    this.http.post(`${environment.apiUrl}shift/orgshiftlist`, data)
-    .map(res => res.json()).subscribe(data => {
-        // let jsonResponse = data.json();
-        console.log(data);
-        this.orgShiftLists = data.data;
-      },
-      error => {
-        console.log("Error! ", error);
-      }
-    );
+    };
 
-    this.http.get(`${environment.apiUrl}shift/shiftlist`).map(res => res.json())
-    .subscribe(data => {
-      console.log(data);
-      this.shiftLists = data.data;
-    })
+    this.http
+      .post(`${environment.apiUrl}shift/orgshiftlist`, data)
+      .map(res => res.json())
+      .subscribe(
+        data => {
+          // let jsonResponse = data.json();
+          // console.log("Org shift list ", data.data);
+          this.orgShiftLists = data.data;
+        }
+        // error => {
+        //   console.log("Error! ", error);
+        // }
+      );
+
+    this.http
+      .get(`${environment.apiUrl}shift/shiftlist`)
+      .map(res => res.json())
+      .subscribe(data => {
+        // console.log("Shift lists ", data.data);
+        this.shiftLists = data.data;
+      });
   }
 
-  shiftchange(e){
-    console.log(e);
+  // shift change function
+  shiftchange(e) {
+    // console.log('check value :', e.checked);
     let header = new Headers();
     header.set("Content-Type", "application/json");
-    let data = {
-      org_id: 2,
-      shift_id: e.source._elementRef.nativeElement.id
-    };    
-    if(e.checked){
-      this.http.post(`${environment.apiUrl}shift/addorgshift`, data)
-      .map(res => res.json()).subscribe(data => {
-        console.log(data);
-        
-      })
-    }else{
-      
+
+    //if check is ture
+    if (e.checked) {
+      console.log("add function called");
+
+      let data = {
+        org_id: 2,
+        shift_id: e.source._elementRef.nativeElement.id
+      };
+
+      this.http
+        .post(`${environment.apiUrl}shift/addorgshift`, data)
+        .map(res => res.json())
+        .subscribe(
+          data => {
+            console.log("After add success :", data);
+          },
+          error => {
+            console.log("Error! ", error);
+          }
+        );
+    }
+
+    //if check is false
+    if (!e.checked) {
+      console.log("delete function called");
+
+      let data = { id: e.source._elementRef.nativeElement.id };
+
+      this.http
+        .post(`${environment.apiUrl}shift/orgshiftdelete`, data)
+        .map(res => res.json())
+        .subscribe(
+          data => {
+            console.log("After delete success :", data);
+          },
+          error => {
+            console.log("Error! ", error);
+          }
+        );
     }
   }
+
+
+
+
+  //get exam pattern types
+  getExamTypeNames() {
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+
+    let data = {
+      org_id: 2
+    };
+
+    this.http
+      .post(`${environment.apiUrl}exampattern/OrgExampatternlist`, data)
+      .map(res => res.json())
+      .subscribe(data => {
+        // let jsonResponse = data.json();
+        // console.log("Org exam pattern list ", data.data);
+        this.orgExamPatList = data.data;
+      });
+
+    this.http
+      .get(`${environment.apiUrl}exampattern/exampatternlist`)
+      .map(res => res.json())
+      .subscribe(data => {
+        console.log("exam pattern lists ", data.data);
+        this.examPatList = data.data;
+      });
+  }
+
+  examTypeChange(e) {
+    // console.log('check value :', e.checked);
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+
+    //if check is ture
+    if (e.checked) {
+      console.log("add function called");
+
+      let data = {
+        org_id: 2,
+        pat_id: e.source._elementRef.nativeElement.id
+      };
+
+      this.http
+        .post(`${environment.apiUrl}exampattern/addorgexampatternlist`, data)
+        .map(res => res.json())
+        .subscribe(
+          data => {
+            console.log("After add success :", data);
+          },
+          error => {
+            console.log("Error! ", error);
+      });
+    }
+
+    //if check is false
+    if (!e.checked) {
+      console.log("delete function called");
+
+      let data = { id: e.source._elementRef.nativeElement.id };
+
+      this.http
+        .post(`${environment.apiUrl}shift/orgshiftdelete`, data)
+        .map(res => res.json())
+        .subscribe(
+          data => {
+            console.log("After delete success :", data);
+          },
+          error => {
+            console.log("Error! ", error);
+          }
+        );
+    }
+  }
+
+
+
+
+
+
+ 
 }
