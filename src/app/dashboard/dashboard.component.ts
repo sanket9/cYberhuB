@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import * as Chartist from 'chartist';
+import { Component, OnInit } from "@angular/core";
+import * as Chartist from "chartist";
 import { Route, ActivatedRoute } from "@angular/router";
 import { Http, RequestOptions, Headers } from "@angular/http";
 import { environment } from "../../environments/environment.prod";
@@ -11,11 +11,12 @@ import { environment } from "../../environments/environment.prod";
 })
 export class DashboardComponent implements OnInit {
   shiftLists: any;
-  orgShiftLists: any = [];
+  orgShiftLists: any;
   examPatList: any;
   orgExamPatList: any;
   checkshift: any;
-  checkedBtn: any [];
+  checkedBtn: any[];
+  daysChecked: boolean;
 
   constructor(public route: ActivatedRoute, public http: Http) {}
   startAnimationForLineChart(chart) {
@@ -72,7 +73,7 @@ export class DashboardComponent implements OnInit {
   }
   ngOnInit() {
     this.getShiftsNames();
-    this.getExamTypeNames(); 
+    this.getExamTypeNames();
 
     /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
@@ -163,19 +164,6 @@ export class DashboardComponent implements OnInit {
           // let jsonResponse = data.json();
           console.log("Org shift list ", data.data);
           this.orgShiftLists = data.data;
-          console.log(this.orgShiftLists[0].draw);
-          console.log(this.orgShiftLists[1].draw);
-          console.log(this.orgShiftLists[2].draw);
-          
-          this.orgShiftLists.forEach(element => {
-            if (element.orgshift.length > 0) {
-              this.checkshift.push(true)
-            }else{
-              this.checkshift.push(false);
-            }
-          });
-          console.log(this.checkshift);
-          
         }
         // error => {
         //   console.log("Error! ", error);
@@ -224,10 +212,10 @@ export class DashboardComponent implements OnInit {
     if (!e.checked) {
       console.log("delete function called");
       // console.log(eleid);
-      
-      let data = { 
-          id: e.source._elementRef.nativeElement.id
-       };
+
+      let data = {
+        id: e.source._elementRef.nativeElement.id
+      };
 
       this.http
         .post(`${environment.apiUrl}shift/orgshiftdelete`, data)
@@ -245,18 +233,16 @@ export class DashboardComponent implements OnInit {
     // this.getShiftsNames();
   }
 
-
-  canbeChecked(id){
+  canbeChecked(id) {
     console.log(this.shiftLists[0].id);
-    
-    if (this.shiftLists[id].draw === 'ttt') {
-      // console.log('true');      
-      return true
-    }else{
-      // console.log('false');      
-      return false
+
+    if (this.shiftLists[id].draw === "ttt") {
+      // console.log('true');
+      return true;
+    } else {
+      // console.log('false');
+      return false;
     }
-    
   }
 
   //get exam pattern types
@@ -309,7 +295,8 @@ export class DashboardComponent implements OnInit {
           },
           error => {
             // console.log("Error! ", error);
-      });
+          }
+        );
     }
 
     //if check is false
@@ -331,11 +318,4 @@ export class DashboardComponent implements OnInit {
         );
     }
   }
-
-
-
-
-
-
- 
 }
