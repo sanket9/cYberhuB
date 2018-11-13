@@ -156,7 +156,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a mat-button class="nav-link" [routerLink]="['/addClass']" data-toggle="tab">
+                                        <a mat-button class="nav-link" href="#addClass" data-toggle="tab">
                                             <i class="material-icons">cloud</i> Add Class / Dept.
                                             <div class="ripple-container"></div>
                                         </a>
@@ -169,11 +169,15 @@
                     <div class="card-body">
                         <div class="tab-content">
 
+                            <!-- #################################################
+                            -------------- Shift List -------------
+                            ################################################# -->
+
                             <div class="tab-pane active" id="shift">
                                 <div class="row">
                                     <div class="col-md-6 pb-3" *ngFor="let shift of orgShiftLists; let i = index">
 
-                                        <mat-checkbox [id]="shift.id" [checked]="shift.draw == 'ttt'" (change)="shiftchange($event)">
+                                        <mat-checkbox [id]="shift.id" [checked]="shift.orgshift[0]?.id" (change)="shiftchange($event, shift.orgshift[0]?.id)">
                                             {{shift.name}}
                                         </mat-checkbox>
 
@@ -185,24 +189,69 @@
                                 </div>
                             </div>
 
+                            <!-- #################################################
+                            -------------- Exam Type List -------------
+                            ################################################# -->
+
                             <div class="tab-pane" id="examType">
                                 <div class="row">
-                                    <div class="col-md-6 pb-3" *ngFor="let examPattern of examPatList; let i = index">
-                                        <mat-slide-toggle [id]="examPattern.id" (change)="examTypeChange($event)">{{examPattern.name}}
+                                    <div class="col-md-6 pb-3" *ngFor="let examPattern of orgExamPatList; let i = index">
+                                        <mat-slide-toggle [id]="examPattern.id" [checked]="examPattern.orgexam[0]?.id" (change)="examTypeChange($event, examPattern.orgexam[0]?.id)">{{examPattern.name}}
                                             ({{examPattern.description}})</mat-slide-toggle>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- <div class="tab-pane" id="addClass">
-                            <div class="row">
-                                <div class="col-md-6 pb-3" *ngFor="let class of classList; let i = index">
-                                    <mat-slide-toggle [id]="class.id" (change)="examTypeChange($event)">
-                                        {{class.class_name}}
-                                    </mat-slide-toggle>
+                            <!-- #################################################
+                            -------------- Class/stream List -------------
+                            ################################################# -->
+
+                            <div class="tab-pane" id="addClass">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-sm table-bordered">
+                                            
+                                                <tr>
+                                                    <th scope="col">Sl</th>
+                                                    <th scope="col">Class</th>
+                                                    <th scope="col">Section</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            
+
+                                            <!-- <tbody> -->
+                                                <tr *ngFor="let classObj of sortArray; let i = index">
+                                                    <td [attr.rowspan]="classObj.rs">{{i+1}}</td>
+                                                    <td [attr.rowspan]="classObj.rs">{{classObj.class_name}}</td>
+                                                    <td>
+                                                        <tr *ngFor="let sectionObj of sortArray.sections">
+                                                            <td>{{sectionObj.section_name}}</td>
+                                                        </tr>
+                                                    </td>
+
+                                                    <td>
+                                                        <tr *ngFor="let sectionObj of sortArray.sections">
+                                                            <td>Delete</td>
+                                                        </tr>
+                                                    </td>                                            
+                                                </tr>
+                                            <!-- </tbody> -->
+
+                                            </table>
+                                                  
+                                    </div>
+                                </div>
+
+                                <!-- #################################################
+                                -------------- ADD Class/stream btn -------------
+                                ################################################# -->
+
+                                <div class="row">
+                                        <div class="col-sm-12">
+                                          <button mat-raised-button color="primary" class="pull-right" [routerLink]="['/addClass']">Add New</button>
+                                        </div>
                                 </div>
                             </div>
-                        </div> -->
 
                         </div>
                     </div>

@@ -1,106 +1,76 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
-
       <div class="col-md-6">
         <div class="card">
           <div class="card-header card-header-danger">
-            <h4 class="card-title ">Class List</h4>
-            <p class="card-category">Choose class from the below list</p>
+            <h4 class="card-title ">Select Class and Section</h4>
+            <p class="card-category">Choose class and section from the below list</p>
           </div>
-          <div class="card-body">
-            <div class="table-responsive same-height">
-              <table class="table">
-
-                <thead class=" text-primary">
-                  <th>
-                    Select
-                  </th>
-                  <th>
-                    ID
-                  </th>
-                  <th>
-                    Class Name
-                  </th>
-                </thead>
-
-                <tbody>
-                  <tr *ngFor="let class of classList">
-                    <td>
-                      <div class="form-check pb-2">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" value="">
-                          <span class="form-check-sign">
-                            <span class="check"></span>
-                          </span>
-                        </label>
-                      </div>
-                    </td>
-                    <td class="pl-3">{{class.id}}</td>
-                    <td class="pl-3">{{class.class_name}}</td>
-                  </tr>
-                </tbody>
-              </table>
+          <div class="card-body p-4">
+            <!-- ###################################################################
+            --------------  class and section list generating  ---------------
+            ################################################################### -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <button mat-raised-button color="primary" class="pull-right" (click)="increaseField()">Add More +</button>
+                </div>
             </div>
+
+
+            <div class="row mt-2 border" *ngFor="let field of fieldCountArr"> 
+
+              <div class="col-sm-6" *ngIf="typeId === '1'">                
+                  <mat-form-field>                      
+                      <mat-select placeholder="Select Class" (change)="onChangeClass($event, field)">
+                        <mat-option *ngFor="let class of classList" [value]="class.id">
+                          {{class.class_name}}
+                        </mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+
+              <div class="col-sm-6" *ngIf="typeId === '2'">                
+                <mat-form-field>                      
+                    <mat-select placeholder="Select Stream" (change)="onChangeClass($event, field)">
+                      <mat-option *ngFor="let class of classList" [value]="class.id">
+                        {{class.class_name}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-6" *ngIf="typeId === '1'">
+                  <mat-form-field>
+                      <mat-select placeholder="Select Section" (change)="onChangeSection($event, field)">
+                        <mat-option *ngFor="let section of sectionList" [value]="section.id">
+                          {{section.sec_name}}
+                        </mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+
+              <div class="col-sm-6" *ngIf="typeId === '2'">
+                <mat-form-field>
+                    <mat-select placeholder="Select Subject" (change)="onChangeSection($event, field)">
+                      <mat-option *ngFor="let section of sectionList" [value]="section.id">
+                        {{section.sec_name}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12 mt-3">
+                <button mat-raised-button color="primary" class="pull-right" (click)="onClickSave()">Save</button>
+              </div>
+            </div>
+            
           </div>
         </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header card-header-danger">
-            <h4 class="card-title">Section List</h4>
-            <p class="card-category">Choose section from the below list</p>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive same-height">
-              <table class="table">
-                <thead class=" text-primary">
-                  <th>
-                    Select
-                  </th>
-                  <th>
-                    ID
-                  </th>
-                  <th>
-                    Section Name
-                  </th>
-                  <th>
-                    Type
-                  </th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let section of sectionList">
-                    <td>
-                      <div class="form-check pb-2">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" value="">
-                          <span class="form-check-sign">
-                            <span class="check"></span>
-                          </span>
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      {{section.id}}
-                    </td>
-                    <td>
-                      {{section.sec_name}}
-                    </td>
-                    <td *ngIf="section.is_Honrs == '1'">
-                      Pass
-                    </td>
-                    <td *ngIf="section.is_Honrs == '0'">                      
-                      Honers
-                    </td>
-                  </tr>                  
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      
+      </div>      
     </div>
   </div>
 </div>

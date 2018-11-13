@@ -3,6 +3,7 @@ import * as Chartist from "chartist";
 import { Route, ActivatedRoute } from "@angular/router";
 import { Http, RequestOptions, Headers } from "@angular/http";
 import { environment } from "../../environments/environment.prod";
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
 @Component({
   selector: "app-dashboard",
@@ -10,6 +11,7 @@ import { environment } from "../../environments/environment.prod";
   styleUrls: ["./dashboard.component.css"]
 })
 export class DashboardComponent implements OnInit {
+
   shiftLists: any;
   orgShiftLists: any;
   examPatList: any;
@@ -17,8 +19,11 @@ export class DashboardComponent implements OnInit {
   checkshift: any;
   checkedBtn: any[];
   daysChecked: boolean;
+  org_code: any;
+  orgClassSectionList: any;  
+  sortArray: any;
 
-  constructor(public route: ActivatedRoute, public http: Http) {}
+  constructor(public route: ActivatedRoute, public http: Http, public sessionStore: SessionStorageService) {}
   startAnimationForLineChart(chart) {
     // let seq: any, delays: any, durations: any;
     // seq = 0;
@@ -72,8 +77,14 @@ export class DashboardComponent implements OnInit {
     // seq2 = 0;
   }
   ngOnInit() {
+    this.org_code = this.sessionStore.retrieve('user-data')[0].org_code;
+
     this.getShiftsNames();
     this.getExamTypeNames();
+    this.getClassSection();     
+    this.sortArray = [];
+
+    // console.log('org_id : ', this.org_code);
 
     /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
@@ -153,7 +164,7 @@ export class DashboardComponent implements OnInit {
     let header = new Headers();
     header.set("Content-Type", "application/json");
     let data = {
-      org_id: 2
+      org_id: this.org_code
     };
     this.checkshift = [];
     this.http
@@ -162,7 +173,7 @@ export class DashboardComponent implements OnInit {
       .subscribe(
         data => {
           // let jsonResponse = data.json();
-          console.log("Org shift list ", data.data);
+          // console.log("Org shift list ", data.data);
           this.orgShiftLists = data.data;
         }
         // error => {
@@ -180,18 +191,18 @@ export class DashboardComponent implements OnInit {
   }
 
   // shift change function
-  shiftchange(e) {
-    console.log(this.checkedBtn);
+  shiftchange(e, id) {
+    // console.log(this.checkedBtn);
     // console.log('check value :', e.checked);
     let header = new Headers();
     header.set("Content-Type", "application/json");
 
     //if check is ture
     if (e.checked) {
-      console.log("add function called");
+      // console.log("add function called");
 
       let data = {
-        org_id: 2,
+        org_id: this.org_code,
         shift_id: e.source._elementRef.nativeElement.id
       };
 
@@ -200,21 +211,24 @@ export class DashboardComponent implements OnInit {
         .map(res => res.json())
         .subscribe(
           data => {
-            console.log("After add shift success :", data);
+            // console.log("After add shift success :", data);
+            this.getShiftsNames();
           },
           error => {
             console.log("Error! ", error);
           }
         );
+
+        
     }
 
     //if check is false
     if (!e.checked) {
-      console.log("delete function called");
+      // console.log("delete function called");
       // console.log(eleid);
 
       let data = {
-        id: e.source._elementRef.nativeElement.id
+        id 
       };
 
       this.http
@@ -222,36 +236,39 @@ export class DashboardComponent implements OnInit {
         .map(res => res.json())
         .subscribe(
           data => {
-            console.log("After delete shift success :", data);
+            // console.log("After delete shift success :", data);
+            this.getShiftsNames();
           },
           error => {
             console.log("Error! ", error);
           }
         );
+            
     }
 
     // this.getShiftsNames();
   }
 
-  canbeChecked(id) {
-    console.log(this.shiftLists[0].id);
+  // canbeChecked(id) {
+  //   console.log(this.shiftLists[0].id);
 
-    if (this.shiftLists[id].draw === "ttt") {
-      // console.log('true');
-      return true;
-    } else {
-      // console.log('false');
-      return false;
-    }
-  }
+  //   if (this.shiftLists[id].draw === "ttt") {
+  //     // console.log('true');
+  //     return true;
+  //   } else {
+  //     // console.log('false');
+  //     return false;
+  //   }
+  // }
 
   //get exam pattern types
   getExamTypeNames() {
+
     let header = new Headers();
     header.set("Content-Type", "application/json");
 
     let data = {
-      org_id: 2
+      org_id: this.org_code
     };
 
     this.http
@@ -263,26 +280,28 @@ export class DashboardComponent implements OnInit {
         this.orgExamPatList = data.data;
       });
 
-    this.http
-      .get(`${environment.apiUrl}exampattern/exampatternlist`)
-      .map(res => res.json())
-      .subscribe(data => {
-        // console.log("exam pattern lists ", data.data);
-        this.examPatList = data.data;
-      });
+    // this.http
+    //   .get(`${environment.apiUrl}exampattern/exampatternlist`)
+    //   .map(res => res.json())
+    //   .subscribe(data => {
+    //     console.log("exam pattern lists ", data.data);
+    //     this.examPatList = data.data;
+    //   });
   }
 
-  examTypeChange(e) {
+
+
+  examTypeChange(e, id) {
     // console.log('check value :', e.checked);
     let header = new Headers();
     header.set("Content-Type", "application/json");
 
     //if check is ture
     if (e.checked) {
-      // console.log("add function called");
+      // console.log("add exam function called");
 
       let data = {
-        org_id: 2,
+        org_id: this.org_code,
         pat_id: e.source._elementRef.nativeElement.id
       };
 
@@ -291,31 +310,128 @@ export class DashboardComponent implements OnInit {
         .map(res => res.json())
         .subscribe(
           data => {
-            // console.log("After add success :", data);
+            console.log("After exam add success :", data);
+            this.getExamTypeNames();
           },
           error => {
-            // console.log("Error! ", error);
+            console.log("Error! ", error);
           }
         );
     }
 
     //if check is false
     if (!e.checked) {
-      // console.log("delete function called");
+      // console.log("delete exam function called");
 
-      let data = { id: e.source._elementRef.nativeElement.id };
+      let data = { id };
 
       this.http
-        .post(`${environment.apiUrl}shift/orgshiftdelete`, data)
+        .post(`${environment.apiUrl}exampattern/delete`, data)
         .map(res => res.json())
         .subscribe(
           data => {
-            // console.log("After delete success :", data);
+            // console.log("After exam delete success :", data);
+            this.getExamTypeNames();
           },
           error => {
-            // console.log("Error! ", error);
+            console.log("Error! ", error);
           }
         );
     }
   }
+
+
+
+
+  getClassSection(){
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+
+    let data = {
+      org_id: this.org_code
+    };
+
+    this.http
+      .post(`${environment.apiUrl}classsection/getall`, data)
+      .map(res => res.json())
+      .subscribe(
+        data => {
+          console.log("Org class/stream list ", data.data);
+          this.orgClassSectionList = data.data;
+          this.createSortArray(this.orgClassSectionList);
+    });
+  }
+
+
+
+  createSortArray(arr){
+    // var rs = 1;
+    arr.forEach(ele => {
+
+      var obj = {
+        class_id: ele.class_id,
+        sec_id: ele.sec_id,
+        class_name: ele.class.class_name,
+        sections: [
+          {
+            section_name: ele.section.sec_name,
+            classSectionIndexId: ele.id
+          }
+        ],
+        rs: 1
+      }
+
+      let check_exist = this.sortArray.filter((element)=> {
+        return element.class_id == ele.class_id;
+      });
+
+      if(check_exist.length > 0){
+        console.log('exist');
+        let i = this.sortArray.indexOf(check_exist[0]);
+        this.sortArray.splice(i,1); 
+        check_exist[0].rs += check_exist[0].rs;
+
+        check_exist[0].sections.push({
+          section_name: ele.section.sec_name,
+          classSectionIndexId: ele.id
+        });
+
+        this.sortArray.push(check_exist[0]);       
+      }else{
+        this.sortArray.push(obj);
+      }
+    });
+    console.log(this.sortArray);    
+  }
+
+
+
+  classOrSectionChange(e, id){
+
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+
+
+    //if check is false
+    if (!e.checked) {
+      // console.log("delete exam function called");
+      let data = { id };
+
+      this.http
+        .post(`${environment.apiUrl}classSection/delete`, data)
+        .map(res => res.json())
+        .subscribe(
+          data => {
+            console.log("After Class/Stream delete success :", data);
+            this.getClassSection();
+          },
+          error => {
+            console.log("Error! ", error);
+          }
+        );
+    }
+  }
+
+
+
 }

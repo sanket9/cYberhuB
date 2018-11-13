@@ -33,7 +33,7 @@
               <div class="form-row">
                 <i class="material-icons">lock_outline</i>
                 <mat-input-container color="accent">
-                  <input type="password" matInput formControlName="password" name="password" placeholder="Password" />
+                  <input type="password" matInput formControlName="password" autocomplete="password" name="password" placeholder="Password" />
                 </mat-input-container>
                 <mat-error *ngIf="loginForm.controls.password.hasError('required') && 
                                         loginForm.controls.password.touched">

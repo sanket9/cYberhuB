@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.value.password
     };
     this.http
-      .post(`${environment.apiUrl}/user/login`, data, options)
+      .post(`${environment.apiUrl}user/login`, data, options)
       .map(res => res.json())
       .subscribe(data => {
         console.log(data);
