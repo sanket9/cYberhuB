@@ -210,7 +210,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-sm table-bordered">
-                                            
+                                            <thead>
                                                 <tr>
                                                     <th scope="col">Sl</th>
                                                     <th scope="col">Class</th>
@@ -218,24 +218,19 @@
                                                     <th scope="col">Action</th>
                                                 </tr>
                                             
-
-                                            <!-- <tbody> -->
-                                                <tr *ngFor="let classObj of sortArray; let i = index">
-                                                    <td [attr.rowspan]="classObj.rs">{{i+1}}</td>
-                                                    <td [attr.rowspan]="classObj.rs">{{classObj.class_name}}</td>
-                                                    <td>
-                                                        <tr *ngFor="let sectionObj of sortArray.sections">
-                                                            <td>{{sectionObj.section_name}}</td>
-                                                        </tr>
-                                                    </td>
-
-                                                    <td>
-                                                        <tr *ngFor="let sectionObj of sortArray.sections">
-                                                            <td>Delete</td>
-                                                        </tr>
-                                                    </td>                                            
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let obj of orgClassSectionList; let i = index">
+                                                    <td>{{i+1}}</td>
+                                                    <td>{{obj.class.class_name}}</td>
+                                                    <td>{{obj.section.sec_name}}</td>
+                                                    <td class="text-danger">
+                                                        <a (click)="onDeleteSection(obj.id)"><i class="material-icons">
+                                                            delete_forever
+                                                        </i></a>
+                                                    </td>                                 
                                                 </tr>
-                                            <!-- </tbody> -->
+                                            </tbody>
 
                                             </table>
                                                   
