@@ -406,19 +406,44 @@ export class DashboardComponent implements OnInit {
 
 
 
-  classOrSectionChange(e, id){
+  // classOrSectionChange(e, id){
 
+  //   let header = new Headers();
+  //   header.set("Content-Type", "application/json");
+
+
+  //   //if check is false
+  //   if (!e.checked) {
+  //     // console.log("delete exam function called");
+  //     let data = { id };
+
+  //     this.http
+  //       .post(`${environment.apiUrl}classSection/delete`, data)
+  //       .map(res => res.json())
+  //       .subscribe(
+  //         data => {
+  //           console.log("After Class/Stream delete success :", data);
+  //           this.getClassSection();
+  //         },
+  //         error => {
+  //           console.log("Error! ", error);
+  //         }
+  //       );
+  //   }
+  // }
+
+
+
+
+  onDeleteSection(id){
+    console.log(id);
     let header = new Headers();
     header.set("Content-Type", "application/json");
 
+    let data = { id };
 
-    //if check is false
-    if (!e.checked) {
-      // console.log("delete exam function called");
-      let data = { id };
-
-      this.http
-        .post(`${environment.apiUrl}classSection/delete`, data)
+    this.http
+        .post(`${environment.apiUrl}classsection/delete`, data)
         .map(res => res.json())
         .subscribe(
           data => {
@@ -428,8 +453,7 @@ export class DashboardComponent implements OnInit {
           error => {
             console.log("Error! ", error);
           }
-        );
-    }
+    );
   }
 
 
