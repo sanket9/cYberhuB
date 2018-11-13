@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Http, RequestOptions, Headers } from "@angular/http";
 import { environment } from "../../environments/environment.prod";
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class ClassListComponent implements OnInit {
   choosenClassAndSectionArr: any;
   finalClassSeclistArr: any;
 
-  constructor(public http: Http, public sessionStore: SessionStorageService) {}
+  constructor(public http: Http, public router: Router, public sessionStore: SessionStorageService) {}
 
   ngOnInit() {
     this.getOrgDetails();
@@ -178,6 +179,7 @@ export class ClassListComponent implements OnInit {
       .map(res => res.json())
       .subscribe(data => {
         console.log("after success add class/section : ", data);
+        this.router.navigate(['/dashboard']);
     });
   }
   
