@@ -4,6 +4,8 @@ import { AddNoticeComponent } from './add-notice/add-notice.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { BrowserModule } from '@angular/platform-browser';
+import { ChooseNoticeTypeComponent } from './choose-notice-type/choose-notice-type.component';
+
 import {
   MatFormFieldModule,
   MatButtonModule,
@@ -20,7 +22,6 @@ import {
   MatGridListModule
 } from "@angular/material";
 
-
 const routes: Routes = [
   {
     path: "",
@@ -29,6 +30,10 @@ const routes: Routes = [
   {
     path: "add-notice",
     component: AddNoticeComponent
+  },
+  {
+    path: "notice-type",
+    component: ChooseNoticeTypeComponent
   }
 ];
 

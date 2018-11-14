@@ -21,6 +21,7 @@ import {
   MatExpansionModule,
   MatGridListModule
 } from "@angular/material";
+import { ChooseNoticeTypeComponent } from './choose-notice-type/choose-notice-type.component';
 
 @NgModule({
   imports: [
@@ -44,7 +45,7 @@ import {
     MatGridListModule
   ],
 
-  declarations: [AddNoticeComponent],
+  declarations: [AddNoticeComponent, ChooseNoticeTypeComponent],
 
   providers: [ApiService]
 })

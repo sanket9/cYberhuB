@@ -1,0 +1,89 @@
+<div class="main-content">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a [routerLink]="['/dashboard']" class="text-success">
+            <i class="material-icons">home</i>
+              Dashboard
+          </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          Notice Mangament
+        </li>
+      </ol>
+    </nav>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title">Notice Type</h4>
+                  <p class="card-category">Choose Notice type</p>
+                </div>
+
+                <div class="card-body mt-2">
+                  <div class="row">
+
+                    <div class="col-sm-6">
+                        <mat-form-field>                      
+                            <mat-select placeholder="Select Notice Type" (change)="onChooseNoticeType($event)">
+                              <mat-option *ngFor="let noticeType of noticeTypes" [value]="noticeType.id">
+                                {{noticeType.type_name}}
+                              </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-sm-6" *ngIf="showShiftClassSectionField">
+                        <mat-form-field>                      
+                            <mat-select placeholder="Select Shift" (change)="onChooseShift($event)">
+                              <ng-container *ngFor="let shift of orgShiftLists">                   
+                                  <mat-option [value]="shift?.id" *ngIf="shift.orgshift[0]?.id">
+                                      {{shift.name}}
+                                  </mat-option>
+                              </ng-container>                              
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-sm-6" *ngIf="showShiftClassSectionField">
+                        <mat-form-field>                      
+                            <mat-select placeholder="Select Class/Stream" (change)="onChooseClassStream($event)">
+                              <!-- <mat-option [value]="all">All</mat-option> -->
+                              <ng-container *ngFor="let classStream of sortArray">                  
+                                  <mat-option [value]="classStream.class_id">
+                                      {{classStream.class_name}}
+                                  </mat-option>
+                              </ng-container>                              
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-sm-6" *ngIf="showSectionField">
+                        <mat-form-field>                      
+                            <mat-select placeholder="Select Section" (change)="onChooseSection($event)">
+                              <!-- <mat-option [value]="all">All</mat-option> -->
+                              <ng-container *ngFor="let sec of filteredArrayForSectionList">       
+                                <mat-option [value]="sec.sec_id">
+                                  {{sec.section_name}}
+                                </mat-option>
+                              </ng-container>                              
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="example-full-width">
+                          <button mat-raised-button type="submit" class="btn btn-success pull-right" (click)="onClickSubmitBtn()">Go Next</button>
+                        </div>
+                    </div>
+
+                  </div>                    
+                </div>
+
+              </div>
+        </div>
+      </div>
+      
+    </div>
