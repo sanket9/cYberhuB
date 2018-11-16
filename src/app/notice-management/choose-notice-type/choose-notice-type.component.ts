@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { environment } from "../../../environments/environment.prod";
 import { Route, ActivatedRoute, Router } from "@angular/router";
 import { Http, RequestOptions, Headers } from "@angular/http";
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
+import { MatOption } from '@angular/material';
+import { ApiService } from "../../services/api/api.service";
+import { NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-choose-notice-type',
@@ -10,17 +13,34 @@ import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
   styleUrls: ['./choose-notice-type.component.scss']
 })
 export class ChooseNoticeTypeComponent implements OnInit {
+
   org_code: any;
   noticeTypes: any;
   orgShiftLists: any;
-  noticeTypeID: any;
+  selectedNoticeTypeID: any;
   orgClassSectionList: any;
   sortArray: any;
   filteredArrayForSectionList: any;
   showShiftClassSectionField: boolean;
   showSectionField: boolean;
+  classStreamID: any;
+  data: any;
 
-  constructor(public route: ActivatedRoute, public routes: Router, public http: Http, public sessionStore: SessionStorageService) { }
+  selectedData: any = {};
+  sendSelectData: any;
+
+  selectedShifts: any[];
+  shift: any[];
+
+  // get data() { 
+  //   return this.apiServ.serviceData; 
+  // } 
+  // set data(value: any) { 
+  //   this.apiServ.serviceData = value; 
+  // } 
+
+  @ViewChild('allSelected') private allSelected: MatOption;
+  constructor(public route: ActivatedRoute, public routes: Router, public http: Http, public sessionStore: SessionStorageService, private apiServ: ApiService) { }
 
   ngOnInit() {
     this.org_code = this.sessionStore.retrieve('user-data')[0].org_code;
@@ -31,6 +51,7 @@ export class ChooseNoticeTypeComponent implements OnInit {
     this.filteredArrayForSectionList = [];
     this.showShiftClassSectionField = false;
     this.showSectionField = false;
+    this.sendSelectData = {};
   }
 
 
@@ -105,6 +126,8 @@ getClassList(){
           class_id: "all"
         });
   });
+
+  // console.log("Org Class list : ", this.sortArray);
 }
   
 
@@ -126,36 +149,54 @@ getClassList(){
 
     if(this.orgShiftLists.length < 1){
       this.getShiftLists();
-    }      
-    this.noticeTypeID = e.value;
+    } 
+
+    // this.selectedNoticeTypeID = e.value;
+    // console.log('notice type : ',this.selectedNoticeTypeID);
+    this.selectedData.selectedNoticeType = e.value;  
   }
 
 
   onChooseShift(e){
-    if(this.orgClassSectionList.length < 1){
+
+    // console.log(e);
+    // console.log(this.allSelected);        
+
+    if(this.orgClassSectionList.length < 1) {
       this.getClassList();
     }
+    // console.log('shift : ', e.value);  
+    
+    let ifAllSelect = e.value.filter((ele)=>{
+      return ele == "all";
+    });
+
+    if(ifAllSelect.length > 0){
+      this.selectedData.selectedShifts = this.orgShiftLists;
+    }else{
+      this.selectedData.selectedShifts = e.value;
+    }
+
   }
 
 
   onChooseClassStream(e) {
-    // let classStreamID = e.value;
+    this.classStreamID = e.value;
     if(e.value == "all"){
       this.filteredArrayForSectionList = [
-        { sec_id: "all", section_name: "All"}
+        { sec_id: "all", section_name: "All" }
       ];
-
       return;
     }
 
     this.filteredArrayForSectionList = this.sortArray.filter((element)=> {
       return element.class_id == e.value;
     });
-
-    // console.log('filter section array : ', this.filteredArrayForSectionList);
-    // console.log('filter only section array : ', this.filteredArrayForSectionList[0].sections);    
+   
     this.filteredArrayForSectionList = this.filteredArrayForSectionList[0].sections;
     this.filteredArrayForSectionList.unshift({ sec_id: "all", section_name: "All"});
+
+    // console.log('filter section array : ', this.filteredArrayForSectionList);
   }
 
 
@@ -163,13 +204,71 @@ getClassList(){
   onChooseSection(e){
     if(e.value){
       // this.routes.navigate(['/notice-management/add-notice']);
-    }    
+    }   
+    
+    let ifAllSelect = e.value.filter((ele)=>{
+      return ele == "all";
+    });
+
+    if(ifAllSelect.length > 0){
+      if(this.classStreamID == "all"){
+        this.selectedData.selectedSections = this.sortArray;
+      }else{
+        this.selectedData.selectedSections = this.sortArray.filter((element)=> {
+          return element.class_id == this.classStreamID;
+        });
+      }      
+    }else{
+      this.selectedData.selectedSections = e.value;
+    }        
   }
 
 
 
-  onClickSubmitBtn(){
+  onClickSubmitBtn(){   
+    this.sortSelectedFilterData(this.selectedData);
+    // console.log('Selected send data', this.selectedData);     
     this.routes.navigate(['/notice-management/add-notice']);
+  }
+
+
+
+  sortSelectedFilterData(arr) {
+    this.sendSelectData.noticeType = arr.selectedNoticeType;
+    this.sendSelectData.shifts = [];
+    this.sendSelectData.sections = [];
+
+    if(arr.selectedShifts[0].id == "all"){
+      arr.selectedShifts.forEach(element => {
+        if(element.id != "all"){
+          if(element.orgshift.length > 0){
+            this.sendSelectData.shifts.push(element.orgshift[0].id);
+          }          
+        }
+      });
+    }else{
+      this.sendSelectData.shifts = arr.selectedShifts;
+    }
+
+
+    if(arr.selectedSections[0].class_id == "all" || arr.selectedSections[0].class_name == "Arts" || arr.selectedSections[0].class_name == "Science"){
+      arr.selectedSections.forEach(element => {
+        if(element.class_id != "all"){
+          if(element.sections.length > 0){
+            element.sections.forEach(ele => {
+              if(ele.sec_id != "all"){
+                this.sendSelectData.sections.push(ele.classSectionIndexId);
+              }              
+            });            
+          }          
+        }
+      });
+    }else{
+      this.sendSelectData.sections = arr.selectedSections;
+    }
+
+    console.log('filter data : ', this.sendSelectData);
+    this.apiServ.changeData(this.sendSelectData);
   }
 
 
@@ -215,6 +314,11 @@ getClassList(){
   }
 
 
+
+
+  selectAllShifts(){
+    
+  }
 
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Http, RequestOptions, Headers } from "@angular/http";
 import { ApiService } from "../../services/api/api.service";
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import {
   FormGroup,
   FormControl,
@@ -24,18 +25,38 @@ export class AddNoticeComponent implements OnInit {
   subject: FormControl;
   text: FormControl;
   file_url: FormControl;
+  file: File;
+  multipartItem: any = {};
+  uploadCallback: any;
+  data: any;
+  shareData: any;
+  sessionValue: any;
+  showDescription: boolean;
 
-  slFile: File;
+  // get data() { 
+  //   return this.apiServ.serviceData; 
+  // } 
+  // set data(value: string) { 
+  //   this.apiServ.serviceData = value; 
+  // }
 
   constructor(
     public router: Router,
     public http: Http,
-    private apiServ: ApiService
+    private apiServ: ApiService,
+    private sessionStore: SessionStorageService
   ) {}
 
   ngOnInit() {
+    this.sessionValue = this.sessionStore.retrieve('user-data');
+    this.showDescription = false;
+    this.apiServ.serviceData.subscribe(data => this.data = data);
     this.createFormControls();
     this.createFormGroup();
+    this.multipartItem.formData = null;
+    this.shareData = this.data;
+    console.log("sent from filter page : ", this.shareData);
+    console.log("session value : ", this.sessionValue);
   }
 
   createFormControls() {
@@ -59,64 +80,48 @@ export class AddNoticeComponent implements OnInit {
   onAddNoticeSubmit() {
     let addNoticeFormData = this.addNoticeForm.value;
 
-    console.log(this.slFile);
+    console.log(this.file);
+
+    let header = new Headers();
+    header.append('Content-Type', 'multipart/form-data');
 
     let fd = new FormData();
-    fd.append("file", this.slFile);
 
-    var info = {
-      sampleData: "abc",
-      sampleInt: 123
-    };
-
-    fd.append('data', JSON.stringify(info));
-
-    // fd.append("notice_type_id", "1");
+    fd.append("notice_type_id", this.shareData.noticeType);
     // fd.append("status", "1");
-    // fd.append("user_master_id", "7");
-    // fd.append("org_master_id", "1");
-    // fd.append("user_type_id", "2");
-    // fd.append("dept_id", "3");
-    // fd.append("create_by", "1");
-    // fd.append("is_Parent", "1");
-    // fd.append("title", addNoticeFormData.title);
-    // fd.append("subject", addNoticeFormData.subject);
-    // fd.append("text", addNoticeFormData.text);
+    fd.append("create_by", this.sessionValue.master_id);
+    fd.append("org_id", this.sessionValue.org_code);
+    // fd.append("user_type_id", "1");
+    fd.append("dept_id", this.shareData.sections);
+    // fd.append("create_by", this.shareData.);    
+    fd.append("title", addNoticeFormData.title);
+    fd.append("subject", addNoticeFormData.subject);
+    fd.append("text", addNoticeFormData.text);
 
-    console.log(JSON.stringify(fd));
-    
-    // this.http.post("http://softechs.co.in/fileupload.php", fd)
-    //     .subscribe(data => {
-    //       // let jsonResponse = data.json();
-    //       console.log('Got some data from backend ', data);
-    //       // console.log("Got some data from backend ", jsonResponse);
-    //     }, (error) => {
-    //       console.log('Error! ', error);
-    // });
+    console.log(fd);
+
+    this.http.post("http://softechs.co.in/school_hub/notice/addnotice", fd).map((res)=>{res.json()})
+    .subscribe(data => {
+      console.log('Got some data from backend ', data);
+    });
   }
 
 
 
 
-  onSelectFile(e) {
-    if (e.target.files && e.target.files[0]) {
-      this.slFile = e.dataTransfer
-        ? e.dataTransfer.files[0]
-        : e.target.files[0];
+  onSelectFile($event): void {
+		var inputValue = $event.target;
+		this.file = inputValue.files[0];
+    // console.debug("Input File name: " + this.file.name + " type:" + this.file.type + " size:" + this.file.size);
+  }
+  
 
-      // console.log(this.slFile);
-      // let fd = new FormData();
-      // fd.append("selectFile", this.slFile, this.slFile.name);
+
+  onChooseDescType(e){
+    if(e.value == "1"){
+      this.showDescription = true;
+    }else{
+      this.showDescription = false;
     }
-
-
-    // let elem = e.target;
-
-    // if (elem.files.length > 0) {
-    //   // let formData = new FormData();
-    //   // formData.append('file', elem.files[0]);
-    //   this.slFile = elem.files[0];
-    // }
   }
-
 }

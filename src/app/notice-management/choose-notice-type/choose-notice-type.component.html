@@ -37,9 +37,9 @@
 
                     <div class="col-sm-6" *ngIf="showShiftClassSectionField">
                         <mat-form-field>                      
-                            <mat-select placeholder="Select Shift" (change)="onChooseShift($event)">
+                            <mat-select name="shift" placeholder="Select Shift" (change)="onChooseShift($event)" (change)="selectAllShifts($event)" multiple>
                               <ng-container *ngFor="let shift of orgShiftLists">                   
-                                  <mat-option [value]="shift?.id" *ngIf="shift.orgshift[0]?.id">
+                                  <mat-option #allSelected [value]="shift.orgshift[0]?.id" *ngIf="shift.orgshift[0]?.id">
                                       {{shift.name}}
                                   </mat-option>
                               </ng-container>                              
@@ -49,7 +49,7 @@
 
                     <div class="col-sm-6" *ngIf="showShiftClassSectionField">
                         <mat-form-field>                      
-                            <mat-select placeholder="Select Class/Stream" (change)="onChooseClassStream($event)">
+                            <mat-select placeholder="Select Class/Stream" (change)="onChooseClassStream($event)" multiple>
                               <!-- <mat-option [value]="all">All</mat-option> -->
                               <ng-container *ngFor="let classStream of sortArray">                  
                                   <mat-option [value]="classStream.class_id">
@@ -62,7 +62,7 @@
 
                     <div class="col-sm-6" *ngIf="showSectionField">
                         <mat-form-field>                      
-                            <mat-select placeholder="Select Section" (change)="onChooseSection($event)">
+                            <mat-select placeholder="Select Section" (change)="onChooseSection($event)" multiple>
                               <!-- <mat-option [value]="all">All</mat-option> -->
                               <ng-container *ngFor="let sec of filteredArrayForSectionList">       
                                 <mat-option [value]="sec.sec_id">
