@@ -12,7 +12,6 @@ import { NoticeManagementComponent } from "../../notice-management/notice-manage
 import { AddDetailsComponent } from '../../add-details/add-details.component';
 import { ClassListComponent } from "app/class-list/class-list.component";
 // import { BrowserModule } from '@angular/platform-browser';
-
 import {
   MatFormFieldModule,
   MatButtonModule,
@@ -28,6 +27,8 @@ import {
   MatExpansionModule,
   MatGridListModule,
   MatSlideToggleModule,
+  MatProgressSpinnerModule,
+
 } from "@angular/material";
 
 
@@ -51,6 +52,7 @@ import {
     MatExpansionModule,
     MatGridListModule,
     MatSlideToggleModule,
+    MatProgressSpinnerModule
   ],
 
   declarations: [
@@ -61,7 +63,8 @@ import {
     AddUserComponent,
     NoticeManagementComponent,
     AddDetailsComponent,
-    ClassListComponent
-  ]
+    ClassListComponent,
+  ],
+  exports: []
 })
 export class AdminLayoutModule {}

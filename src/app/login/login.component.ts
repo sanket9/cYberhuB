@@ -17,17 +17,19 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   username: FormControl;
   password: FormControl;
+  loading: boolean = false;
   showErrors: boolean = false;
-  constructor(public router: Router, public http: Http,
+  constructor(
+    public router: Router,
+    public http: Http,
     public localStore: LocalStorageService,
     public SessionStore: SessionStorageService
-    ) {      
-      var status = this.SessionStore.retrieve('user-data');      
-      if(status){
-        this.router.navigate(["dashboard"]);
-      }
-      
-  } 
+  ) {
+    var status = this.SessionStore.retrieve("user-data");
+    if (status) {
+      this.router.navigate(["dashboard"]);
+    }
+  }
 
   ngOnInit() {
     this.createFormControl();
@@ -43,10 +45,10 @@ export class LoginComponent implements OnInit {
       password: this.password
     });
     // console.log(this.loginForm);
-    
   }
   loginBtn() {
     this.showErrors = false;
+    this.loading = true;
     this._markAsDirty(this.loginForm);
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
@@ -62,9 +64,10 @@ export class LoginComponent implements OnInit {
         console.log(data);
         if (data.data.length == 0) {
           this.showErrors = true;
-        } else if (data.data.length > 0){
+          this.loading = false;
+        } else if (data.data.length > 0) {
           this.router.navigate(["dashboard"]);
-          this.SessionStore.store('user-data', data.data)
+          this.SessionStore.store("user-data", data.data);
         }
       });
     // this.router.navigate(["dashboard"]);

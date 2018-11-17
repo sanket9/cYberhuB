@@ -12,7 +12,8 @@ import {
   MatRippleModule,
   MatTooltipModule,
   MatIconModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatProgressSpinnerModule
 } from "@angular/material";
 
 import { AppRoutingModule } from "./app.routing";
@@ -43,13 +44,20 @@ import { ClassListComponent } from './class-list/class-list.component';
     MatTooltipModule,
     MatIconModule,
     MatSlideToggleModule,
+    MatProgressSpinnerModule,
     // AgmCoreModule.forRoot({
     //   apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     // })
     Ng2Webstorage
     // NgxWebstorageModule
   ],
-  declarations: [AppComponent, AdminLayoutComponent, LoginComponent],
+
+  declarations: [
+    AppComponent,
+    AdminLayoutComponent,
+    LoginComponent,    
+  ],
+  exports: [],
   providers: [AuthGuard],
   bootstrap: [AppComponent]
 })

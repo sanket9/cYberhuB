@@ -28,13 +28,18 @@ export class BookListingComponent implements OnInit {
 
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
-  constructor(public http: Http, public router: Router, public SessionStore: SessionStorageService,) {}
+  constructor(
+    public http: Http, 
+    public router: Router, 
+    public SessionStore: SessionStorageService,
+  ) {}
 
   ngOnInit() {
     this.getAllBooks();
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    
   }
   getAllBooks() {
     var status = this.SessionStore.retrieve('user-data');
@@ -42,7 +47,7 @@ export class BookListingComponent implements OnInit {
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
     let data = {
-      master_id: status[0].master_id
+      master_id: status[0].org_code
     };
     this.http
       .post(`${environment.apiUrl}library/librarydetails`, data, options)

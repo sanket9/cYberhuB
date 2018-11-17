@@ -34,3 +34,13 @@
     position: absolute;
     left: 0;
 }
+
+.loader{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: #a0a0a04d;
+    box-shadow: 0 0 3px 22222222px #a0a0a04d; 
+    transform: translate(-50%, -50%);
+    z-index: 9999999;
+}

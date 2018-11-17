@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ExamManagementRoutingModule } from './exam-management-routing.module';
 import { AddRoomComponent } from './add-room/add-room.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-
+import { NotificationService } from "../services/notification.service";
 import {
   MatFormFieldModule,
   MatButtonModule,
@@ -18,10 +18,14 @@ import {
   MatCardModule,
   MatIconModule,
   MatTabsModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatProgressSpinnerModule
 } from "@angular/material";
+import { ListroomComponent } from './listroom/listroom.component';
 @NgModule({
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     MatFormFieldModule,
     MatButtonModule,
@@ -36,8 +40,11 @@ import {
     MatIconModule,
     MatTabsModule,
     MatPaginatorModule,
-    ExamManagementRoutingModule
+    MatProgressSpinnerModule,
+    ExamManagementRoutingModule,
+    
   ],
-  declarations: [AddRoomComponent]
+  declarations: [AddRoomComponent, ListroomComponent],
+  providers: [NotificationService]
 })
-export class ExamManagementModule { }
+export class ExamManagementModule {}

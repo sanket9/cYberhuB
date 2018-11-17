@@ -16,10 +16,14 @@
       </li>
     </ol>
   </nav>
-
+  <!-- <div class="loader" *ngIf="showloader">
+    <mat-spinner color="accent" [diameter]="70"></mat-spinner>
+  </div> -->
+  <app-loader [show]="showloader"></app-loader>
   <div class="container-fluid">
     <div class="row page-title">
       <div class="col-md-10 col-md-offset-1">
+        
       <mat-tab-group>
         <mat-tab label="Single Upload">
           <div class="card">
@@ -118,7 +122,8 @@
               <h4 class="card-title">Bulk Book Add</h4>
               <p class="card-category">Bulk add </p>
             </div>
-            <div class="card-body">
+            <div class="card-body" >
+              
               <form class="pt-2">
                 
                 <div class="col-md-6">

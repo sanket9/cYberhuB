@@ -22,7 +22,7 @@ export class AddLibraryComponent implements OnInit {
   no_of_copy: FormControl;
   book_for_out: FormControl;
   showErrors: boolean = false;
-
+  showloader: boolean = false;
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -58,8 +58,9 @@ export class AddLibraryComponent implements OnInit {
     // console.log(this.bookaddForm);
   }
 
-  bookadd(values) {  
-    var status = this.SessionStore.retrieve('user-data');  
+  bookadd(values) {
+    this.showloader = true;
+    var status = this.SessionStore.retrieve("user-data");
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
@@ -69,7 +70,8 @@ export class AddLibraryComponent implements OnInit {
       .post(`${environment.apiUrl}library/addbook`, values, options)
       .map(res => res.json())
       .subscribe(data => {
-        console.log(data);
+        this.showloader = false;
+        // console.log(data);
         if (!data.error && data.data) {
           this.notification.showNotification(
             "top",
@@ -90,20 +92,44 @@ export class AddLibraryComponent implements OnInit {
   }
 
   uploadFile(event) {
-  	let elem = event.target;
-  	if(elem.files.length > 0) {
-  		let formData = new FormData();
-  		formData.append('file', elem.files[0]);
+    this.showloader = true;
+    let elem = event.target;
+    if (elem.files.length > 0) {
+      let formData = new FormData();
+      formData.append("file", elem.files[0]);
+      var status = this.SessionStore.retrieve("user-data");
+      formData.append("org_id", status[0].org_code);
+      this.http
+        .post(`${environment.apiUrl}library/libraryimport`, formData)
+        .map(res => res.json())
+        .subscribe(
+          data => {
+            this.showloader = false;
+            if (data.status == 1) {
 
-  		this.http.post(`${environment.apiUrl}library/libraryimport`, formData)
-  		.subscribe((data) => {
+              this.notification.showNotification(
+                "top",
+                "right",
+                "success",
+                "Book Added SuccessFuly"
+              );
 
-  			let jsonResponse = data.json();
-  			
-  			console.log('Got some data from backend ', data);
-  		}, (error) => {
-  			console.log('Error! ', error);
-  		});
-  	}
+              this.router.navigate(["/library/index"]);
+            } else {
+              this.notification.showNotification(
+                "top",
+                "right",
+                "warning",
+                "Something Went Wrong"
+              );
+            }
+
+            //console.log("Got some data from backend ", data);
+          },
+          error => {
+            console.log("Error! ", error);
+          }
+        );
+    }
   }
 }

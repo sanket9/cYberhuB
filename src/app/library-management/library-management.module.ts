@@ -5,7 +5,6 @@ import { LibraryManagementRoutingModule } from './library-management-routing.mod
 import { AddLibraryComponent } from './add-library/add-library.component';
 import { BookListingComponent } from './book-listing/book-listing.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-
 import {
   MatFormFieldModule,
   MatButtonModule,
@@ -19,9 +18,12 @@ import {
   MatCardModule,
   MatIconModule,
   MatTabsModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatProgressSpinnerModule
 } from "@angular/material";
 import { EditBookComponent } from './edit-book/edit-book.component';
+import { ComponentsModule } from "../components/components.module";
+
 @NgModule({
   imports: [
     CommonModule,
@@ -40,9 +42,12 @@ import { EditBookComponent } from './edit-book/edit-book.component';
     MatCardModule,
     MatIconModule,
     MatTabsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    ComponentsModule
   ],
   declarations: [AddLibraryComponent, BookListingComponent, EditBookComponent],
-  providers: [NotificationService]
+  providers: [NotificationService],
+  exports: []
 })
 export class LibraryManagementModule {}

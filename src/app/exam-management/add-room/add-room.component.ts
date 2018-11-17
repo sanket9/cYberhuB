@@ -1,4 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  NgForm,
+  Validators,
+  FormGroupDirective
+} from "@angular/forms";
+import { Http, RequestOptions, Headers } from "@angular/http";
+import { environment } from "../../../environments/environment.prod";
+import { Router, ActivatedRoute } from "@angular/router";
+import { NotificationService } from "../../services/notification.service";
+import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: "app-add-room",
@@ -6,51 +18,128 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ["./add-room.component.scss"]
 })
 export class AddRoomComponent implements OnInit {
-  seatingTypes: any = [
-    {
-      id: 1,
-      name: "Table"
-    },
-    {
-      id: 2,
-      name: "Banch"
-    }
-  ];
+  roomaddForm: FormGroup;
+  room_name: FormControl;
+  floor_name: FormControl;
+  seatingTypes: FormControl;
+  banchtypes: FormControl;
+  benchCapacity: FormControl;
+  no_of_bench: FormControl;
+  total_no_of_student: FormControl;
+  showErrors: boolean = false;
+  seating_types = [{ id: 1, name: "Table" }, { id: 2, name: "Banch" }];
+  banch_types: any = [];
+  bench_capacity: any = [];
   disabaleBanchType: boolean = true;
-  banchtypes: any = [];
-  benchCapacity: any = [];
 
-  constructor() {}
+  perBenchCapacity: number;
+  total_no_student: number;
+  seatingType: any;
 
-  ngOnInit() {}
+  constructor(
+    public http: Http,
+    public notification: NotificationService,
+    public router: Router,
+    public SessionStore: SessionStorageService
+  ) {}
+
+  ngOnInit() {
+    this.createFormControl();
+    this.createFormGroup();
+    //this.seatingType = JSON.stringify([{ id: 1, name: "Table" }, { id: 2, name: "Banch" }]);
+  }
+
+  createFormControl() {
+    this.room_name = new FormControl("", [Validators.required]);
+    this.floor_name = new FormControl("", [Validators.required]);
+    this.seatingTypes = new FormControl("", [Validators.required]);
+    this.banchtypes = new FormControl({ value: "", disabled: true }, [
+      Validators.required
+    ]);
+    this.benchCapacity = new FormControl("", [Validators.required]);
+    this.no_of_bench = new FormControl("", [Validators.required]);
+    this.total_no_of_student = new FormControl({ value: "", disabled: true }, [
+      Validators.required
+    ]);
+  }
+
+  createFormGroup() {
+    this.roomaddForm = new FormGroup({
+      room_name: this.room_name,
+      floor_name: this.floor_name,
+      seatingTypes: this.seatingTypes,
+      banchtypes: this.banchtypes,
+      benchCapacity: this.benchCapacity,
+      no_of_bench: this.no_of_bench,
+      total_no_of_student: this.total_no_of_student
+    });
+    // console.log(this.bookaddForm);
+  }
 
   onChangeSheattingtype(e) {
     // console.log(e);
     if (e.value === 1) {
-      this.disabaleBanchType = true;
-      this.benchCapacity = [1];
-      console.log(this.benchCapacity);
-      
+      this.roomaddForm.controls["banchtypes"].disable();
+      this.bench_capacity = [1];
+      // console.log(this.benchCapacity);
     } else {
       this.disabaleBanchType = false;
-      this.banchtypes = [
-        {
-          id: 1,
-          name: "Long"
-        },
-        {
-          id: 2,
-          name: "Short"
-        }
-      ];
+      this.roomaddForm.controls["banchtypes"].enable();
+      this.banch_types = [{ id: 1, name: "Long" }, { id: 2, name: "Short" }];
+    }
+  }
+  noofBenchChange(e) {
+    this.total_no_student =
+      this.roomaddForm.value.benchCapacity * e.target.value;
+  }
+  onChangeBanchtype(e) {
+    if (e.value === 1) {
+      this.bench_capacity = [1, 2, 3];
+    } else {
+      this.bench_capacity = [1, 2];
     }
   }
 
-  onChangeBanchtype(e){    
-    if (e.value === 1) {
-      this.benchCapacity = [1, 2, 3];      
+  roomadd(values) {
+    var status = this.SessionStore.retrieve("user-data");  
+
+    if (values.banchtypes == 1) {
+      values.banchtypes = "Long";
     }else{
-      this.benchCapacity = [1, 2];
+      values.banchtypes = "Short";
     }
+
+    if (values.seatingTypes == 1) {
+      values.seatingTypes = "Table";
+      values.banchtypes = null;
+    }else{
+      values.seatingTypes = "Banch";
+    }
+    values.org_id = status[0].org_code;
+    values.total_no_of_student = this.total_no_student;
+
+    var status = this.SessionStore.retrieve("user-data");
+    var headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    let options = new RequestOptions({ headers: headers });
+    this.http.post(`${environment.apiUrl}room/add`, values, options).map(res => res.json())
+    .subscribe(data => {
+      if (!data.error && data.data) {
+        this.notification.showNotification(
+          "top",
+          "right",
+          "success",
+          "Room Added SuccessFuly"
+        );
+        this.router.navigate(["/exam/index"]);
+      } else {
+        this.notification.showNotification(
+          "top",
+          "right",
+          "warning",
+          "Something Went Wrong"
+        );
+      }
+    });
   }
 }
