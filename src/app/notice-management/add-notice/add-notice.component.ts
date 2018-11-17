@@ -32,6 +32,8 @@ export class AddNoticeComponent implements OnInit {
   shareData: any;
   sessionValue: any;
   showDescription: boolean;
+  showFileUpload: boolean;
+  shareDataArrayObject: any;
 
   // get data() { 
   //   return this.apiServ.serviceData; 
@@ -50,13 +52,15 @@ export class AddNoticeComponent implements OnInit {
   ngOnInit() {
     this.sessionValue = this.sessionStore.retrieve('user-data');
     this.showDescription = false;
+    this.showFileUpload = false;
     this.apiServ.serviceData.subscribe(data => this.data = data);
     this.createFormControls();
     this.createFormGroup();
     this.multipartItem.formData = null;
     this.shareData = this.data;
-    console.log("sent from filter page : ", this.shareData);
-    console.log("session value : ", this.sessionValue);
+    this.shareDataArrayObject = {};
+    // console.log("sent from filter page : ", this.shareData);
+    // console.log("session value : ", this.sessionValue);
   }
 
   createFormControls() {
@@ -80,19 +84,23 @@ export class AddNoticeComponent implements OnInit {
   onAddNoticeSubmit() {
     let addNoticeFormData = this.addNoticeForm.value;
 
-    console.log(this.file);
+    // console.log(this.file);
 
     let header = new Headers();
     header.append('Content-Type', 'multipart/form-data');
+
+    this.shareDataArrayObject.secArr = this.shareData.sections;
+    this.shareDataArrayObject.shiftArr = this.shareData.shifts;
 
     let fd = new FormData();
 
     fd.append("notice_type_id", this.shareData.noticeType);
     // fd.append("status", "1");
-    fd.append("create_by", this.sessionValue.master_id);
-    fd.append("org_id", this.sessionValue.org_code);
+    fd.append("create_by", this.sessionValue[0].master_id);
+    fd.append("org_id", this.sessionValue[0].org_code);
     // fd.append("user_type_id", "1");
-    fd.append("dept_id", this.shareData.sections);
+    fd.append("dept_id", JSON.stringify(this.shareDataArrayObject.secArr));
+    fd.append("org_shift_id", JSON.stringify(this.shareDataArrayObject.shiftArr));
     // fd.append("create_by", this.shareData.);    
     fd.append("title", addNoticeFormData.title);
     fd.append("subject", addNoticeFormData.subject);
@@ -120,7 +128,9 @@ export class AddNoticeComponent implements OnInit {
   onChooseDescType(e){
     if(e.value == "1"){
       this.showDescription = true;
+      this.showFileUpload = false;
     }else{
+      this.showFileUpload = true;
       this.showDescription = false;
     }
   }
