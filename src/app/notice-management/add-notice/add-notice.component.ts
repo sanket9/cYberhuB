@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Http, RequestOptions, Headers } from "@angular/http";
 import { ApiService } from "../../services/api/api.service";
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import {
   FormGroup,
   FormControl,
@@ -24,24 +25,48 @@ export class AddNoticeComponent implements OnInit {
   subject: FormControl;
   text: FormControl;
   file_url: FormControl;
+  file: File;
+  multipartItem: any = {};
+  uploadCallback: any;
+  data: any;
+  shareData: any;
+  sessionValue: any;
+  showDescription: boolean;
+  showFileUpload: boolean;
+  shareDataArrayObject: any;
 
-  slFile: File;
+  // get data() { 
+  //   return this.apiServ.serviceData; 
+  // } 
+  // set data(value: string) { 
+  //   this.apiServ.serviceData = value; 
+  // }
 
   constructor(
     public router: Router,
     public http: Http,
-    private apiServ: ApiService
+    private apiServ: ApiService,
+    private sessionStore: SessionStorageService
   ) {}
 
   ngOnInit() {
+    this.sessionValue = this.sessionStore.retrieve('user-data');
+    this.showDescription = false;
+    this.showFileUpload = false;
+    this.apiServ.serviceData.subscribe(data => this.data = data);
     this.createFormControls();
     this.createFormGroup();
+    this.multipartItem.formData = null;
+    this.shareData = this.data;
+    this.shareDataArrayObject = {};
+    // console.log("sent from filter page : ", this.shareData);
+    // console.log("session value : ", this.sessionValue);
   }
 
   createFormControls() {
-    this.title = new FormControl("", []);
-    this.subject = new FormControl("", []);
-    this.text = new FormControl("", []);
+    this.title = new FormControl("", [Validators.required]);
+    this.subject = new FormControl("", [Validators.required]);
+    this.text = new FormControl("", [Validators.required]);
     // this.file_url = new FormControl("", []);
   }
 
@@ -59,98 +84,54 @@ export class AddNoticeComponent implements OnInit {
   onAddNoticeSubmit() {
     let addNoticeFormData = this.addNoticeForm.value;
 
-    console.log(this.slFile);
+    // console.log(this.file);
+
+    let header = new Headers();
+    header.append('Content-Type', 'multipart/form-data');
+
+    this.shareDataArrayObject.secArr = this.shareData.sections;
+    this.shareDataArrayObject.shiftArr = this.shareData.shifts;
 
     let fd = new FormData();
-    fd.append("file", this.slFile);
-    fd.append("notice_type_id", "1");
-    fd.append("status", "1");
-    fd.append("user_master_id", "7");
-    fd.append("org_master_id", "1");
-    fd.append("user_type_id", "2");
-    fd.append("dept_id", "3");
-    fd.append("create_by", "1");
-    fd.append("is_Parent", "1");
+
+    fd.append("notice_type_id", this.shareData.noticeType);
+    // fd.append("status", "1");
+    fd.append("create_by", this.sessionValue[0].master_id);
+    fd.append("org_id", this.sessionValue[0].org_code);
+    // fd.append("user_type_id", "1");
+    fd.append("dept_id", JSON.stringify(this.shareDataArrayObject.secArr));
+    fd.append("org_shift_id", JSON.stringify(this.shareDataArrayObject.shiftArr));
+    // fd.append("create_by", this.shareData.);    
     fd.append("title", addNoticeFormData.title);
     fd.append("subject", addNoticeFormData.subject);
     fd.append("text", addNoticeFormData.text);
 
-    // addNoticeFormData.notice_type_id = 1;
-    // addNoticeFormData.status = 1;
-    // addNoticeFormData.user_master_id = 7;
-    // addNoticeFormData.org_master_id = 1;
-    // addNoticeFormData.user_type_id = 2;
-    // addNoticeFormData.dept_id = 2;
-    // addNoticeFormData.dept_id = 3;
-    // addNoticeFormData.create_by = 1;
-    // addNoticeFormData.is_Parent = 1;
-    // addNoticeFormData.file_url = this.slFile;
-
-    // let body = JSON.stringify(addNoticeFormData);
-    // console.log(addNoticeFormData);
     console.log(fd);
 
-    // this.apiServ.addNotice(fd).subscribe((res: any) => {
-    //   console.log("Responce From Server : ", res);
-    // });
-    this.http.post("http://softechs.co.in/fileupload.php", fd)
-        .subscribe(data => {
-          // let jsonResponse = data.json();
-          console.log('Got some data from backend ', data);
-          // console.log("Got some data from backend ", jsonResponse);
-        }, (error) => {
-          console.log('Error! ', error);
+    this.http.post("http://softechs.co.in/school_hub/notice/addnotice", fd).map((res)=>{res.json()})
+    .subscribe(data => {
+      console.log('Got some data from backend ', data);
     });
   }
 
 
 
 
-  onSelectFile(event) {
-    // if (e.target.files && e.target.files[0]) {
-    //   this.slFile = e.dataTransfer
-    //     ? e.dataTransfer.files[0]
-    //     : e.target.files[0];
+  onSelectFile($event): void {
+		var inputValue = $event.target;
+		this.file = inputValue.files[0];
+    // console.debug("Input File name: " + this.file.name + " type:" + this.file.type + " size:" + this.file.size);
+  }
+  
 
 
-      // console.log(file);
-      // let fd = new FormData();
-      // fd.append("selectFile", file, file.name);
-      // this.slFile = fd;
-      // console.log(this.slFile);
-
-
-  // }
-
-
-    let elem = event.target;
-
-    if (elem.files.length > 0) {
-      // let formData = new FormData();
-      // formData.append('file', elem.files[0]);
-      this.slFile = elem.files[0];
+  onChooseDescType(e){
+    if(e.value == "1"){
+      this.showDescription = true;
+      this.showFileUpload = false;
+    }else{
+      this.showFileUpload = true;
+      this.showDescription = false;
     }
   }
-
-  // onSelectFile(files: any) {
-  //   console.log(files[0]);
-  //   this.myFile = <File>files[0];
-  // }
-
-  // uploadFile(event) {
-  //   let elem = event.target;
-  //   if (elem.files.length > 0) {
-
-  //     let formData = new FormData();
-  //     formData.append('file', elem.files[0]);
-
-  //     this.http.post(`softechs.co.in/fileupload.php`, formData)
-  //       .subscribe(data => {
-  //         let jsonResponse = data.json();
-  //         console.log('Got some data from backend ', data);
-  //       }, (error) => {
-  //         console.log('Error! ', error);
-  //       });
-  //   }
-  // }
 }

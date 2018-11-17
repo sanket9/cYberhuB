@@ -35,14 +35,27 @@
               </mat-form-field>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-6" >
+                <mat-form-field>                      
+                    <mat-select placeholder="Select Description Type" (change)="onChooseDescType($event)"> 
+                      <mat-option [value]="1">
+                        Add Description
+                      </mat-option> 
+                      <mat-option [value]="2">
+                        Upload File
+                      </mat-option>                          
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-12" *ngIf="showDescription">
               <mat-form-field class="example-full-width">
                 <textarea matInput placeholder="Description" name="text" formControlName="text"></textarea>
               </mat-form-field>
             </div>
 
-            <div class="col-sm-12">
-              <div class="custom-file example-full-width">
+            <div class="col-sm-12" *ngIf="!showDescription">
+              <div class="custom-file example-full-width">                  
                 <input type="file" class="custom-file-input" name="file" (change)="onSelectFile($event)">
                 <label class="custom-file-label" for="customFile">Choose File</label>
               </div>
