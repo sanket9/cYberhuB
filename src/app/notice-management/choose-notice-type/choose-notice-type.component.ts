@@ -21,9 +21,11 @@ export class ChooseNoticeTypeComponent implements OnInit {
   orgClassSectionList: any;
   sortArray: any;
   filteredArrayForSectionList: any;
+  filteredArrayForClassList: any;
   showShiftClassSectionField: boolean;
   showSectionField: boolean;
   classStreamID: any;
+  shiftID: any;
   data: any;
 
   selectedData: any = {};
@@ -45,10 +47,12 @@ export class ChooseNoticeTypeComponent implements OnInit {
   ngOnInit() {
     this.org_code = this.sessionStore.retrieve('user-data')[0].org_code;
     this.getNoticeTypeSection();
+    this.getClassList();
     this.orgShiftLists = [];
     this.orgClassSectionList = [];
     this.sortArray = [];
     this.filteredArrayForSectionList = [];
+    this.filteredArrayForClassList = [];
     this.showShiftClassSectionField = false;
     this.showSectionField = false;
     this.sendSelectData = {};
@@ -56,7 +60,9 @@ export class ChooseNoticeTypeComponent implements OnInit {
 
 
 
-
+// ###################################################################
+//    ------------------ getting all notice type -----------------
+// ###################################################################
   getNoticeTypeSection(){
     let header = new Headers();
     header.set("Content-Type", "application/json");
@@ -77,7 +83,9 @@ export class ChooseNoticeTypeComponent implements OnInit {
 
 
 
-
+// ########################################################################
+//       ------------------ getting all shifts here -----------------
+// ########################################################################
   getShiftLists() {
     let header = new Headers();
     header.set("Content-Type", "application/json");
@@ -105,6 +113,11 @@ export class ChooseNoticeTypeComponent implements OnInit {
   }
 
 
+
+
+// ########################################################################
+//       ------------------ getting all class list here -----------------
+// ########################################################################
 getClassList(){
   let header = new Headers();
   header.set("Content-Type", "application/json");
@@ -133,7 +146,9 @@ getClassList(){
 
 
 
-
+// ########################################################################
+// ------------------ After choose notice type function -----------------
+// ########################################################################
   onChooseNoticeType(e) {
     if(e.value == "1" || e.value == "4"){
       this.showShiftClassSectionField = true;
@@ -157,31 +172,61 @@ getClassList(){
   }
 
 
-  onChooseShift(e){
 
+
+// ########################################################################
+// ------------------ After choose shift -----------------
+// ########################################################################
+  onChooseShift(e){
+    this.shiftID = e.value;
     // console.log(e);
     // console.log(this.allSelected);        
 
-    if(this.orgClassSectionList.length < 1) {
-      this.getClassList();
-    }
-    // console.log('shift : ', e.value);  
+    console.log('shift : ', e.value);  
     
     let ifAllSelect = e.value.filter((ele)=>{
       return ele == "all";
     });
 
+    // console.log("shift list : ", this.orgShiftLists);
+    
     if(ifAllSelect.length > 0){
+      this.sortArray = [];
       this.selectedData.selectedShifts = this.orgShiftLists;
-    }else{
-      this.selectedData.selectedShifts = e.value;
-    }
 
+      this.createSortArray(this.orgClassSectionList);
+      this.sortArray.unshift({
+        class_name: "All",
+        class_id: "all"
+      });
+      console.log("filter class list for choosen shift : ", this.sortArray); 
+    }else{
+      this.sortArray = [];
+      this.selectedData.selectedShifts = e.value;
+
+      this.filteredArrayForClassList = this.orgClassSectionList.filter((ele)=>{
+        return ele.org_shift_id == e.value;
+      });
+
+      console.log(this.filteredArrayForClassList);
+      this.createSortArray(this.filteredArrayForClassList);
+      this.sortArray.unshift({
+        class_name: "All",
+        class_id: "all"
+      });
+       console.log("filter class list for choosen shift : ", this.sortArray); 
+    }
   }
 
 
+
+
+// ########################################################################
+// ------------------ After choose class/stream -----------------
+// ########################################################################
   onChooseClassStream(e) {
     this.classStreamID = e.value;
+
     if(e.value == "all"){
       this.filteredArrayForSectionList = [
         { sec_id: "all", section_name: "All" }
@@ -193,14 +238,21 @@ getClassList(){
       return element.class_id == e.value;
     });
    
-    this.filteredArrayForSectionList = this.filteredArrayForSectionList[0].sections;
-    this.filteredArrayForSectionList.unshift({ sec_id: "all", section_name: "All"});
+    if(this.filteredArrayForSectionList.length > 0){
+      this.filteredArrayForSectionList = this.filteredArrayForSectionList[0].sections;
+      this.filteredArrayForSectionList.unshift({ sec_id: "all", section_name: "All"});
+    }  
 
     // console.log('filter section array : ', this.filteredArrayForSectionList);
   }
 
 
 
+
+
+// ########################################################################
+// ------------------ After choose section -----------------
+// ########################################################################
   onChooseSection(e){
     if(e.value){
       // this.routes.navigate(['/notice-management/add-notice']);
@@ -225,18 +277,38 @@ getClassList(){
 
 
 
+
+
+// ########################################################################
+// ------------------ After clicking submit btn -----------------
+// ########################################################################
   onClickSubmitBtn(){   
     this.sortSelectedFilterData(this.selectedData);
-    // console.log('Selected send data', this.selectedData);     
+    // console.log('Selected data', this.selectedData);     
     this.routes.navigate(['/notice-management/add-notice']);
   }
 
 
 
+
+// ########################################################################
+// ------------------ sorting selected data for sending -----------------
+// ########################################################################
   sortSelectedFilterData(arr) {
+    // console.log(arr);
+    
     this.sendSelectData.noticeType = arr.selectedNoticeType;
     this.sendSelectData.shifts = [];
     this.sendSelectData.sections = [];
+
+    if(arr.selectedNoticeType == "2"){
+      this.sendSelectData.noticeType = arr.selectedNoticeType;
+      this.sendSelectData.shifts = [];
+      this.sendSelectData.sections = [];
+      // console.log('filter data : ', this.sendSelectData);
+      this.apiServ.changeData(this.sendSelectData);
+      return;
+    }
 
     if(arr.selectedShifts[0].id == "all"){
       arr.selectedShifts.forEach(element => {
@@ -250,22 +322,41 @@ getClassList(){
       this.sendSelectData.shifts = arr.selectedShifts;
     }
 
+    if(arr.selectedSections.length > 0){
 
-    if(arr.selectedSections[0].class_id == "all" || arr.selectedSections[0].class_name == "Arts" || arr.selectedSections[0].class_name == "Science"){
-      arr.selectedSections.forEach(element => {
-        if(element.class_id != "all"){
-          if(element.sections.length > 0){
-            element.sections.forEach(ele => {
-              if(ele.sec_id != "all"){
-                this.sendSelectData.sections.push(ele.classSectionIndexId);
-              }              
-            });            
-          }          
-        }
-      });
-    }else{
-      this.sendSelectData.sections = arr.selectedSections;
+      if(arr.selectedSections[0].class_id == "all" || arr.selectedSections[0].class_name == "Arts" || arr.selectedSections[0].class_name == "Science"){
+        arr.selectedSections.forEach(element => {
+          if(element.class_id != "all"){
+            if(element.sections.length > 0){
+              element.sections.forEach(ele => {
+                if(ele.sec_id != "all"){
+                  this.sendSelectData.sections.push(ele.classSectionIndexId);
+                }              
+              });            
+            }          
+          }
+        });
+      } else {
+        this.sendSelectData.sections = arr.selectedSections;
+      }
+
     }
+
+    // if(arr.selectedSections[0].class_id == "all" || arr.selectedSections[0].class_name == "Arts" || arr.selectedSections[0].class_name == "Science"){
+    //   arr.selectedSections.forEach(element => {
+    //     if(element.class_id != "all"){
+    //       if(element.sections.length > 0){
+    //         element.sections.forEach(ele => {
+    //           if(ele.sec_id != "all"){
+    //             this.sendSelectData.sections.push(ele.classSectionIndexId);
+    //           }              
+    //         });            
+    //       }          
+    //     }
+    //   });
+    // }else{
+    //   this.sendSelectData.sections = arr.selectedSections;
+    // }
 
     console.log('filter data : ', this.sendSelectData);
     this.apiServ.changeData(this.sendSelectData);
@@ -281,6 +372,7 @@ getClassList(){
         class_id: ele.class_id,
         sec_id: ele.sec_id,
         class_name: ele.class.class_name,
+        shift_id: ele.org_shift_id,
         sections: [
           {
             section_name: ele.section.sec_name,
@@ -310,6 +402,8 @@ getClassList(){
         this.sortArray.push(obj);
       }
     });
+
+
     // console.log(this.sortArray);    
   }
 
