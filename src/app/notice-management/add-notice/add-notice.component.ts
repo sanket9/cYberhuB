@@ -63,6 +63,12 @@ export class AddNoticeComponent implements OnInit {
     // console.log("session value : ", this.sessionValue);
   }
 
+
+
+
+// ########################################################################
+// ----------- Creating form control -----------
+// ########################################################################
   createFormControls() {
     this.title = new FormControl("", [Validators.required]);
     this.subject = new FormControl("", [Validators.required]);
@@ -70,6 +76,13 @@ export class AddNoticeComponent implements OnInit {
     // this.file_url = new FormControl("", []);
   }
 
+
+
+
+
+// ########################################################################
+// ----------- Creating form group -----------
+// ########################################################################
   createFormGroup() {
     this.addNoticeForm = new FormGroup({
       title: this.title,
@@ -81,6 +94,12 @@ export class AddNoticeComponent implements OnInit {
 
 
 
+
+
+
+// ########################################################################
+// ----------- Notice submit method -----------
+// ########################################################################
   onAddNoticeSubmit() {
     let addNoticeFormData = this.addNoticeForm.value;
 
@@ -117,14 +136,21 @@ export class AddNoticeComponent implements OnInit {
 
 
 
+// ########################################################################
+// ----------- After choosing file -----------
+// ########################################################################
   onSelectFile($event): void {
 		var inputValue = $event.target;
 		this.file = inputValue.files[0];
     // console.debug("Input File name: " + this.file.name + " type:" + this.file.type + " size:" + this.file.size);
   }
+
+
   
 
-
+// ########################################################################
+// ----------- After choosing desc option method -----------
+// ########################################################################
   onChooseDescType(e){
     if(e.value == "1"){
       this.showDescription = true;

@@ -33,21 +33,39 @@
                               </mat-option>
                             </mat-select>
                         </mat-form-field>
-                    </div>
+                    </div>                    
 
-                    <div class="col-sm-6" *ngIf="showShiftClassSectionField">
+                    <div class="col-sm-6" *ngIf="showShiftField">
                         <mat-form-field>                      
                             <mat-select name="shift" placeholder="Select Shift" (change)="onChooseShift($event)" (change)="selectAllShifts($event)" multiple>
+
                               <ng-container *ngFor="let shift of orgShiftLists">                   
                                   <mat-option #allSelected [value]="shift.orgshift[0]?.id" *ngIf="shift.orgshift[0]?.id">
                                       {{shift.name}}
                                   </mat-option>
-                              </ng-container>                              
+                              </ng-container>   
+
                             </mat-select>
                         </mat-form-field>
                     </div>
 
-                    <div class="col-sm-6" *ngIf="showShiftClassSectionField">
+                    <div class="col-sm-6" *ngIf="showStuffTypeField">
+                        <mat-form-field>                      
+                            <mat-select placeholder="Select Stuff Type" (change)="onChooseStuffType($event)" multiple>
+                                <mat-option [value]="">
+                                    All
+                                  </mat-option>                                    
+                                <mat-option [value]="">
+                                  Teaching Stuff
+                                </mat-option> 
+                                <mat-option [value]="">
+                                  Non Teaching Stuff
+                                </mat-option>                                
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-sm-6" *ngIf="showClassField">
                         <mat-form-field>                      
                             <mat-select placeholder="Select Class/Stream" (change)="onChooseClassStream($event)" multiple>
                               <!-- <mat-option [value]="all">All</mat-option> -->
@@ -71,7 +89,7 @@
                               </ng-container>                              
                             </mat-select>
                         </mat-form-field>
-                    </div>
+                    </div>                    
 
                     <div class="col-sm-12">
                         <div class="example-full-width">

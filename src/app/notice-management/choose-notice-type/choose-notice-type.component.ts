@@ -12,6 +12,7 @@ import { NgModel } from '@angular/forms';
   templateUrl: './choose-notice-type.component.html',
   styleUrls: ['./choose-notice-type.component.scss']
 })
+
 export class ChooseNoticeTypeComponent implements OnInit {
 
   org_code: any;
@@ -22,8 +23,10 @@ export class ChooseNoticeTypeComponent implements OnInit {
   sortArray: any;
   filteredArrayForSectionList: any;
   filteredArrayForClassList: any;
-  showShiftClassSectionField: boolean;
+  showShiftField: boolean;
+  showClassField: boolean;
   showSectionField: boolean;
+  showStuffTypeField: boolean;
   classStreamID: any;
   shiftID: any;
   data: any;
@@ -32,16 +35,10 @@ export class ChooseNoticeTypeComponent implements OnInit {
   sendSelectData: any;
 
   selectedShifts: any[];
-  shift: any[];
-
-  // get data() { 
-  //   return this.apiServ.serviceData; 
-  // } 
-  // set data(value: any) { 
-  //   this.apiServ.serviceData = value; 
-  // } 
+  shifts: any[]; 
 
   @ViewChild('allSelected') private allSelected: MatOption;
+
   constructor(public route: ActivatedRoute, public routes: Router, public http: Http, public sessionStore: SessionStorageService, private apiServ: ApiService) { }
 
   ngOnInit() {
@@ -53,8 +50,10 @@ export class ChooseNoticeTypeComponent implements OnInit {
     this.sortArray = [];
     this.filteredArrayForSectionList = [];
     this.filteredArrayForClassList = [];
-    this.showShiftClassSectionField = false;
+    this.showShiftField = false;
     this.showSectionField = false;
+    this.showClassField = false;
+    this.showStuffTypeField = false;
     this.sendSelectData = {};
   }
 
@@ -115,6 +114,8 @@ export class ChooseNoticeTypeComponent implements OnInit {
 
 
 
+
+
 // ########################################################################
 //       ------------------ getting all class list here -----------------
 // ########################################################################
@@ -133,15 +134,16 @@ getClassList(){
       data => {
         // console.log("Org Class list : ", data.data);
         this.orgClassSectionList = data.data;
-        this.createSortArray(this.orgClassSectionList);
-        this.sortArray.unshift({
-          class_name: "All",
-          class_id: "all"
-        });
+        // this.createSortArray(this.orgClassSectionList);
+        // this.sortArray.unshift({
+        //   class_name: "All",
+        //   class_id: "all"
+        // });
   });
-
   // console.log("Org Class list : ", this.sortArray);
 }
+
+
   
 
 
@@ -151,15 +153,25 @@ getClassList(){
 // ########################################################################
   onChooseNoticeType(e) {
     if(e.value == "1" || e.value == "4"){
-      this.showShiftClassSectionField = true;
+      this.showClassField = true;
       this.showSectionField = true;
+      this.showShiftField = true;
+      this.showStuffTypeField = false;
     }else if(e.value == "5"){
-      this.showShiftClassSectionField = true;
+      this.showShiftField = true;
+      this.showClassField = true;
+      this.showSectionField = true;
+      this.showStuffTypeField = true;
+    }else if(e.value == "2"){
+      this.showShiftField = false;
+      this.showClassField = false;
       this.showSectionField = false;
+      this.showStuffTypeField = false;
     }else{
-      this.showShiftClassSectionField = false;
-      this.showSectionField = false;
-      // this.routes.navigate(['/notice-management/add-notice']);
+      this.showShiftField = true;
+      this.showClassField = true;
+      this.showSectionField = true;
+      this.showStuffTypeField = false;
     }
 
     if(this.orgShiftLists.length < 1){
@@ -168,27 +180,29 @@ getClassList(){
 
     // this.selectedNoticeTypeID = e.value;
     // console.log('notice type : ',this.selectedNoticeTypeID);
-    this.selectedData.selectedNoticeType = e.value;  
+    this.selectedData.selectedNoticeType = e.value; 
+    this.sortArray = []; 
+    this.filteredArrayForSectionList = [];
   }
 
 
 
 
+
+
 // ########################################################################
-// ------------------ After choose shift -----------------
+//    ------------------ After choose shift -----------------
 // ########################################################################
   onChooseShift(e){
+    this.sortArray = [];
     this.shiftID = e.value;
     // console.log(e);
     // console.log(this.allSelected);        
-
     console.log('shift : ', e.value);  
     
     let ifAllSelect = e.value.filter((ele)=>{
       return ele == "all";
     });
-
-    // console.log("shift list : ", this.orgShiftLists);
     
     if(ifAllSelect.length > 0){
       this.sortArray = [];
@@ -199,7 +213,8 @@ getClassList(){
         class_name: "All",
         class_id: "all"
       });
-      console.log("filter class list for choosen shift : ", this.sortArray); 
+
+      // console.log("filter class list for choosen shift : ", this.sortArray); 
     }else{
       this.sortArray = [];
       this.selectedData.selectedShifts = e.value;
@@ -214,9 +229,11 @@ getClassList(){
         class_name: "All",
         class_id: "all"
       });
-       console.log("filter class list for choosen shift : ", this.sortArray); 
+      //  console.log("filter class list for choosen shift : ", this.sortArray); 
     }
   }
+
+
 
 
 
@@ -225,6 +242,7 @@ getClassList(){
 // ------------------ After choose class/stream -----------------
 // ########################################################################
   onChooseClassStream(e) {
+    this.filteredArrayForSectionList = [];
     this.classStreamID = e.value;
 
     if(e.value == "all"){
@@ -291,8 +309,10 @@ getClassList(){
 
 
 
+
+
 // ########################################################################
-// ------------------ sorting selected data for sending -----------------
+// ----------- sorting selected data method for sending to add notice ----------
 // ########################################################################
   sortSelectedFilterData(arr) {
     // console.log(arr);
@@ -358,12 +378,18 @@ getClassList(){
     //   this.sendSelectData.sections = arr.selectedSections;
     // }
 
-    console.log('filter data : ', this.sendSelectData);
+    // console.log('filter data : ', this.sendSelectData);
     this.apiServ.changeData(this.sendSelectData);
   }
 
 
 
+
+
+
+// ########################################################################
+// ----------- sorting class list array here for looping -----------
+// ########################################################################
   createSortArray(arr){
     // var rs = 1;
     arr.forEach(ele => {
@@ -402,17 +428,25 @@ getClassList(){
         this.sortArray.push(obj);
       }
     });
-
-
     // console.log(this.sortArray);    
   }
 
 
 
 
-  selectAllShifts(){
-    
+
+
+  selectAllShifts(e){
+    if(e.value == "all"){
+      // console.log(e.source);
+      console.log("native element : ", e.source._parentFormField._elementRef.nativeElement);
+      console.log("Sibling : ", e.source._parentFormField._elementRef.nativeElement.nextSibling);  
+    }
   }
+
+
+
+
 
 
 }
