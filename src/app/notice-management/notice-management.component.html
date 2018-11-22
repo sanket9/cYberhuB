@@ -14,15 +14,10 @@
   </nav>
   <div class="container-fluid">
     <!-- <div class="row page-title">       -->
-      <mat-grid-list cols="4" rowHeight="1:1">
-        <mat-grid-tile class="ml-2 mr-2">
+      <mat-grid-list gutterSize="15px" cols="4" rowHeight="1:1">
+
+        <mat-grid-tile>
             <mat-card class="example-card">
-                <!-- <mat-card-header>
-                  <div mat-card-avatar class="example-header-image"></div>
-                  <mat-card-title>Shiba Inu</mat-card-title>
-                  <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-                </mat-card-header> -->
-                <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
                 <a [routerLink]="['/notice-management/notice-type']">
                   <mat-card-content class="text-center">
                     <p class="">
@@ -31,15 +26,69 @@
                     <p class="add-text text-muted">ADD</p> 
                   </mat-card-content> 
                 </a>
-                <!-- <mat-card-actions>
-                  <button mat-button>LIKE</button>
-                  <button mat-button>SHARE</button>
-                </mat-card-actions> -->
             </mat-card>        
         </mat-grid-tile>
-        <mat-grid-tile class="ml-2 mr-2">Grid 2</mat-grid-tile>
-        <mat-grid-tile class="ml-2 mr-2">Grid 3</mat-grid-tile>
-        <mat-grid-tile class="ml-2 mr-2">Grid 4</mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-card class="example-card">
+            <mat-card-header>
+              <!-- <div mat-card-avatar class="example-header-image"></div> -->
+              <mat-card-title class="m-0 p-0">A sample heading title</mat-card-title>
+              <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+            </mat-card-header>
+            <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+            <!-- <a [routerLink]="['/notice-management/notice-type']"> -->
+            <mat-card-content>
+              <p class="ml-2">A sample text body sample text body sample text body sample</p> 
+            </mat-card-content> 
+            <!-- </a> -->
+            <mat-card-actions>
+              <button class="btn btn-info btn-sm pull-right mr-4">Show Details</button>
+            </mat-card-actions>
+          </mat-card>
+        </mat-grid-tile>
+
+          <mat-grid-tile>
+            <mat-card class="example-card">
+              <mat-card-header>
+                <!-- <div mat-card-avatar class="example-header-image"></div> -->
+                <mat-card-title class="m-0 p-0">A sample heading title</mat-card-title>
+                <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+              </mat-card-header>
+              <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+              <!-- <a [routerLink]="['/notice-management/notice-type']"> -->
+              <mat-card-content>
+                <p class="ml-2">A sample text body sample text body sample text body sample</p>  
+              </mat-card-content> 
+              <!-- </a> -->
+              <mat-card-actions>
+                <button class="btn btn-info btn-sm pull-right mr-4">Show Details</button>
+              </mat-card-actions>
+            </mat-card>
+          </mat-grid-tile>
+
+            <mat-grid-tile>
+              <mat-card class="example-card">
+                <mat-card-header>
+                  <!-- <div mat-card-avatar class="example-header-image"></div> -->
+                  <mat-card-title class="m-0 p-0">A sample heading title</mat-card-title>
+                  <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+                </mat-card-header>
+                <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+                <!-- <a [routerLink]="['/notice-management/notice-type']"> -->
+                <mat-card-content>
+                  <p class="ml-2">A sample text body sample text body sample text body sample</p>  
+                </mat-card-content> 
+                <!-- </a> -->
+                <mat-card-actions>
+                  <button class="btn btn-info btn-sm pull-right mr-3">Show Details</button>
+                </mat-card-actions>
+              </mat-card>
+            </mat-grid-tile>
+
+
+        <!-- <mat-grid-tile class="ml-2 mr-2">Grid 3</mat-grid-tile>
+        <mat-grid-tile class="ml-2 mr-2">Grid 4</mat-grid-tile> -->
       </mat-grid-list>      
     <!-- </div> -->
   </div>

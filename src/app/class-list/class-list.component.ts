@@ -124,7 +124,6 @@ onChooseShift(e){
         // console.log(ele.children[0].getAttribute('ng-reflect-state'));
       }      
     });
-    // console.log(options[0].children[0]);
     
   }else if(ifAllSelect.length < 1){
     this.shiftID = [];
@@ -139,9 +138,10 @@ onChooseShift(e){
           }          
         }      
     });
+
   }else{
     this.shiftID = e.value;
-    console.log(this.shiftID);      
+    // console.log(this.shiftID);     
   }
 
    
