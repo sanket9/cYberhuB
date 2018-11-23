@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Http, RequestOptions, Headers } from "@angular/http";
 import { ApiService } from "../../services/api/api.service";
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
+import { environment } from "../../../environments/environment.prod";
 import {
   FormGroup,
   FormControl,
@@ -64,6 +65,12 @@ export class AddNoticeComponent implements OnInit {
     // console.log("session value : ", this.sessionValue);
   }
 
+
+
+
+// ########################################################################
+// ----------- Creating form control -----------
+// ########################################################################
   createFormControls() {
     this.title = new FormControl("", [Validators.required]);
     this.subject = new FormControl("", [Validators.required]);
@@ -71,6 +78,13 @@ export class AddNoticeComponent implements OnInit {
     // this.file_url = new FormControl("", []);
   }
 
+
+
+
+
+// ########################################################################
+// ----------- Creating form group -----------
+// ########################################################################
   createFormGroup() {
     this.addNoticeForm = new FormGroup({
       title: this.title,
@@ -80,6 +94,17 @@ export class AddNoticeComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+// ########################################################################
+// ----------- Notice submit method -----------
+// ########################################################################
+>>>>>>> c8c8bcc1530081c69f706c91dbfc3e4a16e41673
   onAddNoticeSubmit() {
     this.showloader = true;
     let addNoticeFormData = this.addNoticeForm.value;
@@ -108,6 +133,7 @@ export class AddNoticeComponent implements OnInit {
 
     console.log(fd);
 
+<<<<<<< HEAD
     this.http
       .post(`${environment.apiUrl}notice/addnotice`, fd)
       .map(res => {
@@ -121,14 +147,40 @@ export class AddNoticeComponent implements OnInit {
       });
   }
 
+=======
+    this.http.post(`${environment.apiUrl}notice/addnotice`, fd).map((res)=>{res.json()})
+    .subscribe(data => {
+      console.log('Got some data from backend ', data);
+    });
+  }
+
+
+
+
+// ########################################################################
+// ----------- After choosing file -----------
+// ########################################################################
+>>>>>>> c8c8bcc1530081c69f706c91dbfc3e4a16e41673
   onSelectFile($event): void {
     var inputValue = $event.target;
     this.file = inputValue.files[0];
     // console.debug("Input File name: " + this.file.name + " type:" + this.file.type + " size:" + this.file.size);
   }
+<<<<<<< HEAD
 
   onChooseDescType(e) {
     if (e.value == "1") {
+=======
+
+
+  
+
+// ########################################################################
+// ----------- After choosing desc option method -----------
+// ########################################################################
+  onChooseDescType(e){
+    if(e.value == "1"){
+>>>>>>> c8c8bcc1530081c69f706c91dbfc3e4a16e41673
       this.showDescription = true;
       this.showFileUpload = false;
     } else {

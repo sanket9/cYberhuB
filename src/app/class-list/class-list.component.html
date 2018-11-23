@@ -13,7 +13,19 @@
             ################################################################### -->
             <div class="row">
                 <div class="col-sm-12">
-                    <button mat-raised-button color="primary" class="pull-right" (click)="increaseField()">Add More +</button>
+
+                    <button mat-raised-button color="primary" class="pull-right ml-3" (click)="increaseField()">Add More +</button>
+
+                    <mat-form-field class="pull-right">                      
+                        <mat-select placeholder="Select Shift" (change)="onChooseShift($event)" multiple>
+                          <ng-container *ngFor="let shift of orgShiftLists">                   
+                            <mat-option [value]="shift.orgshift[0]?.id" *ngIf="shift.orgshift[0]?.id" class="shiftOptions">
+                                {{shift.name}}
+                            </mat-option>
+                          </ng-container>
+                        </mat-select>
+                    </mat-form-field>                    
+                    
                 </div>
             </div>
 

@@ -8,9 +8,10 @@ import { UserProfileComponent } from '../../user-profile/user-profile.component'
 import { TableListComponent } from '../../table-list/table-list.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { AddUserComponent } from '../../add-user/add-user.component';
-import { NoticeManagementComponent } from "../../notice-management/notice-management.component";
+import { NoticeManagementComponent, ModalDialog } from "../../notice-management/notice-management.component";
 import { AddDetailsComponent } from '../../add-details/add-details.component';
 import { ClassListComponent } from "app/class-list/class-list.component";
+import { NotificationService } from '../../services/notification.service';
 // import { BrowserModule } from '@angular/platform-browser';
 import {
   MatFormFieldModule,
@@ -28,7 +29,7 @@ import {
   MatGridListModule,
   MatSlideToggleModule,
   MatProgressSpinnerModule,
-
+  MatDialogModule
 } from "@angular/material";
 
 
@@ -52,7 +53,8 @@ import {
     MatExpansionModule,
     MatGridListModule,
     MatSlideToggleModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule
   ],
 
   declarations: [
@@ -64,7 +66,11 @@ import {
     NoticeManagementComponent,
     AddDetailsComponent,
     ClassListComponent,
+    ModalDialog
   ],
-  exports: []
+
+  entryComponents: [ModalDialog],
+  exports: [],
+  providers: [NotificationService],
 })
 export class AdminLayoutModule {}

@@ -14,11 +14,14 @@ import "rxjs/add/operator/map";
   styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent implements OnInit {
+  
   loginForm: FormGroup;
   username: FormControl;
   password: FormControl;
   loading: boolean = false;
   showErrors: boolean = false;
+
+
   constructor(
     public router: Router,
     public http: Http,
@@ -31,10 +34,15 @@ export class LoginComponent implements OnInit {
     }
   }
 
+
   ngOnInit() {
     this.createFormControl();
     this.createFormGroup();
   }
+
+
+
+
   createFormControl() {
     this.username = new FormControl("", [Validators.required]);
     this.password = new FormControl("", [Validators.required]);

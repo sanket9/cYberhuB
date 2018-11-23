@@ -198,7 +198,8 @@
                                 <div class="row">
                                     <div class="col-md-6 pb-3" *ngFor="let examPattern of orgExamPatList; let i = index">
                                         <mat-slide-toggle [id]="examPattern.id" [checked]="examPattern.orgexam[0]?.id" (change)="examTypeChange($event, examPattern.orgexam[0]?.id)">{{examPattern.name}}
-                                            ({{examPattern.description}})</mat-slide-toggle>
+                                            ({{examPattern.description}})
+                                        </mat-slide-toggle>
                                     </div>
                                 </div>
                             </div>
@@ -209,7 +210,7 @@
 
                             <div class="tab-pane" id="addClass">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 overflow-scroll">
                                         <table class="table table-sm table-bordered">
                                             <thead>
                                                 <tr>
@@ -220,7 +221,8 @@
                                                 </tr>
                                             
                                             </thead>
-                                            <tbody>
+
+                                            <tbody class="">
                                                 <tr *ngFor="let obj of orgClassSectionList; let i = index">
                                                     <td>{{i+1}}</td>
                                                     <td>{{obj.class.class_name}}</td>
@@ -235,8 +237,7 @@
                                                 </tr>
                                             </tbody>
 
-                                            </table>
-                                                  
+                                        </table>                                                  
                                     </div>
                                 </div>
 
@@ -246,7 +247,7 @@
 
                                 <div class="row">
                                         <div class="col-sm-12">
-                                          <button mat-raised-button color="primary" class="pull-right" [routerLink]="['/addClass']">Add New</button>
+                                          <button mat-raised-button color="primary" class="pull-right mt-4" [routerLink]="['/addClass']">Add New</button>
                                         </div>
                                 </div>
                             </div>
