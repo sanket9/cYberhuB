@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Http, RequestOptions, Headers } from "@angular/http";
 import { environment } from "../../../environments/environment.prod";
 import { FormControl, FormGroup, NgForm, Validators, FormGroupDirective } from "@angular/forms";
-import { Router, ActivatedRoute } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { NotificationService } from '../../services/notification.service'
+import { NotificationService } from '../../services/notification.service';
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
 @Component({

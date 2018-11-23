@@ -6,6 +6,7 @@ import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import { MatOption } from '@angular/material';
 import { ApiService } from "../../services/api/api.service";
 import { NgModel } from '@angular/forms';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-choose-notice-type',
@@ -27,9 +28,16 @@ export class ChooseNoticeTypeComponent implements OnInit {
   showClassField: boolean;
   showSectionField: boolean;
   showStuffTypeField: boolean;
+  showSearchField: boolean;
+  showRollField: boolean;
+  showFoundStudentTable: boolean;
   classStreamID: any;
   shiftID: any;
   data: any;
+  searchRoll: any;
+  foundStudentForSearch: any;
+  selectStdArr: any;
+  studentSelectedForPersonelNotice: boolean;
 
   selectedData: any = {};
   sendSelectData: any;
@@ -39,7 +47,14 @@ export class ChooseNoticeTypeComponent implements OnInit {
 
   @ViewChild('allSelected') private allSelected: MatOption;
 
-  constructor(public route: ActivatedRoute, public routes: Router, public http: Http, public sessionStore: SessionStorageService, private apiServ: ApiService) { }
+  constructor(
+    public route: ActivatedRoute, 
+    public routes: Router, 
+    public http: Http, 
+    public sessionStore: SessionStorageService, 
+    private apiServ: ApiService,
+    public notification: NotificationService
+    ) { }
 
   ngOnInit() {
     this.org_code = this.sessionStore.retrieve('user-data')[0].org_code;
@@ -54,7 +69,12 @@ export class ChooseNoticeTypeComponent implements OnInit {
     this.showSectionField = false;
     this.showClassField = false;
     this.showStuffTypeField = false;
+    this.showSearchField = false;
+    this.showRollField = false;
+    this.showFoundStudentTable = false;
+    this.studentSelectedForPersonelNotice = false;
     this.sendSelectData = {};
+    this.selectStdArr = [];
   }
 
 
@@ -117,7 +137,7 @@ export class ChooseNoticeTypeComponent implements OnInit {
 
 
 // ########################################################################
-//       ------------------ getting all class list here -----------------
+//     ------------------ getting all class list here -----------------
 // ########################################################################
 getClassList(){
   let header = new Headers();
@@ -157,21 +177,29 @@ getClassList(){
       this.showSectionField = true;
       this.showShiftField = true;
       this.showStuffTypeField = false;
+      this.showSearchField = false;
+      this.showRollField = false;
     }else if(e.value == "5"){
       this.showShiftField = true;
       this.showClassField = true;
       this.showSectionField = true;
       this.showStuffTypeField = true;
+      this.showSearchField = false;
+      this.showRollField = false;
     }else if(e.value == "2"){
       this.showShiftField = false;
       this.showClassField = false;
       this.showSectionField = false;
       this.showStuffTypeField = false;
+      this.showSearchField = false;
+      this.showRollField = false;
     }else{
-      this.showShiftField = true;
-      this.showClassField = true;
-      this.showSectionField = true;
+      this.showShiftField = false;
+      this.showClassField = false;
+      this.showSectionField = false;
       this.showStuffTypeField = false;
+      this.showSearchField = true;
+      this.showRollField = true;
     }
 
     if(this.orgShiftLists.length < 1){
@@ -312,7 +340,7 @@ getClassList(){
 
 
 // ########################################################################
-// ----------- sorting selected data method for sending to add notice ----------
+// ----- sorting selected data method for sending to add notice --------
 // ########################################################################
   sortSelectedFilterData(arr) {
     // console.log(arr);
@@ -435,10 +463,120 @@ getClassList(){
 
 
 
+// ########################################################################
+//    ----------- searching for student by roll -----------
+// ########################################################################
+  onClickSearchBtn() {
+    console.log(this.searchRoll); 
+    this.showFoundStudentTable = false;
+    this.foundStudentForSearch = null;
+
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+
+    let data = {
+      org_id: this.org_code,
+      roll_no: this.searchRoll
+    };
+  
+    this.http
+      .post(`${environment.apiUrl}student/studentsearch`, data)
+      .map(res => res.json())
+      .subscribe(
+        data => {
+          console.log("found student : ", data.data[0]);          
+          this.foundStudentForSearch = data.data[0];
+
+          if(data.data.length > 0){
+            this.notification.showNotification(
+              "top",
+              "right",
+              "success",
+              "Success, One Student Found."
+            );
+            this.showFoundStudentTable = true;
+          }else{
+            this.notification.showNotification(
+              "top",
+              "right",
+              "warning",
+              "Sorry, Did't Not Found Any Student."
+            );
+
+            this.showFoundStudentTable = false;
+          }
+    });
+    
+  }
+
+
+
+
+
+// ########################################################################
+// ----------- check box click function for selecting student -----------
+// ########################################################################
+  onClickFoundStdCheckBox(e) {
+    // console.log('event value : ', e); 
+    console.log('roll value : ', e.target.value); 
+    console.log('check value : ', e.target.checked);
+
+    if(e.target.checked){
+      let is_exist =  this.selectStdArr.filter(()=> {
+        return e.target.value;
+      });
+
+      if(is_exist.length > 0){
+        this.notification.showNotification(
+          "top",
+          "right",
+          "warning",
+          "Student All Ready Added."
+        );
+
+        this.showFoundStudentTable = false;
+        this.foundStudentForSearch = null;
+      }else{
+        this.selectStdArr.push(e.target.value);
+      }
+    }else{
+      let is_exist =  this.selectStdArr.filter(()=> {
+        return e.target.value;
+      });
+
+      if(is_exist.length > 0){
+        let index = this.selectStdArr.indexOf(e.target.value);
+        this.selectStdArr.splice(index, 1);
+      }
+    }
+
+    console.log('selected Student array : ', this.selectStdArr); 
+    
+    if(this.selectStdArr.length > 0){
+      this.studentSelectedForPersonelNotice = true;
+    }else{
+      this.studentSelectedForPersonelNotice = false;
+    }
+  }
+
+
+
+
+
+// ########################################################################
+// ----------- go next btn function for personel notice -----------
+// ########################################################################
+  onClickGoNextForPersonelNotice() {
+    this.apiServ.changeData(this.selectStdArr);
+    this.routes.navigate(['/notice-management/add-notice']);
+  }
+
+
+
+
 
   selectAllShifts(e){
-    if(e.value == "all"){
-      // console.log(e.source);
+    if(e.value == "all") {
       console.log("native element : ", e.source._parentFormField._elementRef.nativeElement);
       console.log("Sibling : ", e.source._parentFormField._elementRef.nativeElement.nextSibling);  
     }

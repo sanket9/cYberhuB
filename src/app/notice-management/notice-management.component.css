@@ -29,3 +29,8 @@
 /* #noticeShowDetailBtn {
     width: 100px;
 } */
+
+
+.mat-dialog-container {
+    padding: 0px !important;
+}

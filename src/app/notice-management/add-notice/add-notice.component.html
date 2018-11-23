@@ -54,7 +54,7 @@
               </mat-form-field>
             </div>
 
-            <div class="col-sm-12" *ngIf="!showDescription">
+            <div class="col-sm-12" *ngIf="showFileUpload">
               <div class="custom-file example-full-width">                  
                 <input type="file" class="custom-file-input" name="file" (change)="onSelectFile($event)">
                 <label class="custom-file-label" for="customFile">Choose File</label>

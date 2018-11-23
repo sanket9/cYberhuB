@@ -51,7 +51,7 @@
 
                     <div class="col-sm-6" *ngIf="showStuffTypeField">
                         <mat-form-field>                      
-                            <mat-select placeholder="Select Stuff Type" (change)="onChooseStuffType($event)" multiple>
+                            <mat-select placeholder="Select Stuff Type" multiple>
                                 <mat-option [value]="">
                                     All
                                   </mat-option>                                    
@@ -89,11 +89,88 @@
                               </ng-container>                              
                             </mat-select>
                         </mat-form-field>
-                    </div>                    
+                    </div> 
+                    
+                    <div class="col-sm-6" *ngIf="showRollField">
+                        <mat-form-field>                      
+                            <mat-select placeholder="Select Search Type">
+                              <!-- <mat-option [value]="all">All</mat-option> -->
+                              <!-- <ng-container *ngFor="">        -->
+                                <mat-option [value]="1">Roll No</mat-option>
+                                <mat-option [value]="2">Registration No</mat-option>
+                              <!-- </ng-container>                               -->
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
 
-                    <div class="col-sm-12">
+                    <div class="col-sm-6" *ngIf="showSearchField">
+                      <mat-form-field class="example-full-width">
+                          <input matInput placeholder="Search" name="rollSearch" [(ngModel)]="searchRoll">
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-sm-12 p-1 m-1" *ngIf="showFoundStudentTable">
+                      <div class="card-body p-1 m-1">
+                          <div class="table table-sm table-bordered table-responsive">
+                              <table class="table">
+                                  <thead class="text-primary">
+                                      <th>
+                                          Select
+                                      </th>
+                                      <th>
+                                          Name
+                                      </th>
+                                      <th>
+                                          Roll
+                                      </th>                
+                                      <th>
+                                          Registration No
+                                      </th>
+                                  </thead>
+                                  <tbody>
+                                      <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox" value="{{foundStudentForSearch?.roll_no}}" (change)="onClickFoundStdCheckBox($event)">
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                          {{foundStudentForSearch?.f_name}} {{foundStudentForSearch?.l_name}}
+                                        </td>
+                                        <td>
+                                          {{foundStudentForSearch?.roll_no}}
+                                        </td>
+                                        <td>
+                                          {{foundStudentForSearch?.registration_no}}
+                                        </td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12" *ngIf="!showSearchField">
                         <div class="example-full-width">
                           <button mat-raised-button type="submit" class="btn btn-success pull-right" (click)="onClickSubmitBtn()">Go Next</button>
+                        </div>
+                    </div>
+
+                    <!-- <div class="col-sm-12" *ngIf="showSearchField">
+                        <div class="example-full-width">
+                          <button mat-raised-button type="submit" class="btn btn-success pull-right" (click)="onClickGoNextForPersonelNotice()">Go Next</button>
+                        </div>
+                    </div> -->
+
+                    <div class="col-sm-12" *ngIf="showSearchField">
+                        <div class="example-full-width">
+                          <button mat-raised-button type="submit" class="btn btn-success pull-right ml-3" (click)="onClickGoNextForPersonelNotice()" *ngIf="studentSelectedForPersonelNotice">Go Next</button>
+                          <button mat-raised-button type="submit" class="btn btn-success pull-right ml-3" (click)="onClickSearchBtn()">Search</button>
                         </div>
                     </div>
 

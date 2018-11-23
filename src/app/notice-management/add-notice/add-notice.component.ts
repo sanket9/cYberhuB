@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Http, RequestOptions, Headers } from "@angular/http";
 import { ApiService } from "../../services/api/api.service";
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
+import { environment } from "../../../environments/environment.prod";
 import {
   FormGroup,
   FormControl,
@@ -59,7 +60,7 @@ export class AddNoticeComponent implements OnInit {
     this.multipartItem.formData = null;
     this.shareData = this.data;
     this.shareDataArrayObject = {};
-    // console.log("sent from filter page : ", this.shareData);
+    console.log("sent from filter page : ", this.shareData);
     // console.log("session value : ", this.sessionValue);
   }
 
@@ -127,7 +128,7 @@ export class AddNoticeComponent implements OnInit {
 
     console.log(fd);
 
-    this.http.post("http://softechs.co.in/school_hub/notice/addnotice", fd).map((res)=>{res.json()})
+    this.http.post(`${environment.apiUrl}notice/addnotice`, fd).map((res)=>{res.json()})
     .subscribe(data => {
       console.log('Got some data from backend ', data);
     });

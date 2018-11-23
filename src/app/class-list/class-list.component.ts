@@ -218,7 +218,9 @@ onChooseShift(e){
 
 
 
-
+// ########################################################################
+//       ------------------ After choosing a class -----------------
+// ########################################################################
   onChangeClass(e, f) {
     // console.log('class ', e.value); 
     this.classId = e.value;  
@@ -253,6 +255,9 @@ onChooseShift(e){
       console.log('final array ', this.finalClassSeclistArr);
     }
   }
+
+
+
 
 
   onChangeSection(e, f){
