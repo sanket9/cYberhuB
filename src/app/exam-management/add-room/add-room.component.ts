@@ -24,6 +24,7 @@ export class AddRoomComponent implements OnInit {
   seatingTypes: FormControl;
   banchtypes: FormControl;
   benchCapacity: FormControl;
+  no_of_rows: FormControl;
   no_of_bench: FormControl;
   total_no_of_student: FormControl;
   showErrors: boolean = false;
@@ -31,7 +32,7 @@ export class AddRoomComponent implements OnInit {
   banch_types: any = [];
   bench_capacity: any = [];
   disabaleBanchType: boolean = true;
-
+  showloader: boolean = false
   perBenchCapacity: number;
   total_no_student: number;
   seatingType: any;
@@ -56,6 +57,9 @@ export class AddRoomComponent implements OnInit {
     this.banchtypes = new FormControl({ value: "", disabled: true }, [
       Validators.required
     ]);
+    this.no_of_rows = new FormControl({ value: "", disabled: true }, [
+      Validators.required
+    ]);
     this.benchCapacity = new FormControl("", [Validators.required]);
     this.no_of_bench = new FormControl("", [Validators.required]);
     this.total_no_of_student = new FormControl({ value: "", disabled: true }, [
@@ -70,6 +74,7 @@ export class AddRoomComponent implements OnInit {
       seatingTypes: this.seatingTypes,
       banchtypes: this.banchtypes,
       benchCapacity: this.benchCapacity,
+      no_of_rows: this.no_of_rows,
       no_of_bench: this.no_of_bench,
       total_no_of_student: this.total_no_of_student
     });
@@ -81,6 +86,7 @@ export class AddRoomComponent implements OnInit {
     if (e.value === 1) {
       this.roomaddForm.controls["banchtypes"].disable();
       this.bench_capacity = [1];
+      this.roomaddForm.controls["no_of_rows"].enable();
       // console.log(this.benchCapacity);
     } else {
       this.disabaleBanchType = false;
@@ -101,19 +107,21 @@ export class AddRoomComponent implements OnInit {
   }
 
   roomadd(values) {
-    var status = this.SessionStore.retrieve("user-data");  
+    this.showloader = true;
+    var status = this.SessionStore.retrieve("user-data");
 
     if (values.banchtypes == 1) {
       values.banchtypes = "Long";
-    }else{
+    } else {
       values.banchtypes = "Short";
     }
 
     if (values.seatingTypes == 1) {
       values.seatingTypes = "Table";
       values.banchtypes = null;
-    }else{
+    } else {
       values.seatingTypes = "Banch";
+      values.no_of_rows = null;
     }
     values.org_id = status[0].org_code;
     values.total_no_of_student = this.total_no_student;
@@ -122,24 +130,27 @@ export class AddRoomComponent implements OnInit {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
-    this.http.post(`${environment.apiUrl}room/add`, values, options).map(res => res.json())
-    .subscribe(data => {
-      if (!data.error && data.data) {
-        this.notification.showNotification(
-          "top",
-          "right",
-          "success",
-          "Room Added SuccessFuly"
-        );
-        this.router.navigate(["/exam/index"]);
-      } else {
-        this.notification.showNotification(
-          "top",
-          "right",
-          "warning",
-          "Something Went Wrong"
-        );
-      }
-    });
+    this.http
+      .post(`${environment.apiUrl}room/add`, values, options)
+      .map(res => res.json())
+      .subscribe(data => {
+        this.showloader = false;
+        if (!data.error && data.data) {
+          this.notification.showNotification(
+            "top",
+            "right",
+            "success",
+            "Room Added SuccessFuly"
+          );
+          this.router.navigate(["/exam/index"]);
+        } else {
+          this.notification.showNotification(
+            "top",
+            "right",
+            "warning",
+            "Something Went Wrong"
+          );
+        }
+      });
   }
 }

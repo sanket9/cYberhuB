@@ -20,7 +20,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/notice', title: 'Notice', icon: 'notes', class: '' },
     { path: '/library/index', title: 'Library', icon: 'library_books', class: '' },
     { path: '/event/index', title: 'Events', icon: 'speaker', class: '' },
-    { path: '/routin/index', title: 'Routine', icon: 'event_available', class: '' },
+    { path: '/routine/index', title: 'Routine', icon: 'event_available', class: '' },
     { path: '/exam/index', title: 'Exam System', icon: 'event_available', class: '' },
     // { path: '/add-user-details', title: 'Add Details', icon: 'event_available', class: '' },
 ];

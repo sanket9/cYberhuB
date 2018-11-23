@@ -23,124 +23,33 @@
               </p>
             </div>
             <div class="card-body">
-              <div id="accordion">
-                <div class="card">
-                  <div class="card-header" id="headingOne">
-                    <h5 class="mb-0">
-                      <button mat-raised-button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                        aria-controls="collapseOne">
-                        Principal
-                      </button>
-                    </h5>
-                  </div>
-              
-                  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="First Name" type="text">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-md-6">
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Last Name" type="text">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-md-6">
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Email" type="email">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-md-6">
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="*******" type="text">
-                          </mat-form-field>
-                        </div>
-                        <button mat-raised-button class="btn btn-success">Save & Next</button>
-                      </div>                      
+              <div class="row">
+                <mat-card class="ml-3 mb-3">
+                  <mat-card-title>Upload Student Details file</mat-card-title>
+                  <form class="pt-2">
+                    <div class="col-md-6">
+                      <button mat-raised-button color="primary" (click)="fileInput.click()" (change)="fileChange($event)">
+                        Add File</button>
+                        <button mat-raised-button class="mt-2" color="warn" (click)="downloadFile('assets/demofiles/student - Sheet1.csv')">
+                          Download Demo File</button>
+                      <input type="file" hidden #fileInput name="file" (change)="uploadStudentFile($event)">
                     </div>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="card-header" id="headingTwo">
-                    <h5 class="mb-0">
-                      <button mat-raised-button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
-                        aria-controls="collapseTwo">
-                       Libarian
-                      </button>
-                    </h5>
-                  </div>
-                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="First Name" type="text">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-md-6">
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Last Name" type="text">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-md-6">
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Email" type="email">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-md-6">
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="*******" type="text">
-                          </mat-form-field>
-                        </div>
-                        <button mat-raised-button data-target="#collapseThree" class="btn btn-success float-right">Save & Next</button>
-                      </div>
+                    <img class="card-image" src="assets/img/student_1144709.png">
+                  </form>
+                </mat-card>
+                <mat-card class="ml-3 mb-3">
+                  <mat-card-title>Upload Teacher Details file</mat-card-title>
+                  <form class="pt-2">
+                    <div class="col-md-6">
+                      <button mat-raised-button color="primary" (click)="fileInput.click()" (change)="fileChange($event)">
+                        Add File</button>
+                      <input type="file" hidden #fileInput name="file" (change)="uploadTeacherFile($event)">
                     </div>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="card-header" id="headingThree">
-                    <h5 class="mb-0">
-                      <button mat-raised-button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
-                        aria-controls="collapseThree">
-                        Exam cell
-                      </button>
-                    </h5>
-                  </div>
-                  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="First Name" type="text">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-md-6">
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Last Name" type="text">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-md-6">
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Email" type="email">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-md-6">
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="*******" type="text">
-                          </mat-form-field>
-                        </div>
-                        <button mat-raised-button class="btn btn-success float-right">Save & Next</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-footer">
-                    
-                    <button mat-raised-button class="btn btn-success float-right" [routerLink] = "['/table-list']">Finish</button>
-                  </div>
-                </div>
+                    <img class="card-image" src="assets/img/teacher.png">
+                  </form>
+                </mat-card>
               </div>
+              
             </div>
           </div>
         </div>          

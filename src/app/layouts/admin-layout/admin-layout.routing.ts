@@ -41,5 +41,10 @@ export const AdminLayoutRoutes: Routes = [
         canActivate: [AuthGuard],
         loadChildren: "../../exam-management/exam-management.module#ExamManagementModule"
     },
+    {
+        path: "routine",
+        canActivate: [AuthGuard],
+        loadChildren: "../../routine-system/routine-system.module#RoutineSystemModule"
+    },
     { path: 'add-user-details', component: AddDetailsComponent },   
 ];

@@ -1,11 +1,11 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { AddNoticeComponent } from "./add-notice/add-notice.component";
-import { NoticeManagementRoutingModule } from "./notice-management-routing.module";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-// import { BrowserModule } from '@angular/platform-browser';
-import { ApiService } from "../services/api/api.service";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { RoutineSystemRoutingModule } from './routine-system-routing.module';
+import { IndexComponent } from './index/index.component';
+import { AddRoutineComponent } from './add-routine/add-routine.component';
 import { ComponentsModule } from "../components/components.module";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import {
   MatFormFieldModule,
@@ -22,13 +22,12 @@ import {
   MatExpansionModule,
   MatGridListModule
 } from "@angular/material";
-import { ChooseNoticeTypeComponent } from './choose-notice-type/choose-notice-type.component';
-
+import { AssignClassComponent } from './assign-class/assign-class.component';
 @NgModule({
   imports: [
     CommonModule,
+    CommonModule,
     // BrowserModule,
-    NoticeManagementRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -44,11 +43,9 @@ import { ChooseNoticeTypeComponent } from './choose-notice-type/choose-notice-ty
     MatIconModule,
     MatExpansionModule,
     MatGridListModule,
-    ComponentsModule
+    ComponentsModule,
+    RoutineSystemRoutingModule
   ],
-
-  declarations: [AddNoticeComponent, ChooseNoticeTypeComponent],
-
-  providers: [ApiService]
+  declarations: [IndexComponent, AddRoutineComponent, AssignClassComponent]
 })
-export class NoticeManagementModule {}
+export class RoutineSystemModule { }

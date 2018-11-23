@@ -3,7 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 
 import { AddRoomComponent } from './add-room/add-room.component';
-import { ListroomComponent } from './listroom/listroom.component'
+import { ListroomComponent } from './listroom/listroom.component';
+import { ScheduleExamComponent } from "./schedule-exam/schedule-exam.component";
 const routes: Routes = [
   {
     path: "index",
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: "addroom",
     component: AddRoomComponent
+  },
+  {
+    path: "schedule",
+    component: ScheduleExamComponent
   }
 ];
 

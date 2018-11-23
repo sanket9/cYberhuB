@@ -9,6 +9,7 @@ import {
   Validators
 } from "@angular/forms";
 import { Router } from "@angular/router";
+import { environment } from "../../../environments/environment.prod";
 
 @Component({
   selector: "app-add-notice",
@@ -19,7 +20,7 @@ export class AddNoticeComponent implements OnInit {
   // title: string = null;
   // subTitle: string = null;
   // description: string = null;
-
+  showloader: boolean = false;
   addNoticeForm: FormGroup;
   title: FormControl;
   subject: FormControl;
@@ -35,11 +36,11 @@ export class AddNoticeComponent implements OnInit {
   showFileUpload: boolean;
   shareDataArrayObject: any;
 
-  // get data() { 
-  //   return this.apiServ.serviceData; 
-  // } 
-  // set data(value: string) { 
-  //   this.apiServ.serviceData = value; 
+  // get data() {
+  //   return this.apiServ.serviceData;
+  // }
+  // set data(value: string) {
+  //   this.apiServ.serviceData = value;
   // }
 
   constructor(
@@ -50,7 +51,7 @@ export class AddNoticeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.sessionValue = this.sessionStore.retrieve('user-data');
+    this.sessionValue = this.sessionStore.retrieve("user-data");
     this.showDescription = false;
     this.showFileUpload = false;
     this.apiServ.serviceData.subscribe(data => this.data = data);
@@ -59,7 +60,7 @@ export class AddNoticeComponent implements OnInit {
     this.multipartItem.formData = null;
     this.shareData = this.data;
     this.shareDataArrayObject = {};
-    // console.log("sent from filter page : ", this.shareData);
+    console.log("sent from filter page : ", this.shareData);
     // console.log("session value : ", this.sessionValue);
   }
 
@@ -79,15 +80,14 @@ export class AddNoticeComponent implements OnInit {
     });
   }
 
-
-
   onAddNoticeSubmit() {
+    this.showloader = true;
     let addNoticeFormData = this.addNoticeForm.value;
 
     // console.log(this.file);
 
     let header = new Headers();
-    header.append('Content-Type', 'multipart/form-data');
+    header.append("Content-Type", "multipart/form-data");
 
     this.shareDataArrayObject.secArr = this.shareData.sections;
     this.shareDataArrayObject.shiftArr = this.shareData.shifts;
@@ -99,37 +99,39 @@ export class AddNoticeComponent implements OnInit {
     fd.append("create_by", this.sessionValue[0].master_id);
     fd.append("org_id", this.sessionValue[0].org_code);
     // fd.append("user_type_id", "1");
-    fd.append("dept_id", JSON.stringify(this.shareDataArrayObject.secArr));
-    fd.append("org_shift_id", JSON.stringify(this.shareDataArrayObject.shiftArr));
-    // fd.append("create_by", this.shareData.);    
+    fd.append("dept_id", this.shareDataArrayObject.secArr);
+    fd.append("org_shift_id", this.shareDataArrayObject.shiftArr);
+    // fd.append("create_by", this.shareData.);
     fd.append("title", addNoticeFormData.title);
     fd.append("subject", addNoticeFormData.subject);
     fd.append("text", addNoticeFormData.text);
 
     console.log(fd);
 
-    this.http.post("http://softechs.co.in/school_hub/notice/addnotice", fd).map((res)=>{res.json()})
-    .subscribe(data => {
-      console.log('Got some data from backend ', data);
-    });
+    this.http
+      .post(`${environment.apiUrl}notice/addnotice`, fd)
+      .map(res => {
+        res.json();
+      })
+      .subscribe(data => {
+        this.showloader = false;
+        // if (!data.error && data.data) {
+        // }
+        console.log("Got some data from backend ", data);
+      });
   }
-
-
-
 
   onSelectFile($event): void {
-		var inputValue = $event.target;
-		this.file = inputValue.files[0];
+    var inputValue = $event.target;
+    this.file = inputValue.files[0];
     // console.debug("Input File name: " + this.file.name + " type:" + this.file.type + " size:" + this.file.size);
   }
-  
 
-
-  onChooseDescType(e){
-    if(e.value == "1"){
+  onChooseDescType(e) {
+    if (e.value == "1") {
       this.showDescription = true;
       this.showFileUpload = false;
-    }else{
+    } else {
       this.showFileUpload = true;
       this.showDescription = false;
     }

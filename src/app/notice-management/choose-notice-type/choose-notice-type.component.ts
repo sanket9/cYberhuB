@@ -267,7 +267,7 @@ getClassList(){
       this.sendSelectData.sections = arr.selectedSections;
     }
 
-    console.log('filter data : ', this.sendSelectData);
+    // console.log('filter data : ', this.sendSelectData);
     this.apiServ.changeData(this.sendSelectData);
   }
 

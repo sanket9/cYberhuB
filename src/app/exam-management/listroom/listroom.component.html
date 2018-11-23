@@ -16,14 +16,16 @@
       </li>
     </ol>
   </nav>
-  <!-- <loading [show]="true"></loading> -->
+  <app-loader [show]="showloader"></app-loader>
   <div class="container-fluid">
     <div class="row page-title">
       <div class="col-md-12 col-md-offset-1">
-        <button mat-raised-button [routerLink]="['/exam/addroom']">
+        <button mat-raised-button class="btn btn-success" [routerLink]="['/exam/addroom']">
           <mat-icon>add</mat-icon> Add a Room
         </button>
-        
+        <button mat-raised-button class="btn btn-primary" [routerLink]="['/exam/schedule']">
+          <mat-icon>schedule</mat-icon> Schedule A Exam
+        </button>
         <!-- <app-loading *ngIf="showloader"></app-loading> -->
 
         <div class="example-header">

@@ -1,0 +1,12 @@
+.card-image{
+    width: 27%;
+    height: auto;
+    position: absolute;
+    right: -3%;
+    bottom: -9%;
+    transform: rotate(-25deg);
+    opacity: 0.2;
+}
+.mat-card{
+    overflow: hidden;
+}

@@ -22,9 +22,13 @@ import {
   MatProgressSpinnerModule
 } from "@angular/material";
 import { ListroomComponent } from './listroom/listroom.component';
+import { ComponentsModule } from "../components/components.module";
+import { ScheduleExamComponent } from './schedule-exam/schedule-exam.component';
+
 @NgModule({
   imports: [
     FormsModule,
+    ComponentsModule,
     ReactiveFormsModule,
     CommonModule,
     MatFormFieldModule,
@@ -44,7 +48,7 @@ import { ListroomComponent } from './listroom/listroom.component';
     ExamManagementRoutingModule,
     
   ],
-  declarations: [AddRoomComponent, ListroomComponent],
+  declarations: [AddRoomComponent, ListroomComponent, ScheduleExamComponent],
   providers: [NotificationService]
 })
 export class ExamManagementModule {}

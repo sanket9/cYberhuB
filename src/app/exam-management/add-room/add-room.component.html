@@ -18,6 +18,7 @@
   </nav>
 
   <div class="container-fluid">
+    <app-loader [show]="showloader"></app-loader>
     <div class="row page-title">
       <div class="col-md-10 col-md-offset-1">
 
@@ -72,7 +73,7 @@
                       </mat-error> -->
                     </mat-form-field>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-5">
                     <mat-form-field>
                       <mat-select [placeholder]="!disabaleBanchType ? 'Choose Per Bench Capacity..' : 'Choose Per Table Capacity..'" name="perbenchCapacity"
                        formControlName="benchCapacity">
@@ -83,6 +84,12 @@
                       <mat-error *ngIf="roomaddForm.controls.benchCapacity.hasError('required') && roomaddForm.controls.benchCapacity.touched">
                         <small>This is <strong>required</strong></small>
                       </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="No Of Rows" type="number" 
+                      name="noofrows" formControlName="no_of_rows">
                     </mat-form-field>
                   </div>
                   <div class="col-md-2">
@@ -101,6 +108,7 @@
                       [(ngModel)]="total_no_student">
                     </mat-form-field>
                   </div>
+                  
                 </div>
                 <button mat-raised-button class="btn btn-light" type="submit" [disabled]="!roomaddForm.valid" [ngClass]="{'btn-success': roomaddForm.valid}"
                 >Add Room</button>
