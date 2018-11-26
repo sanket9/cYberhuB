@@ -390,8 +390,6 @@ getClassList(){
 
     }
 
-<<<<<<< HEAD
-=======
     // if(arr.selectedSections[0].class_id == "all" || arr.selectedSections[0].class_name == "Arts" || arr.selectedSections[0].class_name == "Science"){
     //   arr.selectedSections.forEach(element => {
     //     if(element.class_id != "all"){
@@ -408,7 +406,6 @@ getClassList(){
     //   this.sendSelectData.sections = arr.selectedSections;
     // }
 
->>>>>>> c8c8bcc1530081c69f706c91dbfc3e4a16e41673
     // console.log('filter data : ', this.sendSelectData);
     this.apiServ.changeData(this.sendSelectData);
   }

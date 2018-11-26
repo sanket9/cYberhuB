@@ -10,7 +10,6 @@ import {
   Validators
 } from "@angular/forms";
 import { Router } from "@angular/router";
-import { environment } from "../../../environments/environment.prod";
 
 @Component({
   selector: "app-add-notice",
@@ -94,8 +93,6 @@ export class AddNoticeComponent implements OnInit {
     });
   }
 
-<<<<<<< HEAD
-=======
 
 
 
@@ -104,7 +101,6 @@ export class AddNoticeComponent implements OnInit {
 // ########################################################################
 // ----------- Notice submit method -----------
 // ########################################################################
->>>>>>> c8c8bcc1530081c69f706c91dbfc3e4a16e41673
   onAddNoticeSubmit() {
     this.showloader = true;
     let addNoticeFormData = this.addNoticeForm.value;
@@ -133,21 +129,6 @@ export class AddNoticeComponent implements OnInit {
 
     console.log(fd);
 
-<<<<<<< HEAD
-    this.http
-      .post(`${environment.apiUrl}notice/addnotice`, fd)
-      .map(res => {
-        res.json();
-      })
-      .subscribe(data => {
-        this.showloader = false;
-        // if (!data.error && data.data) {
-        // }
-        console.log("Got some data from backend ", data);
-      });
-  }
-
-=======
     this.http.post(`${environment.apiUrl}notice/addnotice`, fd).map((res)=>{res.json()})
     .subscribe(data => {
       console.log('Got some data from backend ', data);
@@ -160,17 +141,11 @@ export class AddNoticeComponent implements OnInit {
 // ########################################################################
 // ----------- After choosing file -----------
 // ########################################################################
->>>>>>> c8c8bcc1530081c69f706c91dbfc3e4a16e41673
   onSelectFile($event): void {
     var inputValue = $event.target;
     this.file = inputValue.files[0];
     // console.debug("Input File name: " + this.file.name + " type:" + this.file.type + " size:" + this.file.size);
   }
-<<<<<<< HEAD
-
-  onChooseDescType(e) {
-    if (e.value == "1") {
-=======
 
 
   
@@ -180,7 +155,6 @@ export class AddNoticeComponent implements OnInit {
 // ########################################################################
   onChooseDescType(e){
     if(e.value == "1"){
->>>>>>> c8c8bcc1530081c69f706c91dbfc3e4a16e41673
       this.showDescription = true;
       this.showFileUpload = false;
     } else {

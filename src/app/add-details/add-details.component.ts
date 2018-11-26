@@ -38,7 +38,19 @@ export class AddDetailsComponent implements OnInit {
     }
   }
   uploadTeacherFile(event){
-    
+    let elem = event.target;
+    if (elem.files.length > 0) {
+      let formData = new FormData();
+      formData.append("file", elem.files[0]);
+      var status = this.SessionStore.retrieve("user-data");
+      formData.append("org_id", status[0].org_code);
+      this.http
+        .post(`${environment.apiUrl}staff/addstaffexcel`, formData)
+        .map(res => res.json())
+        .subscribe(data => {
+          console.log(data);
+        });
+    }
   }
 
   downloadFile(url){
@@ -51,7 +63,7 @@ export class AddDetailsComponent implements OnInit {
         return { filename: "student.csv", data: res.blob() };
       })
       .subscribe(res => {
-          console.log("start download:", res);
+          // console.log("start download:", res);
           var url = window.URL.createObjectURL(res.data);
           var a = document.createElement("a");
           document.body.appendChild(a);
