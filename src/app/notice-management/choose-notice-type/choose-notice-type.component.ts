@@ -38,6 +38,8 @@ export class ChooseNoticeTypeComponent implements OnInit {
   foundStudentForSearch: any;
   selectStdArr: any;
   studentSelectedForPersonelNotice: boolean;
+  getAllStuff: any; 
+  teachingOrNonteachingStuff: any;
 
   selectedData: any = {};
   sendSelectData: any;
@@ -186,6 +188,7 @@ getClassList(){
       this.showStuffTypeField = true;
       this.showSearchField = false;
       this.showRollField = false;
+      this.getStuffs();
     }else if(e.value == "2"){
       this.showShiftField = false;
       this.showClassField = false;
@@ -211,6 +214,44 @@ getClassList(){
     this.selectedData.selectedNoticeType = e.value; 
     this.sortArray = []; 
     this.filteredArrayForSectionList = [];
+  }
+
+
+
+
+
+  getStuffs() {
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+  
+    this.http
+      .get(`${environment.apiUrl}rolecategory/all`, {headers: header})
+      .map(res => res.json())
+      .subscribe(
+        data => {
+          console.log("found stuff details : ", data.data); 
+          this.getAllStuff = data.data;         
+          // this.foundStudentForSearch = data.data[0];
+    });
+  }
+
+
+
+
+
+  onChangeStuffType(e){
+    console.log(e.value);
+    if(e.value != "3"){
+      let teachOrNonTeachthis = this.getAllStuff.filter((ele) => {
+        return ele.parent_id == e.value;
+      });
+
+      this.teachingOrNonteachingStuff = teachOrNonTeachthis;
+      this.teachingOrNonteachingStuff.unshift({id: "all", name: "All"});
+      console.log(this.teachingOrNonteachingStuff);      
+    }else{
+
+    }      
   }
 
 
