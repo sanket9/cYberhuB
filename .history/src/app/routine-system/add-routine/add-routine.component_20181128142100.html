@@ -1,0 +1,84 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Notice Mangament
+      </li>
+    </ol>
+  </nav>
+  <div class="container-fluid">
+    <!-- <div class="row page-title"> -->
+    <!-- </div> -->
+    <app-loader [show]="showloader"></app-loader>
+    <div class="card">
+      <div class="card-header card-header-danger">
+        <h4 class="card-title">Routine</h4>
+        <!-- <p class="card-category">Add a Notice</p> -->
+      </div>
+      <div class="card-body mt-2">
+        <form class="pt-2" [formGroup]="createpriodForm" (submit)="createpriod(createpriodForm.value)">
+        
+          <div class="row">
+            <!-- <div class="col-md-4">
+              <mat-form-field>
+                <mat-select placeholder="Choose a Class" formControlName="class_id" name="class_id">
+                  <mat-option *ngFor="let list of classList" [value]="list.id">
+                    {{ list.section.sec_name }}
+                    ( {{list.org_shift.shifts.name }} )
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-error *ngIf="createpriodForm.controls.class_id.hasError('required') && createpriodForm.controls.class_id.touched">
+                <small>Class is <strong>required</strong></small>
+              </mat-error>
+            </div> -->
+            <div class="col-md-4">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="No of Periode" formControlName="no_of_preiod" name="no_of_preiod" type="Number"
+                (keyup)="priodchange($event)" min="3" max="8">
+              </mat-form-field>
+              <mat-error *ngIf="createpriodForm.controls.no_of_preiod.hasError('required') && createpriodForm.controls.no_of_preiod.touched">
+                <small>This is <strong>required</strong></small>
+              </mat-error>
+            </div>
+          </div>
+          <div >
+            <div formArrayName="priods">
+              <div *ngFor="let list of createpriodForm.controls.priods.controls; let i=index" [formGroupName]="i" class="row">
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Priod Name" formControlName="priod_name" name="priod_name" type="text"
+                        >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="From" formControlName="from" name="from"
+                        atp-time-picker>
+                    </mat-form-field>
+                  
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="To" formControlName="to" name="to"
+                        atp-time-picker>
+                    </mat-form-field>
+                  
+                  </div>
+              </div>
+            </div>
+            <div class="example-full-width">
+              <button mat-raised-button type="submit" class="btn btn-success pull-right">Submit</button>
+            </div>
+          </div> 
+        </form>
+
+      </div>
+    </div>
+  </div>

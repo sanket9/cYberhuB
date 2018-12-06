@@ -4,7 +4,7 @@ import { environment } from "../../environments/environment.prod";
 import { FormControl, FormGroup, NgForm, Validators, FormGroupDirective } from "@angular/forms";
 import { Router, ActivatedRoute } from '@angular/router'
 import { ErrorStateMatcher } from '@angular/material/core';
-// import { NotificationService } from '../../services/notification.service'
+import { NotificationService } from '../services/notification.service'
 import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 @Component({
   selector: "app-add-details",
@@ -12,9 +12,10 @@ import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
   styleUrls: ["./add-details.component.css"]
 })
 export class AddDetailsComponent implements OnInit {
+  showloader: boolean = false;
   constructor(
     public http: Http,
-    // public notification: NotificationService,
+    public notification: NotificationService,
     public SessionStore: SessionStorageService,
     public router: Router
   ) {}
@@ -22,7 +23,7 @@ export class AddDetailsComponent implements OnInit {
   ngOnInit() {}
 
   uploadStudentFile(event) {
-    //this.showloader = true;
+    this.showloader = true;
     let elem = event.target;
     if (elem.files.length > 0) {
       let formData = new FormData();
@@ -33,11 +34,28 @@ export class AddDetailsComponent implements OnInit {
         .post(`${environment.apiUrl}student/addstudentexcel`, formData)
         .map(res => res.json())
         .subscribe(data => {
-          console.log(data);
+          this.showloader = false;
+          if (data.status == 0) {
+            this.notification.showNotification(
+              "top",
+              "right",
+              "success",
+              "Student data Added SuccessFuly"
+            );
+            //this.router.navigate(["/library/index"]);
+          } else {
+            this.notification.showNotification(
+              "top",
+              "right",
+              "warning",
+              "Something Went Wrong"
+            );
+          }
         });
     }
   }
-  uploadTeacherFile(event){
+  uploadTeacherFile(event) {
+    this.showloader = true;
     let elem = event.target;
     if (elem.files.length > 0) {
       let formData = new FormData();
@@ -48,12 +66,18 @@ export class AddDetailsComponent implements OnInit {
         .post(`${environment.apiUrl}staff/addstaffexcel`, formData)
         .map(res => res.json())
         .subscribe(data => {
-          console.log(data);
+          this.showloader = false;
+          if (data.status == 0) {
+            this.notification.showNotification("top", "right", "success", "Staff Data Added SuccessFuly");
+            //this.router.navigate(["/library/index"]);
+          } else {
+            this.notification.showNotification("top", "right", "warning", "Something Went Wrong");
+          }
         });
     }
   }
 
-  downloadFile(url){
+  downloadFile(url) {
     return this.http
       .get(url, {
         responseType: ResponseContentType.Blob
@@ -62,7 +86,8 @@ export class AddDetailsComponent implements OnInit {
       .map(res => {
         return { filename: "student.csv", data: res.blob() };
       })
-      .subscribe(res => {
+      .subscribe(
+        res => {
           // console.log("start download:", res);
           var url = window.URL.createObjectURL(res.data);
           var a = document.createElement("a");
@@ -73,10 +98,13 @@ export class AddDetailsComponent implements OnInit {
           a.click();
           window.URL.revokeObjectURL(url);
           a.remove(); // remove the element
-        }, error => {
+        },
+        error => {
           console.log("download error:", JSON.stringify(error));
-        }, () => {
+        },
+        () => {
           console.log("Completed file download.");
-        });
+        }
+      );
   }
 }
