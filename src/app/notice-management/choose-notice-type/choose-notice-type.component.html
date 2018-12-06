@@ -51,16 +51,28 @@
 
                     <div class="col-sm-6" *ngIf="showStuffTypeField">
                         <mat-form-field>                      
-                            <mat-select placeholder="Select Stuff Type" multiple>
-                                <mat-option [value]="">
-                                    All
-                                  </mat-option>                                    
-                                <mat-option [value]="">
+                            <mat-select placeholder="Select Stuff Type" (change)="onChangeStuffType($event)" multiple>
+                                <mat-option [value]="3">
+                                  All
+                                </mat-option>                                    
+                                <mat-option [value]="1">
                                   Teaching Stuff
                                 </mat-option> 
-                                <mat-option [value]="">
+                                <mat-option [value]="2">
                                   Non Teaching Stuff
                                 </mat-option>                                
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-sm-6" *ngIf="showStuffTypeField">
+                        <mat-form-field>                      
+                            <mat-select placeholder="Select Stuff" multiple>
+                                <ng-container *ngFor="let stuff of teachingOrNonteachingStuff">         
+                                    <mat-option [value]="stuff.id">
+                                        {{stuff.name}}
+                                    </mat-option>
+                                </ng-container>                                
                             </mat-select>
                         </mat-form-field>
                     </div>

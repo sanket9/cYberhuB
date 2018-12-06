@@ -14,7 +14,7 @@ import "rxjs/add/operator/map";
   styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent implements OnInit {
-  
+
   loginForm: FormGroup;
   username: FormControl;
   password: FormControl;
@@ -42,11 +42,20 @@ export class LoginComponent implements OnInit {
 
 
 
-
+// ########################################################################
+// ----------- Creating form controls here -----------
+// ########################################################################
   createFormControl() {
     this.username = new FormControl("", [Validators.required]);
     this.password = new FormControl("", [Validators.required]);
   }
+
+
+
+
+  // ########################################################################
+// ----------- Creating form groups here -----------
+// ########################################################################
   createFormGroup() {
     this.loginForm = new FormGroup({
       username: this.username,
