@@ -13,7 +13,9 @@ import {
   MatTooltipModule,
   MatIconModule,
   MatSlideToggleModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
 } from "@angular/material";
 
 import { AppRoutingModule } from "./app.routing";
@@ -45,6 +47,8 @@ import { ClassListComponent } from './class-list/class-list.component';
     MatIconModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     // AgmCoreModule.forRoot({
     //   apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     // })

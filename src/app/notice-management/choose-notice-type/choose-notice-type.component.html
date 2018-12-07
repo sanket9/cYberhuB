@@ -67,7 +67,7 @@
 
                     <div class="col-sm-6" *ngIf="showStuffTypeField">
                         <mat-form-field>                      
-                            <mat-select placeholder="Select Stuff" multiple>
+                            <mat-select placeholder="Select Stuff" (change)="onChangeStuff($event)" multiple>
                                 <ng-container *ngFor="let stuff of teachingOrNonteachingStuff">         
                                     <mat-option [value]="stuff.id">
                                         {{stuff.name}}
@@ -144,7 +144,7 @@
                                         <td>
                                             <div class="form-check">
                                                 <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" value="{{foundStudentForSearch?.roll_no}}" (change)="onClickFoundStdCheckBox($event)">
+                                                    <input class="form-check-input" type="checkbox" value="{{foundStudentForSearch?.id}}" (change)="onClickFoundStdCheckBox($event)">
                                                     <span class="form-check-sign">
                                                         <span class="check"></span>
                                                     </span>
@@ -152,7 +152,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                          {{foundStudentForSearch?.f_name}} {{foundStudentForSearch?.l_name}}
+                                          {{foundStudentForSearch?.name}}
                                         </td>
                                         <td>
                                           {{foundStudentForSearch?.roll_no}}
@@ -185,6 +185,38 @@
                           <button mat-raised-button type="submit" class="btn btn-success pull-right ml-3" (click)="onClickSearchBtn()">Search</button>
                         </div>
                     </div>
+
+                  </div>                    
+                </div>
+
+              </div>
+        </div>
+
+
+        
+
+        <div class="col-md-6">
+            <div class="card">
+
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title">Student List</h4>
+                  <p class="card-category">List for Personel Notice</p>
+                </div>
+
+                <div class="card-body mt-2">
+                  <div class="row">        
+
+                    <div class="col-sm-12" *ngIf="!showSearchField">
+                        <div class="example-full-width">
+                          <button mat-raised-button type="submit" class="btn btn-success pull-right" (click)="onClickSubmitBtn()">Go Next</button>
+                        </div>
+                    </div>
+
+                    <!-- <div class="col-sm-12" *ngIf="showSearchField">
+                        <div class="example-full-width">
+                          <button mat-raised-button type="submit" class="btn btn-success pull-right" (click)="onClickGoNextForPersonelNotice()">Go Next</button>
+                        </div>
+                    </div> -->                    
 
                   </div>                    
                 </div>

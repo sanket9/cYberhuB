@@ -1,4 +1,6 @@
 <div class="main-content">
+
+
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
@@ -12,9 +14,35 @@
       </li>
     </ol>
   </nav>
+
+
+
+  <div class="p-0 m-0">  
+      <p class="m-0 p-0">Filter by Date : </p>
+
+      <mat-form-field class="w-25 m-0 p-0">
+          <input matInput [matDatepicker]="picker1" placeholder="Choose from date" [(ngModel)]="fromDate">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="w-25 m-0 p-0">
+          <input matInput [matDatepicker]="picker2" placeholder="Choose to date" [(ngModel)]="toDate">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+
+      <div class="example-full-width">
+          <button mat-raised-button type="submit" class="btn btn-success" (click)="onFilterSubmit()">Submit</button>
+      </div> 
+  </div>
+
+
+
   <div class="container-fluid">
+
     <!-- <div class="row page-title">       -->
-      <mat-grid-list gutterSize="15px" cols="4" rowHeight="1:1">
+      <mat-grid-list gutterSize="10px" cols="4" rowHeight="1:1">
 
         <mat-grid-tile>
             <mat-card class="example-card">
@@ -31,8 +59,11 @@
 
         <mat-grid-tile *ngFor="let notice of noticeList">
           <mat-card class="example-card">
+              <div class="">
+                  <i class="material-icons pull-right text-muted cursor" (click)="onClickDeleteNotice(notice.id)">close</i>
+              </div>
             <mat-card-header>
-              <!-- <div mat-card-avatar class="example-header-image"></div> -->
+              <!-- <div mat-card-avatar class="example-header-image"></div> -->              
               <mat-card-title class="m-0 p-0">
                 <i class="fa fa-commenting-o" aria-hidden="true"></i>
                 {{notice.title}}
