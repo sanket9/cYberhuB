@@ -13,6 +13,9 @@ import { AddDetailsComponent } from '../../add-details/add-details.component';
 import { ClassListComponent } from "app/class-list/class-list.component";
 import { NotificationService } from '../../services/notification.service';
 // import { BrowserModule } from '@angular/platform-browser';
+import { ComponentsModule } from "../../components/components.module";
+import { HttpModule } from "@angular/http";
+
 import {
   MatFormFieldModule,
   MatButtonModule,
@@ -37,8 +40,10 @@ import {
 
 @NgModule({
   imports: [
+    HttpModule,
     CommonModule,
-    // BrowserModule,
+    ComponentsModule,
+    ReactiveFormsModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
     MatFormFieldModule,
@@ -75,6 +80,6 @@ import {
 
   entryComponents: [ModalDialog],
   exports: [],
-  providers: [NotificationService],
+  providers: [NotificationService]
 })
 export class AdminLayoutModule {}

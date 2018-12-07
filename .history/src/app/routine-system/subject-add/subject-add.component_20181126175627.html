@@ -1,0 +1,60 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Routine System
+      </li>
+    </ol>
+  </nav>
+  <div class="container-fluid">
+    <!-- <div class="row page-title"> -->
+    <!-- </div> -->
+    <app-loader [show]="showloader"></app-loader>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header card-header-danger">
+              <h4 class="card-title">Routine</h4>
+              <!-- <p class="card-category">Add a Notice</p> -->
+            </div>
+            <div class="card-body mt-2">
+              <button mat-raised-button color="primary" class="ml-3 mb-3" (click)="increaseField()">Add More +</button>
+              <form [formGroup]="addSubjectForm">
+                <div formArrayName="subjects">
+                  <div class="row" *ngFor="let item of addSubjectForm.controls.subjects.controls; let i=index" [formGroupName]="i">
+                    <div class="col-md-6">
+                      <mat-form-field>
+                        <mat-select placeholder="Select Class" name="class_id" formControlName="class_id">
+                          <mat-option *ngFor="let list of classList" [value]="list.id">
+                            {{list.class.class_name}}- {{ list.section.sec_name }}( {{list.org_shift.shifts.name}} )
+                          </mat-option>
+                        </mat-select>
+                        
+                        <mat-error 
+                        *ngIf="addSubjectForm.controls.subjects.controls">
+                          <small>Class is <strong>required</strong></small>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-form-field>
+                        <input matInput type="tect" placeholder="Class Name" formControlName="subject_name" name="subject_name">
+                      </mat-form-field>
+                      <!-- <mat-error *ngIf="addSubjectForm.controls.subjects.controls.i.controls.subject_name.hasError('required') && addSubjectForm.controls.subjects.controls.i.controls.subject_name.touched">
+                        <small>Class is <strong>required</strong></small>
+                      </mat-error> -->
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>

@@ -6,7 +6,8 @@ import { IndexComponent } from './index/index.component';
 import { AddRoutineComponent } from './add-routine/add-routine.component';
 import { ComponentsModule } from "../components/components.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-
+import { NotificationService } from "../services/notification.service";
+import { AmazingTimePickerModule } from "amazing-time-picker";
 import {
   MatFormFieldModule,
   MatButtonModule,
@@ -23,10 +24,13 @@ import {
   MatGridListModule
 } from "@angular/material";
 import { AssignClassComponent } from './assign-class/assign-class.component';
+import { SubjectAddComponent } from './subject-add/subject-add.component';
+import { CoursesSubjectComponent } from './courses-subject/courses-subject.component';
 @NgModule({
   imports: [
     CommonModule,
     CommonModule,
+    AmazingTimePickerModule,
     // BrowserModule,
     FormsModule,
     ReactiveFormsModule,
@@ -46,6 +50,13 @@ import { AssignClassComponent } from './assign-class/assign-class.component';
     ComponentsModule,
     RoutineSystemRoutingModule
   ],
-  declarations: [IndexComponent, AddRoutineComponent, AssignClassComponent]
+  providers: [NotificationService],
+  declarations: [
+    IndexComponent,
+    AddRoutineComponent,
+    AssignClassComponent,
+    SubjectAddComponent,
+    CoursesSubjectComponent
+  ]
 })
-export class RoutineSystemModule { }
+export class RoutineSystemModule {}
