@@ -1,0 +1,103 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Routine System
+      </li>
+    </ol>
+  </nav>
+  <div class="container-fluid">
+    <!-- <div class="row page-title"> -->
+    <!-- </div> -->
+    <app-loader [show]="showloader"></app-loader>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header card-header-danger">
+              <h4 class="card-title">Routine</h4>
+              <!-- <p class="card-category">Add a Notice</p> -->
+            </div>
+            <div class="card-body mt-2">
+              <button mat-raised-button color="primary" class="ml-3 mb-3" (click)="increaseField()">Add More +</button>
+              <form [formGroup]="addSubjectForm" (submit)="addSubject(addSubjectForm.value)">
+                <div formArrayName="subjects">
+                  <div class="row" *ngFor="let item of addSubjectForm.controls.subjects.controls; let i=index" [formGroupName]="i">
+                    <div class="col-md-4">
+                      <mat-form-field>
+                        <mat-select placeholder="Select Class" name="class_id" formControlName="class_id">
+                          <mat-option *ngFor="let list of classList" [value]="list.id">
+                            {{list.class.class_name}}- {{ list.section.sec_name }}( {{list.org_shift.shifts.name}} )
+                          </mat-option>
+                        </mat-select>                        
+                
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field>
+                        <input matInput type="text" placeholder="Class Name" formControlName="subject_name" name="subject_name">
+                      </mat-form-field>
+                      
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field>
+                        <mat-select placeholder="Select A Dept" name="dept_id" formControlName="dept_id">
+                          <mat-option *ngFor="let dept of depts" [value]="dept.id">
+                            {{dept.name}}
+                          </mat-option>
+                        </mat-select>
+                    
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <button mat-raised-button [disabled]="!addSubjectForm.valid" 
+                  [ngClass]="{'btn-success': addSubjectForm.valid}"
+                  type="submit" class="btn pull-right">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card p-3" style="max-height: 500px; overflow: scroll;">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Shift</th>
+                  <th scope="col">Class/Dept.</th>
+                  <th scope="col">Subjects</th>
+                  <th scope="col">Components</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of subjectlist; let i = index">
+                  <th scope="row">{{i}} </th>
+                  <td>{{item.shift}}</td>
+                  <td>{{item.class}}</td>
+                  <td>
+                    <p class="border-bottom clearfix" *ngFor="let it of item.subjectname"> {{it.sub_name}}
+                      
+                      <span>
+                        <button mat-button class="pull-right" (click)="deleteClass(it.id)">
+                          <span class="mat-button-wrapper">
+                            <i class="material-icons">close</i>
+                          </span>                          
+                        </button>
+                      </span>
+                    </p>
+                    
+                  </td>
+                </tr>
+            
+              </tbody>
+            </table>
+          </div>          
+        </div>
+      </div>
+  </div>

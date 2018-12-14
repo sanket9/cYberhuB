@@ -1,0 +1,134 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <!-- <div class="row justify-content-center">
+            <div class="col-3 text-center">
+                <div class="card">
+                    <p>Loem</p>
+                </div>
+            </div>
+        </div> -->
+
+    <div class="row">
+      <div class="col-md-8">
+        <app-loader [show]="showloader"></app-loader>
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title">Edit Profile</h4>
+          </div>
+          <div class="card-body">
+            <form >
+              <div class="row">
+                <div class="col-md-5">
+                  <mat-form-field>
+                    <mat-select name="shift" placeholder="Select Shift" (change)="onChooseShift($event)" >
+                      <ng-container *ngFor="let shift of orgShiftLists">
+                        <mat-option [value]="shift.orgshift[0]?.id" *ngIf="shift.orgshift[0]?.id">
+                          {{shift.name}}
+                        </mat-option>
+                      </ng-container>
+                  
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Select Class/Stream" (change)="onChooseClass($event)">
+                      <!-- <mat-option [value]="all">All</mat-option> -->
+                        <mat-option  *ngFor="let class of classlist" [value]="class">
+                          {{class}}
+                        </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Select Class/Stream" (change)="onChooseClassStream($event)">
+                    <!-- <mat-option [value]="all">All</mat-option> -->
+                      <ng-container *ngFor="let classStream of sortArray">
+                        <mat-option [value]="classStream.id">
+                          {{classStream.section.sec_name}}
+                        </mat-option>
+                      </ng-container>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <form *ngIf="subjectFrm.controls.subject" [formGroup]="subjectFrm" (ngSubmit)="addForm(subjectFrm.controls.subject)">
+                <div formArrayName="subject">
+                    <div class="row" *ngFor="let item of subjectFrm.controls.subject.controls; let i=index" [formGroupName]="i">
+                      <div class="col-md-4">
+                        <mat-form-field class="example-full-width">
+                          <input matInput type="text" placeholder="Subject Name" formControlName="sub_name" name="class_name">
+                          <input type="text" hidden formControlName="sub_id">
+                        </mat-form-field>
+                        
+                      </div>
+                      <div class="col-md-4">
+                        <!-- <mat-form-field class="example-full-width">
+                          <input matInput type="text" placeholder="Subject Name" formControlName="component_id" name="component_id">
+                        </mat-form-field> -->
+                        <mat-form-field>
+                          <mat-select placeholder="Components" formControlName="component_id" name="component_id">
+
+                            <mat-optgroup *ngFor="let group of compponents" [label]="group.name" >
+                              <mat-option *ngIf="group.subs.length == 0" [value]="group.id">{{group.name}}</mat-option>
+                              <mat-option *ngFor="let item of group.subs" [value]="item.id">
+                                {{ item.name }} ({{item.short_name}})
+                              </mat-option>
+                            </mat-optgroup>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                </div>
+                <button mat-raised-button type="submit" class="btn btn-danger pull-right">Save</button>
+              </form>
+              
+              
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+     
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card p-3" style="max-height: 500px; overflow: scroll;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Shift</th>
+                <th scope="col">Class/Dept.</th>
+                <th scope="col">Subjects</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of subjectlist; let i = index">
+                <th scope="row">{{i}} </th>
+                <td>{{item.shift}}</td>
+                <td>{{item.class}}</td>
+                <td>
+                  <p class="border-bottom clearfix" *ngFor="let it of item.subjectname"> {{it.sub_name}}
+                    <span>{{it.course_cat?.course_cat?.short_name}}</span>
+                    <span>
+                      <button mat-button class="pull-right" (click)="deleteClass(it.id)">
+                        <span class="mat-button-wrapper">
+                          <i class="material-icons">close</i>
+                        </span>
+                      </button>
+                    </span>
+                  </p>
+        
+                </td>
+              </tr>
+        
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  

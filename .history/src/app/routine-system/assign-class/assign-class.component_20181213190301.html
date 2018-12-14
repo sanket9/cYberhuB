@@ -1,0 +1,149 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Notice Mangament
+      </li>
+    </ol>
+  </nav>
+  <div class="container-fluid">
+    <!-- <div class="row page-title"> -->
+    <!-- </div> -->
+    <app-loader [show]="showloader"></app-loader>
+    <div class="card">
+      <div class="card-header card-header-danger">
+        <h4 class="card-title">Routine</h4>
+        <!-- <p class="card-category">Add a Notice</p> -->
+      </div>
+      <div class="card-body mt-2">
+        <form class="pt-2" [formGroup]="routineForm" (submit)="submitForm(routineForm.value)">
+
+          <div class="row">
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Choose a Shift" formControlName="shift" name="shift_id" (change)="selectAllShifts($event)">
+                  <ng-container *ngFor="let shift of shifs">
+                    <mat-option  [value]="shift.orgshift[0]?.id" *ngIf="shift.orgshift[0]?.id">
+                    {{shift.name}}
+                    </mat-option>
+                  </ng-container>
+                  
+                </mat-select>
+              </mat-form-field>
+              <!-- <mat-error *ngIf="classassignForm.controls.class_id.hasError('required') && classassignForm.controls.class_id.touched">
+                            <small>Class is <strong>required</strong></small>
+                          </mat-error> -->
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Choose a Class" name="class_id" (change)="classChange($event)">
+                  <mat-option *ngFor="let list of classlist" [value]="list">
+                    {{ list }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <!-- <mat-error *ngIf="classassignForm.controls.class_id.hasError('required') && classassignForm.controls.class_id.touched">
+                <small>Class is <strong>required</strong></small>
+              </mat-error> -->
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Choose a Day" formControlName="day" name="day_id">
+                  <mat-option *ngFor="let day of weak" [value]="day.id">
+                    {{ day.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Choose a Component" formControlName="component_name" name="sub" >
+                  <mat-option *ngFor="let sub of coursesubjects" [value]="sub">
+                    {{ sub }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            
+          </div>
+          <button mat-raised-button color="accent" type="button" (click)="addMoreItems()">Add More</button>
+          <div formArrayName="dept_teachers" >
+            <div class="row" *ngFor="let item of routineForm.controls.dept_teachers.controls; let i=index" [formGroupName]="i">
+              <div class="col-md-3">
+                <mat-form-field>
+                  <mat-select placeholder="Choose a Deperment" formControlName="dept_id"
+                  name="dept_id" (change)="onDeptselect($event)">
+                    <mat-option *ngFor="let dept of depts" [value]="dept.id">
+                      {{ dept.section.sec_name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3">
+                <mat-form-field>
+                  <mat-select placeholder="Choose a Teacher" name="teacher_id" formControlName="teacher_id" ngModel={{i}}>
+                    <mat-option *ngFor="let techer of teachers" [value]="techer.id">
+                      {{ techer.short_name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3">
+                <mat-form-field>
+                  <mat-select placeholder="Choose a Room" formControlName="room_id" name="teacher_id">
+                    <mat-option *ngFor="let room of org_rooms" [value]="room.id">
+                      {{ room.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <button type="submit" >Submit</button>
+        </form>
+
+
+        <!-- formControlName="dept_id" -->
+        <!-- formControlName="teacher_id" -->
+
+        <!-- <table border="2" cellspacing="3" align="center">
+          <tr>
+            <td align="center">
+            <td *ngFor="let item of proidList">{{item.from_time}}-{{item.to_time}}
+            
+          </tr>
+          <tr *ngFor="let day of weak">
+            <td align="center">{{day.name}}</td>
+            <td align="center" *ngFor="let item of proidList; let i = index;" >
+              <select name="class" id="" >
+                <option value="0" selected> -- </option>
+                <option *ngFor="let sub of subjects; let p = index;" [name]="sub.subject_name" [value]="sub.dept_id" [(ngModel)]="sub.subject_name">
+                  {{sub.subject_name}}
+                </option>
+              </select> <br>
+              <select name="teachers{{i}}">
+                <option value="0" selected> -- </option> -->
+                <!-- <option *ngFor="let tech of teachers" [value]="tech.id">{{tech.short_name}}</option>-->
+                   <!-- <ng-container *ngFor="let tech of teachers">
+                    <optgroup [label]="tech[0]?.depts.name">
+                      <option *ngFor="let list of tech" [value]="list.id">{{list.short_name}}</option>
+                    </optgroup>
+                  </ng-container>
+              </select>
+            </td>
+            
+            
+          </tr>
+          
+        </table>  -->
+        
+        
+      </div>
+    </div>
+  </div>
