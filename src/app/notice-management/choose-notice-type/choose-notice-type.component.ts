@@ -115,7 +115,7 @@ export class ChooseNoticeTypeComponent implements OnInit {
     };
     // this.checkshift = [];
     this.http
-      .post(`${environment.apiUrl}shift/orgshiftlist`, data)
+      .post(`${environment.apiUrl}shift/orgshiftlist`, data, {headers: header})
       .map(res => res.json())
       .subscribe(
         data => {
@@ -174,6 +174,9 @@ getClassList(){
 // ------------------ After choose notice type function -----------------
 // ########################################################################
   onChooseNoticeType(e) {
+
+    this.selectedData.noticeType = e.value;
+
     if(e.value == "1" || e.value == "4"){
       this.showClassField = true;
       this.showSectionField = true;
@@ -219,7 +222,9 @@ getClassList(){
 
 
 
-
+// ########################################################################
+//    -------- get list of teaching and non teaching stuff ---------
+// ########################################################################
   getStuffs() {
     let header = new Headers();
     header.set("Content-Type", "application/json");
@@ -238,20 +243,64 @@ getClassList(){
 
 
 
-
+// ########################################################################
+//    ------------------ After choose stuff type ------------------
+// ########################################################################
   onChangeStuffType(e){
     console.log(e.value);
     if(e.value != "3"){
+
       let teachOrNonTeachthis = this.getAllStuff.filter((ele) => {
         return ele.parent_id == e.value;
       });
 
       this.teachingOrNonteachingStuff = teachOrNonTeachthis;
       this.teachingOrNonteachingStuff.unshift({id: "all", name: "All"});
-      console.log(this.teachingOrNonteachingStuff);      
+      console.log(this.teachingOrNonteachingStuff); 
+
     }else{
 
     }      
+  }
+
+
+
+
+
+// ########################################################################
+//        ------------------ After choose stuff ------------------
+// ########################################################################
+  onChangeStuff(e) {
+    console.log(e.value);
+
+    this.selectedData.selectedStuff = [];
+
+    let ifAllSelect = e.value.filter((ele)=>{
+      return ele == "all";
+    });
+
+    if(ifAllSelect.length > 0){
+
+      // this.selectedData.selectedStuff = [];
+
+      this.teachingOrNonteachingStuff.forEach(ele => {
+        this.selectedData.selectedStuff.push(ele.id);
+        this.selectedData.selectedStuff = this.selectedData.selectedStuff.filter((elem) => {
+          return elem != "all";
+        });
+      });
+      // if(this.classStreamID == "all"){
+      //   this.selectedData.selectedSections = this.sortArray;
+      // }else{
+      //   this.selectedData.selectedSections = this.sortArray.filter((element)=> {
+      //     return element.class_id == this.classStreamID;
+      //   });
+      // }      
+    }else{
+      this.selectedData.selectedStuff = e.value;
+    }  
+
+    console.log(this.selectedData.selectedStuff);    
   }
 
 
@@ -288,7 +337,7 @@ getClassList(){
       this.sortArray = [];
       this.selectedData.selectedShifts = e.value;
 
-      this.filteredArrayForClassList = this.orgClassSectionList.filter((ele)=>{
+      this.filteredArrayForClassList = this.orgClassSectionList.filter((ele) => {
         return ele.org_shift_id == e.value;
       });
 
@@ -298,7 +347,6 @@ getClassList(){
         class_name: "All",
         class_id: "all"
       });
-      //  console.log("filter class list for choosen shift : ", this.sortArray); 
     }
   }
 
@@ -308,7 +356,7 @@ getClassList(){
 
 
 // ########################################################################
-// ------------------ After choose class/stream -----------------
+//      ------------------ After choose class/stream -----------------
 // ########################################################################
   onChooseClassStream(e) {
     this.filteredArrayForSectionList = [];
@@ -338,7 +386,7 @@ getClassList(){
 
 
 // ########################################################################
-// ------------------ After choose section -----------------
+//     ------------------ After choose section -----------------
 // ########################################################################
   onChooseSection(e){
     if(e.value){
@@ -384,11 +432,12 @@ getClassList(){
 // ----- sorting selected data method for sending to add notice --------
 // ########################################################################
   sortSelectedFilterData(arr) {
-    // console.log(arr);
+    console.log(arr);
     
     this.sendSelectData.noticeType = arr.selectedNoticeType;
     this.sendSelectData.shifts = [];
     this.sendSelectData.sections = [];
+    this.sendSelectData.stuffs = [];
 
     if(arr.selectedNoticeType == "2"){
       this.sendSelectData.noticeType = arr.selectedNoticeType;
@@ -398,6 +447,8 @@ getClassList(){
       this.apiServ.changeData(this.sendSelectData);
       return;
     }
+
+
 
     if(arr.selectedShifts[0].id == "all"){
       arr.selectedShifts.forEach(element => {
@@ -410,6 +461,8 @@ getClassList(){
     }else{
       this.sendSelectData.shifts = arr.selectedShifts;
     }
+
+
 
     if(arr.selectedSections.length > 0){
 
@@ -429,6 +482,13 @@ getClassList(){
         this.sendSelectData.sections = arr.selectedSections;
       }
 
+    }
+
+
+
+    if(arr.selectedStuff && arr.selectedStuff.length > 0){
+      console.log('selected stuff : ', arr.selectedStuff);
+      this.sendSelectData.stuffs = arr.selectedStuff;
     }
 
     // if(arr.selectedSections[0].class_id == "all" || arr.selectedSections[0].class_name == "Arts" || arr.selectedSections[0].class_name == "Science"){
@@ -559,15 +619,20 @@ getClassList(){
 // ########################################################################
   onClickFoundStdCheckBox(e) {
     // console.log('event value : ', e); 
+    this.sendSelectData.studentsArr = [];
     console.log('roll value : ', e.target.value); 
     console.log('check value : ', e.target.checked);
 
     if(e.target.checked){
-      let is_exist =  this.selectStdArr.filter(()=> {
-        return e.target.value;
+
+      let is_exist =  this.selectStdArr.filter((ele)=> {
+        return ele == e.target.value;
       });
 
       if(is_exist.length > 0){
+
+        console.log('already exist.'); 
+
         this.notification.showNotification(
           "top",
           "right",
@@ -578,6 +643,8 @@ getClassList(){
         this.showFoundStudentTable = false;
         this.foundStudentForSearch = null;
       }else{
+
+        console.log('not exist.');
         this.selectStdArr.push(e.target.value);
       }
     }else{
@@ -590,14 +657,17 @@ getClassList(){
         this.selectStdArr.splice(index, 1);
       }
     }
-
-    console.log('selected Student array : ', this.selectStdArr); 
+     
     
-    if(this.selectStdArr.length > 0){
+    if(this.selectStdArr.length > 0) {
       this.studentSelectedForPersonelNotice = true;
     }else{
       this.studentSelectedForPersonelNotice = false;
     }
+
+    console.log('selected Student array : ', this.selectStdArr);
+    this.sendSelectData.noticeType = this.selectedData.noticeType;
+    this.sendSelectData.studentsArr = this.selectStdArr;
   }
 
 
@@ -608,7 +678,8 @@ getClassList(){
 // ----------- go next btn function for personel notice -----------
 // ########################################################################
   onClickGoNextForPersonelNotice() {
-    this.apiServ.changeData(this.selectStdArr);
+    this.apiServ.changeData(this.sendSelectData);
+    console.log('send data : ', this.sendSelectData);
     this.routes.navigate(['/notice-management/add-notice']);
   }
 

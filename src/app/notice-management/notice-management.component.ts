@@ -15,6 +15,8 @@ export class NoticeManagementComponent implements OnInit {
 
   sessionValue: any;
   noticeList: any;
+  fromDate: any;
+  toDate: any;
 
   constructor(
     public router: Router,
@@ -27,7 +29,8 @@ export class NoticeManagementComponent implements OnInit {
 
   ngOnInit() {
     this.sessionValue = this.sessionStore.retrieve('user-data')[0];
-    this.getAllNotice();   
+    this.getAllNotice();
+    console.log(this.sessionValue );
   }
 
 
@@ -56,12 +59,12 @@ export class NoticeManagementComponent implements OnInit {
     header.append('Content-Type', 'application/json');
 
     let data = {
-      user_type_id: "1",
-      org_id: "2",
+      user_type_id: this.sessionValue.user_type_id,
+      org_id: this.sessionValue.org_code,
       master_id: this.sessionValue.master_id
     }
 
-    console.log('send data : ...', data);    
+    // console.log('send data : ...', data);    
 
     this.http.post(`${environment.apiUrl}notice/noticelist`, data, {headers: header}).map((res)=>res.json())
     .subscribe(data => {
@@ -69,6 +72,94 @@ export class NoticeManagementComponent implements OnInit {
       this.noticeList = data.data;
     });
   }
+
+
+
+
+  onClickDeleteNotice(id){
+
+    console.log(id); 
+    let header = new Headers();
+    header.append('Content-Type', 'application/json');
+
+    let data = {
+      id
+    }   
+
+    this.http.post(`${environment.apiUrl}notice/deletenotice`, data, {headers: header}).map((res)=>res.json())
+    .subscribe(data => {
+      console.log(data.data);
+      if(data.data){
+        this.getAllNotice();
+      }
+    });    
+  }
+
+
+
+
+  onFilterSubmit() {
+
+    // let from = {
+    //   year: this.fromDate.getFullYear(),
+    //   month: this.fromDate.getMonth()+1,
+    //   day: this.fromDate.getDate()
+    // };
+
+    // let to = {
+    //   year: this.toDate.getFullYear(),
+    //   month: this.toDate.getMonth()+1,
+    //   day: this.toDate.getDate()
+    // }
+    // // console.log(this.fromDate.toDateString());    
+
+    // this.noticeList.forEach((ele, index) => {
+    //     ele.date = {};
+    //     ele.date.year = Number(ele.created_at.substring(0, 4));
+    //     ele.date.month = Number(ele.created_at.substring(5, 7));
+    //     ele.date.day = Number(ele.created_at.substring(8, 10));        
+    // });
+
+    // // console.log(this.noticeList); 
+    // console.log(from); 
+    // console.log(to);
+    
+    // let yearFilter = this.noticeList.filter((item)=>{
+    //   return item.date.year >= from.year && item.date.year <= to.year;              
+    // });
+    // let monthFilter = yearFilter.filter((item)=>{
+    //   return item.date.month >= from.month && item.date.month <= to.month;              
+    // });
+    // let dayFilter = monthFilter.filter((item)=>{
+    //   return item.date.day >= from.day && item.date.day <= to.day;              
+    // });
+
+    // console.log("year filter : ", yearFilter);
+    // console.log("month filter : ", monthFilter);
+    // console.log("day filter : ", dayFilter);
+    
+    
+    let header = new Headers();
+    header.append('Content-Type', 'application/json');
+
+    let data = {
+      from: this.fromDate,
+      to: this.toDate,
+      user_type_id: this.sessionValue.user_type_id,
+      org_id: this.sessionValue.org_code,
+      master_id: this.sessionValue.master_id
+    }
+    
+
+    this.http.post(`${environment.apiUrl}notice/filter`, data, {headers: header}).map((res)=>res.json())
+    .subscribe(data => {
+      console.log('Filter notice list : ', data.data);
+      this.noticeList = data.data;
+    });
+  }
+
+
+
 
 }
 

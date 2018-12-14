@@ -32,7 +32,9 @@ import {
   MatGridListModule,
   MatSlideToggleModule,
   MatProgressSpinnerModule,
-  MatDialogModule
+  MatDialogModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
 } from "@angular/material";
 
 
@@ -59,7 +61,9 @@ import {
     MatGridListModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
 
   declarations: [

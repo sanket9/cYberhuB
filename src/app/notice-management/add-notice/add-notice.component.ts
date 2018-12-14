@@ -3,6 +3,7 @@ import { Http, RequestOptions, Headers } from "@angular/http";
 import { ApiService } from "../../services/api/api.service";
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import { environment } from "../../../environments/environment.prod";
+import { NotificationService } from '../../services/notification.service';
 import {
   FormGroup,
   FormControl,
@@ -47,7 +48,8 @@ export class AddNoticeComponent implements OnInit {
     public router: Router,
     public http: Http,
     private apiServ: ApiService,
-    private sessionStore: SessionStorageService
+    private sessionStore: SessionStorageService,
+    public notification: NotificationService
   ) {}
 
   ngOnInit() {
@@ -61,7 +63,7 @@ export class AddNoticeComponent implements OnInit {
     this.shareData = this.data;
     this.shareDataArrayObject = {};
     console.log("sent from filter page : ", this.shareData);
-    // console.log("session value : ", this.sessionValue);
+    console.log("session value : ", this.sessionValue);
   }
 
 
@@ -112,26 +114,47 @@ export class AddNoticeComponent implements OnInit {
 
     this.shareDataArrayObject.secArr = this.shareData.sections;
     this.shareDataArrayObject.shiftArr = this.shareData.shifts;
+    this.shareDataArrayObject.stuffArr = this.shareData.stuffs;
+    this.shareDataArrayObject.stdArr = this.shareData.studentsArr;
 
     let fd = new FormData();
 
     fd.append("notice_type_id", this.shareData.noticeType);
-    // fd.append("status", "1");
     fd.append("create_by", this.sessionValue[0].master_id);
     fd.append("org_id", this.sessionValue[0].org_code);
-    // fd.append("user_type_id", "1");
     fd.append("dept_id", this.shareDataArrayObject.secArr);
     fd.append("org_shift_id", this.shareDataArrayObject.shiftArr);
-    // fd.append("create_by", this.shareData.);
+
+    fd.append("stuff_id", this.shareDataArrayObject.stuffArr);
+    fd.append("student_id", this.shareDataArrayObject.stdArr);
+
     fd.append("title", addNoticeFormData.title);
     fd.append("subject", addNoticeFormData.subject);
     fd.append("text", addNoticeFormData.text);
 
     console.log(fd);
 
-    this.http.post(`${environment.apiUrl}notice/addnotice`, fd).map((res)=>{res.json()})
+    this.http.post(`${environment.apiUrl}notice/addnotice`, fd).map((res)=>res.json())
     .subscribe(data => {
       console.log('Got some data from backend ', data);
+      if(data){
+        this.showloader = false;
+        this.notification.showNotification(
+          "top",
+          "right",
+          "success",
+          "Success, Notice Added Successfully."
+        );
+      }else{
+        this.showloader = false;
+        this.notification.showNotification(
+          "top",
+          "right",
+          "warning",
+          "Sorry, Something Went Wrong."
+        );
+      }
+      
     });
   }
 

@@ -20,14 +20,16 @@ import {
   MatCardModule,
   MatIconModule,
   MatExpansionModule,
-  MatGridListModule
+  MatGridListModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
 } from "@angular/material";
+
 import { ChooseNoticeTypeComponent } from './choose-notice-type/choose-notice-type.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    // BrowserModule,
     NoticeManagementRoutingModule,
     FormsModule,
     ReactiveFormsModule,
@@ -44,7 +46,9 @@ import { ChooseNoticeTypeComponent } from './choose-notice-type/choose-notice-ty
     MatIconModule,
     MatExpansionModule,
     MatGridListModule,
-    ComponentsModule
+    ComponentsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
 
   declarations: [AddNoticeComponent, ChooseNoticeTypeComponent],
