@@ -63,7 +63,7 @@
             </div>
             <div class="col-md-3">
               <mat-form-field>
-                <mat-select placeholder="Choose a Sem" formControlName="sem" name="sem" (change)="onSemselect($event)">
+                <mat-select placeholder="Choose a Year" formControlName="sem" name="sem" (change)="getRoutine()">
                   <mat-option *ngFor="let sem of allsems" [value]="sem.id">
                     {{ sem.sem_no }}
                   </mat-option>
@@ -85,7 +85,7 @@
             <div class="col-md-3">
               <mat-form-field>
                 <mat-select placeholder="Choose a Priod" formControlName="priod_id" name="proid_id">
-                  <mat-option *ngFor="let priod of org_priods" [value]="priod.id">
+                  <mat-option *ngFor="let priod of priods" [value]="priod.id">
                     {{ priod.priod_name }} ({{priod.from_time}} - {{priod.to_time}})
                   </mat-option>
                 </mat-select>
@@ -100,7 +100,7 @@
                 <mat-form-field>
                   <mat-select placeholder="Choose a Deperment" formControlName="dept_id"
                   name="dept_id" (change)="onDeptselect($event)">
-                    <mat-option *ngFor="let dept of Finaldepts" [value]="dept.id">
+                    <mat-option *ngFor="let dept of depts" [value]="dept.id">
                       {{ dept.section.sec_name }}
                     </mat-option>
                   </mat-select>
@@ -145,7 +145,7 @@
         <table border="2" cellspacing="3" align="center">
           <tr>
             <td align="center">
-            <td *ngFor="let priod of org_priods">{{ priod.priod_name }} ({{priod.from_time}} - {{priod.to_time}}) 
+            <td *ngFor="let priod of priods">{{ priod.priod_name }} ({{priod.from_time}} - {{priod.to_time}}) 
             </tr>
           <tr *ngFor="let rutine of rutineDetails">
             <td align="center"> {{rutine.day}} </td>
@@ -155,15 +155,6 @@
                 <small style="font-weight:bold; color:brown">{{item.cc_name}}</small>
               </p>
             </td>
-            <!-- <ng-container *ngFor="let priods of rutine?.priods; let i=index">
-              <td align="center" *ngIf="org_priods[i].id == priods.priod_id">
-                {{org_priods[i].id}}
-                <p *ngFor="let item of priods?.rutinedetails">
-                  {{item.class.section.sec_name}} / {{item.teacher.short_name}} / {{item.room.name}}
-                  <small style="font-weight:bold; color:brown">{{item.cc_name}}</small>
-                </p>
-              </td>
-            </ng-container> -->
           </tr>
 
         </table>  

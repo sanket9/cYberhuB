@@ -61,7 +61,7 @@ export class AssignClassComponent implements OnInit {
   routineForm: FormGroup;
   dept_teachers: FormArray;
   org_rooms: any;
-  org_priods: any;
+  priods: any;
   yearList: any;
   qtd = [];
   rutineDetails;
@@ -218,7 +218,7 @@ export class AssignClassComponent implements OnInit {
       .map(res => res.json())
       .subscribe(data => {
         // console.log(data);
-        this.org_priods = data.data;
+        this.priods = data.data;
       });
   }
   classChange(e) {

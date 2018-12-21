@@ -1,0 +1,102 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Notice Mangament
+      </li>
+    </ol>
+  </nav>
+  <div class="container-fluid">
+    <!-- <div class="row page-title"> -->
+    <!-- </div> -->
+    <app-loader [show]="showloader"></app-loader>
+    <div class="card">
+      <div class="card-header card-header-danger">
+        <h4 class="card-title">Routine</h4>
+        <!-- <p class="card-category">Add a Notice</p> -->
+      </div>
+      <div class="card-body mt-2">
+        <form class="pt-2" [formGroup]="viewRoutine" (submit)="submitForm(routineForm.value)">
+
+          <div class="row">
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Choose a Shift" formControlName="shift" name="shift_id" (change)="selectAllShifts($event)">
+                  <ng-container *ngFor="let shift of shifs">
+                    <mat-option [value]="shift.orgshift[0]?.id" *ngIf="shift.orgshift[0]?.id">
+                      {{shift.name}}
+                    </mat-option>
+                  </ng-container>
+
+                </mat-select>
+              </mat-form-field>
+              <!-- <mat-error *ngIf="classassignForm.controls.class_id.hasError('required') && classassignForm.controls.class_id.touched">
+                            <small>Class is <strong>required</strong></small>
+                          </mat-error> -->
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Choose a Class" name="class_id" formControlName="stream" (change)="classChange($event)">
+                  <mat-option *ngFor="let list of classlist" [value]="list">
+                    {{ list }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <!-- <mat-error *ngIf="classassignForm.controls.class_id.hasError('required') && classassignForm.controls.class_id.touched">
+                <small>Class is <strong>required</strong></small>
+              </mat-error> -->
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Choose a Year" formControlName="year" name="yearList" (change)="getRoutine()">
+                  <mat-option *ngFor="let year of yearList" [value]="year">
+                    {{ year }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Choose a Sem" formControlName="sem" name="sem" (change)="onSemselect($event)">
+                  <mat-option *ngFor="let sem of allsems" [value]="sem.id">
+                    {{ sem.sem_no }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <button type="submit">Submit</button>
+        </form>
+
+
+        <!-- formControlName="dept_id" -->
+        <!-- formControlName="teacher_id" -->
+
+        <!-- <table border="2" cellspacing="3" align="center">
+          <tr>
+            <td align="center">
+            <td *ngFor="let priod of priods">{{ priod.priod_name }} ({{priod.from_time}} - {{priod.to_time}})
+          </tr>
+          <tr *ngFor="let rutine of rutineDetails">
+            <td align="center"> {{rutine.day}} </td>
+            <td align="center" *ngFor="let priods of rutine?.priods">
+              <p *ngFor="let item of priods?.rutinedetails">
+                {{item.class.section.sec_name}} / {{item.teacher.short_name}} / {{item.room.name}}
+                <small style="font-weight:bold; color:brown">{{item.cc_name}}</small>
+              </p>
+            </td>
+          </tr>
+
+        </table> -->
+
+
+      </div>
+    </div>
+  </div>

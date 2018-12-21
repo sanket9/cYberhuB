@@ -26,6 +26,8 @@ import {
 import { AssignClassComponent } from './assign-class/assign-class.component';
 import { SubjectAddComponent } from './subject-add/subject-add.component';
 import { CoursesSubjectComponent } from './courses-subject/courses-subject.component';
+import { ViewRutineComponent } from './view-rutine/view-rutine.component';
+import { EditRoutineComponent } from './edit-routine/edit-routine.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -56,7 +58,9 @@ import { CoursesSubjectComponent } from './courses-subject/courses-subject.compo
     AddRoutineComponent,
     AssignClassComponent,
     SubjectAddComponent,
-    CoursesSubjectComponent
+    CoursesSubjectComponent,
+    ViewRutineComponent,
+    EditRoutineComponent
   ]
 })
 export class RoutineSystemModule {}

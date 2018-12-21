@@ -61,12 +61,9 @@ export class AssignClassComponent implements OnInit {
   routineForm: FormGroup;
   dept_teachers: FormArray;
   org_rooms: any;
-  org_priods: any;
+  priods: any;
   yearList: any;
   qtd = [];
-  rutineDetails;
-  allsems;
-  Finaldepts;
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -107,7 +104,6 @@ export class AssignClassComponent implements OnInit {
       stream: new FormControl("", [Validators.required]),
       priod_id: new FormControl("", [Validators.required]),
       year: new FormControl("", [Validators.required]),
-      sem: new FormControl("", [Validators.required]),
       dept_teachers: new FormArray([
         new FormGroup({
           component_name: new FormControl("", [Validators.required]),
@@ -187,13 +183,6 @@ export class AssignClassComponent implements OnInit {
         // console.log(data);
         this.org_rooms = data.data;
       });
-    this.http
-      .post(`${environment.apiUrl}classsection/getallsem`, data, options)
-      .map(res => res.json())
-      .subscribe(data => {
-        // console.log(data);
-        this.allsems = data.data;
-      });
   }
 
   selectAllShifts(e) {
@@ -218,7 +207,7 @@ export class AssignClassComponent implements OnInit {
       .map(res => res.json())
       .subscribe(data => {
         // console.log(data);
-        this.org_priods = data.data;
+        this.priods = data.data;
       });
   }
   classChange(e) {
@@ -307,9 +296,6 @@ export class AssignClassComponent implements OnInit {
         //this.subjects = data.data;
       });
   }
-  onSemselect($e) {
-    this.Finaldepts = this.depts.filter(itm => itm.sem_id == $e.value);
-  }
 
   submitForm(values: any) {
     console.log(values);
@@ -331,9 +317,7 @@ export class AssignClassComponent implements OnInit {
             "success",
             "Routine data Added."
           );
-          this.getRoutine();
-          // this.r0outineForm.reset();
-
+          this.routineForm.reset();
           // this.router.navigate(["/event/index"]);
         } else {
           this.notification.showNotification(
@@ -347,16 +331,16 @@ export class AssignClassComponent implements OnInit {
       });
   }
 
-  getRoutine() {
+  getRoutine($e){
     var status = this.SessionStore.retrieve("user-data");
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
-    let data = {
-      org_id: status[0].org_code,
+    let data ={
+      org_id : status[0].org_code,
       stream: this.routineForm.value.stream,
       year: this.routineForm.value.year
-    };
+    }
     this.http
       .post(`${environment.apiUrl}routine/getbyorg`, data, options)
       .map(res => res.json())
@@ -364,34 +348,24 @@ export class AssignClassComponent implements OnInit {
         console.log(data);
         let new_arry = [];
         data.data.forEach((element, i) => {
-          let pos = new_arry
-            .map(function(e) {
-              return e.day;
-            })
-            .indexOf(element.day);
-          // console.log(new_arry.indexOf(element.day));
-          if (pos < 0) {
+          console.log(new_arry.indexOf(element.day));
+          if (new_arry.indexOf(element.day) < 0) {
             let new_data = {
               id: element.id,
               day: element.day,
-              priods: [
+              priod: [
                 {
                   priod_id: element.priod_id,
                   rutinedetails: element.rutinedetails
                 }
               ]
-            };
+            }
             new_arry.push(new_data);
-          } else {
-            let exsisting_data = {
-              priod_id: element.priod_id,
-              rutinedetails: element.rutinedetails
-            };
-            new_arry[pos].priods.push(exsisting_data);
-          }
+          };
         });
-        this.rutineDetails = new_arry;
-        console.log(this.rutineDetails);
+        console.log(new_arry);
+        
       });
+
   }
 }

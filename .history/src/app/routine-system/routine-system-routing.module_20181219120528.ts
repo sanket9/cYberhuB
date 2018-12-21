@@ -6,9 +6,7 @@ import { AddRoutineComponent } from "./add-routine/add-routine.component";
 import { AssignClassComponent } from './assign-class/assign-class.component';
 import { SubjectAddComponent } from "./subject-add/subject-add.component";
 import { CoursesSubjectComponent } from "./courses-subject/courses-subject.component";
-import { ViewRutineComponent } from './view-rutine/view-rutine.component';
-import { EditRoutineComponent } from "./edit-routine/edit-routine.component";
-
+import { ViewRutineComponent } from './view-rutine/view-rutine.component'
 const routes: Routes = [
   {
     path: "",
@@ -38,10 +36,6 @@ const routes: Routes = [
   {
     path: "view",
     component: ViewRutineComponent
-  },
-  {
-    path: "edit",
-    component: EditRoutineComponent
   }
 ];
 

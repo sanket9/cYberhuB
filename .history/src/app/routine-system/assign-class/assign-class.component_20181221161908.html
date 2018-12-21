@@ -85,7 +85,7 @@
             <div class="col-md-3">
               <mat-form-field>
                 <mat-select placeholder="Choose a Priod" formControlName="priod_id" name="proid_id">
-                  <mat-option *ngFor="let priod of org_priods" [value]="priod.id">
+                  <mat-option *ngFor="let priod of priods" [value]="priod.id">
                     {{ priod.priod_name }} ({{priod.from_time}} - {{priod.to_time}})
                   </mat-option>
                 </mat-select>
