@@ -65,8 +65,12 @@
                   </div>
                 </div>
                 
-                <button mat-button type="button" class="btn btn-primary" (click)="update(i, routine.rutinedetails[0].id)">Update</button>
-
+                <button type="button" (click)="print(i)">Print</button>
+                
+                
+                <mat-form-field>
+                  <input matInput placeholder="Age">
+                </mat-form-field>
               </form>
               <div *ngIf="routine.rutinedetails.length == 0">
                 No Routine in this Shedule

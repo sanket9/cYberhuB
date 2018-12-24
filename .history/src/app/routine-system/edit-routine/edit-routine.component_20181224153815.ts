@@ -12,7 +12,6 @@ import { environment } from "../../../environments/environment.prod";
 import { Router, ActivatedRoute } from "@angular/router";
 import { NotificationService } from "../../services/notification.service";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
-
 @Component({
   selector: "app-edit-routine",
   templateUrl: "./edit-routine.component.html",
@@ -28,8 +27,6 @@ export class EditRoutineComponent implements OnInit {
   showloader: boolean = false;
   dayRoutine: any;
   subjectlist;
-  teachers;
-  org_rooms;
   constructor(
     private _route: ActivatedRoute,
     public http: Http,
@@ -70,9 +67,10 @@ export class EditRoutineComponent implements OnInit {
       .post(`${environment.apiUrl}routine/getdayroutine`, data, options)
       .map(res => res.json())
       .subscribe(data => {
-        console.log(data);
+        // console.log(data);
         this.dayRoutine = data.data;
-        this.dayRoutine.forEach(element => {});
+        this.filtercoursesubject(this.dept);
+        this.showloader = false;
       });
   }
 
@@ -85,7 +83,8 @@ export class EditRoutineComponent implements OnInit {
       .post(`${environment.apiUrl}subject/getall`, data)
       .map(res => res.json())
       .subscribe(data => {
-        // console.log(data);
+        this.showloader = false;
+        console.log(data);
 
         // this.orgShiftLists = data.data;
         this.subjectlist = [];
@@ -111,7 +110,6 @@ export class EditRoutineComponent implements OnInit {
             } else {
               let data = {
                 id: ele.id,
-                dept_id: ele.dept_id,
                 shift: ele.class.org_shift.shifts.name,
                 class_id: ele.class_id,
                 class: ele.class.section.sec_name,
@@ -129,7 +127,6 @@ export class EditRoutineComponent implements OnInit {
           } else {
             let data = {
               id: ele.id,
-              dept_id: ele.dept_id,
               shift: ele.class.org_shift.shifts.name,
               class_id: ele.class_id,
               class: ele.class.section.sec_name,
@@ -143,79 +140,14 @@ export class EditRoutineComponent implements OnInit {
             };
 
             this.subjectlist.push(data);
-            this.showloader = false;
           }
         });
-        //
-        this.subjectlist = this.subjectlist.filter(
-          item => item.class_id == this.dept
-        );
-        console.log(this.subjectlist);
-        this.getTeachers(this.subjectlist[0].dept_id);
+        // console.log(this.subjectlist);
       });
   }
-
-  getTeachers(dept_id) {
-    // console.log(e);
-    this.showloader = true;
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    let options = new RequestOptions({ headers: headers });
-    let data = {
-      dept_id,
-      org_id: this.org_id
-    };
-
-    this.http
-      .post(`${environment.apiUrl}staff/teacher-search`, data, options)
-      .map(res => res.json())
-      .subscribe(data => {
-        this.showloader = false;
-        console.log(data);
-        if (data.data) {
-          this.teachers = data.data;
-          this.getallRooms();
-        }
-      });
-  }
-  getallRooms() {
-    // this.showloader = true;
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    let options = new RequestOptions({ headers: headers });
-    let data = {
-      org_id: this.org_id
-    };
-    this.http
-      .post(`${environment.apiUrl}room/getall`, data, options)
-      .map(res => res.json())
-      .subscribe(data => {
-        // console.log(data);
-        this.org_rooms = data.data;
-      });
-  }
-
-  update(i, id) {
-    // console.log(id);
-    let data = {
-      id,
-      cc_name: this.dayRoutine[i].rutinedetails[0].cc_name,
-      room_id: this.dayRoutine[i].rutinedetails[0].room.id,
-      teacher_id: this.dayRoutine[i].rutinedetails[0].teacher.id
-    }
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    let options = new RequestOptions({ headers: headers });
-    this.http
-      .post(`${environment.apiUrl}routine/updateroutine`, data, options)
-      .map(res => res.json())
-      .subscribe(data => {
-        // console.log(data);
-        if (!data.error && data.data) {
-          this.notification.showNotification("top", "right", "success", "Routine data Added.");
-        } else {
-          this.notification.showNotification("top", "right", "warning", "Something Went Wrong.");
-        }
-      });
+  filtercoursesubject(dept_id: number){
+    this.subjectlist.filter(item => item.class_id == dept_id);
+    console.log(this.subjectlist);
+    
   }
 }

@@ -25,7 +25,7 @@
         <!-- <form class="pt-2" [formGroup]="" (submit)="submitForm(viewRoutine.value)"> -->
 
           <mat-accordion>
-            <mat-expansion-panel *ngFor="let routine of dayRoutine; let i = index;">
+            <mat-expansion-panel *ngFor="let routine of dayRoutine">
               <mat-expansion-panel-header>
                 <mat-panel-title>
                   Priod : {{routine.priod.priod_name}}
@@ -34,49 +34,27 @@
                   Type your name and age
                 </mat-panel-description>
               </mat-expansion-panel-header>
-              <form class="pt-2" *ngIf="routine.rutinedetails.length > 0">
-                <div class="row">
-                  <div class="col-md-6">
-                    <mat-form-field>
-                      <mat-select placeholder="Select Component" [(ngModel)]="routine.rutinedetails[0].cc_name" name="component">
-                        <mat-option *ngFor="let sub of subjectlist && subjectlist[0].subjectname" [value]="sub.course_cat.count_name" >
-                          {{ sub.course_cat.count_name }}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-6">
-                    <mat-form-field>
-                      <mat-select placeholder="Select Teacher" [(ngModel)]="routine.rutinedetails[0].teacher.id" name="tech_id">
-                        <mat-option *ngFor="let tech of teachers" [value]="tech.id">
-                          {{ tech.short_name }}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-6">
-                    <mat-form-field>
-                      <mat-select placeholder="Select Teacher" [(ngModel)]="routine.rutinedetails[0].room.id" name="room_id">
-                        <mat-option *ngFor="let room of org_rooms" [value]="room.id">
-                          {{ room.name }}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </div>
+              <form class="pt-2">
+                <mat-form-field>
+                  <mat-select placeholder="Favorite food">
+                    <mat-option *ngFor="let sub of subjectlist[0].subjectname" [value]="sub.id">
+                      {{ sub?.course_cat?.count_name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
                 
-                <button mat-button type="button" class="btn btn-primary" (click)="update(i, routine.rutinedetails[0].id)">Update</button>
-
+                <mat-form-field>
+                  <input matInput placeholder="Age">
+                </mat-form-field>
               </form>
-              <div *ngIf="routine.rutinedetails.length == 0">
-                No Routine in this Shedule
-              </div>
+              
             </mat-expansion-panel>
             
           </mat-accordion>
 
           <button type="submit">Submit</button>
         <!-- </form> -->
+        <button (click)="printit()" *ngIf="rutineDetails">PrintIt</button>
 
         <!-- formControlName="dept_id" -->
         <!-- formControlName="teacher_id" -->

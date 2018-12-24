@@ -12,7 +12,6 @@ import { environment } from "../../../environments/environment.prod";
 import { Router, ActivatedRoute } from "@angular/router";
 import { NotificationService } from "../../services/notification.service";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
-
 @Component({
   selector: "app-edit-routine",
   templateUrl: "./edit-routine.component.html",
@@ -211,11 +210,8 @@ export class EditRoutineComponent implements OnInit {
       .map(res => res.json())
       .subscribe(data => {
         // console.log(data);
-        if (!data.error && data.data) {
-          this.notification.showNotification("top", "right", "success", "Routine data Added.");
-        } else {
-          this.notification.showNotification("top", "right", "warning", "Something Went Wrong.");
-        }
+        this.org_rooms = data.data;
       });
+    // console.log(this.dayRoutine[i].rutinedetails[0].cc_name);
   }
 }
