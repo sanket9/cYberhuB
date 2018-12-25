@@ -28,18 +28,14 @@
             <p class="card-category">Add Exam Room Details</p>
           </div>
           <div class="card-body">
-            <form class="pt-2" [formGroup]="examForm" (submit)="FormSubmit(examForm.value)" >
+            <form class="pt-2">
+            
               <div class="col-md-6">
-                <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Exam Name" formControlName="exam_name">
-                </mat-form-field>
-              </div>
-              <div class="col-md-6">
-                <button mat-raised-button type="button" color="primary" (click)="fileInput.click()" >
+                <button mat-raised-button color="primary" (click)="fileInput.click()" (change)="fileChange($event)">
                   Add File</button>
                 <input type="file" hidden #fileInput name="file" (change)="handleFileSelect($event)">
               </div>
-              <button type="submit" >Submit</button>
+            
             </form>
           </div>
         </div>

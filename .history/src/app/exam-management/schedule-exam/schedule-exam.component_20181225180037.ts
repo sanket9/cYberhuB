@@ -22,7 +22,7 @@ import * as csv from "csvtojson";
 export class ScheduleExamComponent implements OnInit {
   fileReaded: any;
   examForm: FormGroup;
-  org_id: string;
+
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -31,11 +31,7 @@ export class ScheduleExamComponent implements OnInit {
     public SessionStore: SessionStorageService
   ) {}
 
-  ngOnInit() {
-    this.createFormGroup();
-    var status = this.SessionStore.retrieve("user-data");
-    this.org_id = status[0].org_code;
-  }
+  ngOnInit() {}
 
   handleFileSelect(fileInput: any) {
     this.fileReaded = fileInput.target.files[0];
@@ -44,28 +40,27 @@ export class ScheduleExamComponent implements OnInit {
     reader.readAsText(this.fileReaded);
     if (this.fileReaded.type === "application/vnd.ms-excel") {
       reader.onload = e => {
-        // let csv: string = reader.result;
-        // let allTextLines = csv.split(/\r|\n|\r/);
-        // let headers = allTextLines[0].split(",");
-        // let lines = [];
+        let csv: string = reader.result;
+        let allTextLines = csv.split(/\r|\n|\r/);
+        let headers = allTextLines[0].split(",");
+        let lines = [];
 
-        // for (let i = 0; i < allTextLines.length; i++) {
-        //   // split content based on comma
-        //   let data = allTextLines[i].split(",");
-        //   if (data.length === headers.length) {
-        //     let tarr = [];
-        //     for (let j = 0; j < headers.length; j++) {
-        //       tarr.push(data[j]);
-        //     }
+        for (let i = 0; i < allTextLines.length; i++) {
+          // split content based on comma
+          let data = allTextLines[i].split(",");
+          if (data.length === headers.length) {
+            let tarr = [];
+            for (let j = 0; j < headers.length; j++) {
+              tarr.push(data[j]);
+            }
 
-        //     // log each row to see output
-        //     lines.push(tarr); 
-        //   }
-        // }
-        // // all rows in the csv file
-        // console.log(">>>>>>>>>>>>>>>>>", lines);
-        this.examForm.patchValue({ exam_file: this.fileReaded });
-      }
+            // log each row to see output
+            lines.push(tarr);
+          }
+        }
+        // all rows in the csv file
+        console.log(">>>>>>>>>>>>>>>>>", lines);
+      };
     } else {
       alert("File not accepted. Please select .csv File...");
     }
@@ -74,23 +69,11 @@ export class ScheduleExamComponent implements OnInit {
   createFormGroup() {
     this.examForm = new FormGroup({
       exam_name: new FormControl("", [Validators.required]),
-      exam_file: new FormControl(null, [Validators.required])
+      exam_file: new FormControl("", [Validators.required])
     });
   }
   FormSubmit(values){
-    let header = new Headers();
-    header.append("Content-Type", "multipart/form-data");
-    values.org_id = this.org_id;
-    let fd = new FormData();
-    fd.append("exam_name", this.examForm.value.exam_name);
-    fd.append("exam_file", this.fileReaded);
-    fd.append("org_id", this.org_id);
     console.log(values);
-    this.http
-      .post(`${environment.apiUrl}exam/create`, fd, )
-      .map(res => res.json())
-      .subscribe(data => {
-        console.log(data);
-      });
+    
   }
 }

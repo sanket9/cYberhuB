@@ -35,9 +35,9 @@
                 </mat-form-field>
               </div>
               <div class="col-md-6">
-                <button mat-raised-button type="button" color="primary" (click)="fileInput.click()" >
+                <button mat-raised-button color="primary" (click)="fileInput.click()" (change)="fileChange($event)">
                   Add File</button>
-                <input type="file" hidden #fileInput name="file" (change)="handleFileSelect($event)">
+                <input type="file" hidden #fileInput name="file" formControlName="exam_file">
               </div>
               <button type="submit" >Submit</button>
             </form>

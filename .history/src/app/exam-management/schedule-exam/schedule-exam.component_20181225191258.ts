@@ -78,16 +78,11 @@ export class ScheduleExamComponent implements OnInit {
     });
   }
   FormSubmit(values){
-    let header = new Headers();
-    header.append("Content-Type", "multipart/form-data");
+    
     values.org_id = this.org_id;
-    let fd = new FormData();
-    fd.append("exam_name", this.examForm.value.exam_name);
-    fd.append("exam_file", this.fileReaded);
-    fd.append("org_id", this.org_id);
     console.log(values);
     this.http
-      .post(`${environment.apiUrl}exam/create`, fd, )
+      .post(`${environment.apiUrl}exam/create`, values)
       .map(res => res.json())
       .subscribe(data => {
         console.log(data);

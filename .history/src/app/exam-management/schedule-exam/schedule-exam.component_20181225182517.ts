@@ -22,7 +22,7 @@ import * as csv from "csvtojson";
 export class ScheduleExamComponent implements OnInit {
   fileReaded: any;
   examForm: FormGroup;
-  org_id: string;
+
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -33,8 +33,6 @@ export class ScheduleExamComponent implements OnInit {
 
   ngOnInit() {
     this.createFormGroup();
-    var status = this.SessionStore.retrieve("user-data");
-    this.org_id = status[0].org_code;
   }
 
   handleFileSelect(fileInput: any) {
@@ -59,7 +57,7 @@ export class ScheduleExamComponent implements OnInit {
         //     }
 
         //     // log each row to see output
-        //     lines.push(tarr); 
+        //     lines.push(tarr);
         //   }
         // }
         // // all rows in the csv file
@@ -78,19 +76,7 @@ export class ScheduleExamComponent implements OnInit {
     });
   }
   FormSubmit(values){
-    let header = new Headers();
-    header.append("Content-Type", "multipart/form-data");
-    values.org_id = this.org_id;
-    let fd = new FormData();
-    fd.append("exam_name", this.examForm.value.exam_name);
-    fd.append("exam_file", this.fileReaded);
-    fd.append("org_id", this.org_id);
     console.log(values);
-    this.http
-      .post(`${environment.apiUrl}exam/create`, fd, )
-      .map(res => res.json())
-      .subscribe(data => {
-        console.log(data);
-      });
+    
   }
 }

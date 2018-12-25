@@ -19,7 +19,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'table-list', component: TableListComponent },
     { path: 'add-user', component: AddUserComponent },
     { path: 'notifications', component: NotificationsComponent },
-    { path: 'notice', canActivate: [AuthGuard], component: NoticeManagementComponent },
+    { path: 'notice', component: NoticeManagementComponent },
     { path: 'addClass', component: ClassListComponent },
     {
       path: "notice-management",
