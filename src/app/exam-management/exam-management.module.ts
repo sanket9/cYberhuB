@@ -24,6 +24,7 @@ import {
 import { ListroomComponent } from './listroom/listroom.component';
 import { ComponentsModule } from "../components/components.module";
 import { ScheduleExamComponent } from './schedule-exam/schedule-exam.component';
+import { MapingRoomsComponent } from './maping-rooms/maping-rooms.component';
 
 @NgModule({
   imports: [
@@ -48,7 +49,7 @@ import { ScheduleExamComponent } from './schedule-exam/schedule-exam.component';
     ExamManagementRoutingModule,
     
   ],
-  declarations: [AddRoomComponent, ListroomComponent, ScheduleExamComponent],
+  declarations: [AddRoomComponent, ListroomComponent, ScheduleExamComponent, MapingRoomsComponent],
   providers: [NotificationService]
 })
 export class ExamManagementModule {}
