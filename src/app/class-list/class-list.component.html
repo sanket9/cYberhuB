@@ -11,22 +11,48 @@
             <!-- ###################################################################
             --------------  class and section list generating  ---------------
             ################################################################### -->
-            <div class="row">
-                <div class="col-sm-12">
+            <div class="row">                 
 
-                    <button mat-raised-button color="primary" class="pull-right ml-3" (click)="increaseField()">Add More +</button>
-
-                    <mat-form-field class="pull-right">                      
-                        <mat-select placeholder="Select Shift" (change)="onChooseShift($event)" multiple>
+                  <div class="col-sm-6">
+                    <mat-form-field class="">                      
+                        <mat-select placeholder="Select Shift" (change)="onChooseShift($event)" [(ngModel)]="shift" (change)="showSameAsPreviousBtn()">
                           <ng-container *ngFor="let shift of orgShiftLists">                   
                             <mat-option [value]="shift.orgshift[0]?.id" *ngIf="shift.orgshift[0]?.id" class="shiftOptions">
                                 {{shift.name}}
                             </mat-option>
                           </ng-container>
                         </mat-select>
-                    </mat-form-field>                    
-                    
-                </div>
+                    </mat-form-field> 
+                  </div>
+
+                  <div class="col-sm-6"> 
+                    <mat-form-field class="">                      
+                      <mat-select placeholder="Select Sem" [(ngModel)]="semester" (change)="showSameAsPreviousBtn()">
+                        <ng-container *ngFor="let sem of semList">                   
+                          <mat-option [value]="sem.id" class="shiftOptions">
+                              Sem {{sem.sem_no}}
+                          </mat-option>
+                        </ng-container>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <mat-form-field class="">                      
+                      <mat-select placeholder="Choose Year" [(ngModel)]="year" (change)="showSameAsPreviousBtn()">
+                        <ng-container *ngFor="let year of yearList">                   
+                          <mat-option [value]="year" class="shiftOptions">
+                              {{year}}
+                          </mat-option>
+                        </ng-container>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-12">
+                      <button mat-raised-button color="primary" class="" (click)="increaseField()">Add More +</button>
+                      <button mat-raised-button color="primary" class="ml-3" (click)="sameAsPrevious()" *ngIf="showSameasPreviousButton">Same as Previous Year</button>
+                  </div>
             </div>
 
 

@@ -23,6 +23,15 @@ export class ClassListComponent implements OnInit {
   finalClassSeclistArr: any;
   shiftID: any;
   orgShiftLists: any;
+  semList: any = [];
+  yearList: any = [];
+  semester: any;
+  year: any;
+  shift: any;
+  orgClassSectionList: any;
+  sortArray: any = [];
+  showSameasPreviousButton: boolean;
+  
 
   // @ViewChild('shiftOption') private shifts: ElementRef;
 
@@ -32,6 +41,9 @@ export class ClassListComponent implements OnInit {
     this.org_code = this.sessionStore.retrieve('user-data')[0].org_code;
     this.getOrgDetails();
     this.getShiftLists();
+    this.getSemList();
+    this.generateYearList(10);
+    this.getClassSection();
     this.fieldCountArr = [1,2,3];
     this.choosenClassAndSectionArr = [];
     this.finalClassSeclistArr = [];
@@ -69,26 +81,17 @@ export class ClassListComponent implements OnInit {
 getShiftLists() {
   let header = new Headers();
   header.set("Content-Type", "application/json");
+
   let data = {
-    org_id: this.org_code
+    org_id: this.org_code,
   };
-  // this.checkshift = [];
+  
   this.http
     .post(`${environment.apiUrl}shift/orgshiftlist`, data)
     .map(res => res.json())
     .subscribe(
       data => {
-        console.log("Org shift list ", data.data);
-        this.orgShiftLists = data.data;
-        this.orgShiftLists.unshift({
-          id: "all",
-          name: "All",
-          orgshift: [
-            {
-              id: "all"
-            }
-          ]
-        });
+        this.orgShiftLists = data.data;       
   });
 }
 
@@ -99,33 +102,26 @@ getShiftLists() {
 // ########################################################################
 // ------------------ After choose shift -----------------
 // ########################################################################
-onChooseShift(e){
-  this.shiftID = e.value;
-  // console.log(e);
-  // console.log(this.allSelected);        
+async onChooseShift(e) {
+  // this.shiftID = await e.value;       
 
-  console.log('shift : ', e.value); 
-
-  let ifAllSelect = e.value.filter((ele)=>{
-    return ele == "all";
-  });
+  // let ifAllSelect = await this.shiftID.filter((ele) => {
+  //   return ele == "all";
+  // });
   
-  if(ifAllSelect.length > 0){
-    this.shiftID = [];
-    let options = <HTMLSelectElement>document.getElementsByClassName('shiftOptions');
-    // console.log('shifts options : ', options);
-    Array.from(options).forEach(ele => {
-      // console.log(ele.children[1].innerHTML.toLocaleLowerCase().trim().toString());
-      if(ele.children[1].innerHTML.toLocaleLowerCase().trim().toString() != "all"){
-        // console.log(ele.getAttribute('ng-reflect-value'));
-        ele.children[0].classList.value = "mat-option-pseudo-checkbox mat-pseudo-checkbox ng-star-inserted mat-pseudo-checkbox-checked"; 
-        this.shiftID.push(ele.getAttribute('ng-reflect-value'));      
-      }else{
-        // console.log(ele.children[0].getAttribute('ng-reflect-state'));
-      }      
-    });
+  // if(ifAllSelect.length > 0){
+
+    // this.shiftID = [];
+    // let options = <HTMLSelectElement>document.getElementsByClassName('shiftOptions');
+    // Array.from(options).forEach(ele => {
+    //   if(ele.children[1].innerHTML.toLocaleLowerCase().trim().toString() != "all"){
+    //     ele.children[0].classList.value = "mat-option-pseudo-checkbox mat-pseudo-checkbox ng-star-inserted mat-pseudo-checkbox-checked"; 
+    //     this.shiftID.push(ele.getAttribute('ng-reflect-value'));      
+    //   }else{
+    //   }      
+    // });
     
-  }else if(ifAllSelect.length < 1){
+  // }else if(ifAllSelect.length < 1){
     this.shiftID = [];
 
     let options = <HTMLSelectElement>document.getElementsByClassName('shiftOptions');
@@ -139,46 +135,8 @@ onChooseShift(e){
         }      
     });
 
-  }else{
-    this.shiftID = e.value;
-    // console.log(this.shiftID);     
-  }
-
-   
-  console.log('shift : ', this.shiftID);
-  // shiftOptions.mat-option.mat-option-multiple.ng-star-inserted.mat-selected.mat-active
-  
-  // let ifAllSelect = e.value.filter((ele)=>{
-  //   return ele == "all";
-  // });
-
-  // console.log("shift list : ", this.orgShiftLists);
-  
-  // if(ifAllSelect.length > 0){
-  //   this.sortArray = [];
-  //   this.selectedData.selectedShifts = this.orgShiftLists;
-
-  //   this.createSortArray(this.orgClassSectionList);
-  //   this.sortArray.unshift({
-  //     class_name: "All",
-  //     class_id: "all"
-  //   });
-  //   // console.log("filter class list for choosen shift : ", this.sortArray); 
   // }else{
-  //   this.sortArray = [];
-  //   this.selectedData.selectedShifts = e.value;
-
-  //   this.filteredArrayForClassList = this.orgClassSectionList.filter((ele)=>{
-  //     return ele.org_shift_id == e.value;
-  //   });
-
-  //   // console.log(this.filteredArrayForClassList);
-  //   this.createSortArray(this.filteredArrayForClassList);
-  //   this.sortArray.unshift({
-  //     class_name: "All",
-  //     class_id: "all"
-  //   });
-  //   //  console.log("filter class list for choosen shift : ", this.sortArray); 
+    // this.shiftID = e.value;     
   // }
 }
 
@@ -201,8 +159,6 @@ onChooseShift(e){
       .post(`${environment.apiUrl}classlist/classlist`, data, {headers: header})
       .map(res => res.json())
       .subscribe(data => {
-        // let jsonResponse = data.json();
-        // console.log("class list ", data.data);
         this.classList = data.data;
     });
 
@@ -211,10 +167,35 @@ onChooseShift(e){
       .post(`${environment.apiUrl}classlist/sectionlist`,data, {headers: header})
       .map(res => res.json())
       .subscribe(data => {
-        // console.log("section list ", data.data);
         this.sectionList = data.data;
     });
   }
+
+
+
+
+// ########################################################################
+//       ------------------ getting classlist here -----------------
+// ########################################################################
+getSemList() {
+  let header = new Headers();
+  header.set("Content-Type", "application/json");
+
+  let data = {
+    org_id: this.sessionStore.retrieve('user-data')[0].org_code,
+  };
+
+  this.http
+    .post(`${environment.apiUrl}classsection/getallsem`, data, {headers: header})
+    .map(res => res.json())
+    .subscribe(data => {
+      console.log("sem list ", data.data);
+      if(data.data){
+        this.semList = data.data;
+        console.log("sem list ", this.semList);
+      }      
+  });
+}
 
 
 
@@ -241,7 +222,7 @@ onChooseShift(e){
         }
       );
 
-      console.log('final array ', this.finalClassSeclistArr);
+      // console.log('final array ', this.finalClassSeclistArr);
     }else{
       this.finalClassSeclistArr.push(
         {
@@ -252,15 +233,17 @@ onChooseShift(e){
         }
       );
 
-      console.log('final array ', this.finalClassSeclistArr);
+      // console.log('final array ', this.finalClassSeclistArr);
     }
   }
 
 
 
 
-
-  onChangeSection(e, f){
+// ########################################################################
+//    ------------------ After change section function -----------------
+// ########################################################################
+  onChangeSection(e, f) {
     // console.log('section ', e.value);
     // console.log('row num ', f);
 
@@ -284,8 +267,6 @@ onChooseShift(e){
           org_id: this.org_code
         }
       );
-
-      console.log('final array ', this.finalClassSeclistArr);
     }else{
       this.finalClassSeclistArr.push(
         {
@@ -295,8 +276,6 @@ onChooseShift(e){
           org_id: this.org_code
         }
       );
-
-      console.log('final array ', this.finalClassSeclistArr);
     }
   }
 
@@ -311,17 +290,150 @@ onChooseShift(e){
 
 
 
-  onClickSave(){
+  onClickSave() {
+
+    let sentData = {      
+        details : this.finalClassSeclistArr,      
+        year: this.year, 
+        sem: this.semester,
+        shift: this.shift,
+        org_id: this.sessionStore.retrieve('user-data')[0].org_code,
+    };    
+
     let header = new Headers();
     header.set("Content-Type", "application/json");    
 
     this.http
-      .post(`${environment.apiUrl}classsection/add`, this.finalClassSeclistArr, {headers: header})
+      .post(`${environment.apiUrl}classsection/add`, sentData, {headers: header})
       .map(res => res.json())
       .subscribe(data => {
         console.log("after success add class/section : ", data);
         this.router.navigate(['/dashboard']);
+    }); 
+  }
+
+
+
+  generateYearList(yearRange) {
+    let currentYear = new Date().getFullYear();
+    this.yearList.push(currentYear);
+    for (let index = 0; index < yearRange; index++) {
+      currentYear++;
+      this.yearList.push(currentYear);      
+    }   
+  }
+
+
+
+
+  sameAsPrevious() {
+
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+
+    let sentData = {            
+      year: this.year, 
+      sem: this.semester,
+      shift_id: this.shift,
+      org_id: this.sessionStore.retrieve('user-data')[0].org_code,
+    };
+
+    this.http
+    .post(`${environment.apiUrl}classsection/sameasprevious`, sentData, {headers: header})
+    .map(res => res.json())
+    .subscribe(
+      data => {
+        console.log(data);        
+    });
+
+  }
+
+
+
+
+  showSameAsPreviousBtn() {
+
+    console.log('show btn called...'); 
+    var year = this.year - 1;   
+
+    if(year && this.shift && this.semester) {
+
+      let filterData = this.orgClassSectionList.filter( item => {
+        return item.year == year && item.sem_id == this.semester;
+      });
+
+      console.log('filter data : ', filterData);
+      
+      if(filterData.length > 0) {
+        this.showSameasPreviousButton = true;
+      }else{
+        this.showSameasPreviousButton = false;
+      } 
+    }
+  }
+
+
+
+
+  getClassSection() {
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+
+    let data = {
+      org_id: this.org_code
+    };
+
+    this.http
+      .post(`${environment.apiUrl}classsection/getall`, data, {headers: header})
+      .map(res => res.json())
+      .subscribe(
+        data => {
+          console.log("Org class/stream list ", data.data);
+          this.orgClassSectionList = data.data;
     });
   }
+
+
+
+
+
+  createSortArray(arr){
+
+    arr.forEach(ele => {
+
+      var obj = {
+        class_id: ele.class_id,
+        sec_id: ele.sec_id,
+        class_name: ele.class.class_name,
+        sections: [
+          {
+            section_name: ele.section.sec_name,
+            classSectionIndexId: ele.id
+          }
+        ],
+        rs: 1
+      }
+
+      let check_exist = this.sortArray.filter((element)=> {
+        return element.class_id == ele.class_id;
+      });
+
+      if(check_exist.length > 0){
+        let i = this.sortArray.indexOf(check_exist[0]);
+        this.sortArray.splice(i,1); 
+        check_exist[0].rs += check_exist[0].rs;
+
+        check_exist[0].sections.push({
+          section_name: ele.section.sec_name,
+          classSectionIndexId: ele.id
+        });
+
+        this.sortArray.push(check_exist[0]);       
+      }else{
+        this.sortArray.push(obj);
+      }
+    });    
+  }
+
   
 }

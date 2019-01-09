@@ -107,7 +107,7 @@ export class AddNoticeComponent implements OnInit {
     this.showloader = true;
     let addNoticeFormData = this.addNoticeForm.value;
 
-    // console.log(this.file);
+    console.log('selected file : ', this.file);
 
     let header = new Headers();
     header.append("Content-Type", "multipart/form-data");
@@ -131,6 +131,7 @@ export class AddNoticeComponent implements OnInit {
     fd.append("title", addNoticeFormData.title);
     fd.append("subject", addNoticeFormData.subject);
     fd.append("text", addNoticeFormData.text);
+    fd.append("file", this.file);
 
     console.log(fd);
 
