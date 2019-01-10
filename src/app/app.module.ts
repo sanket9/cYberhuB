@@ -28,6 +28,7 @@ import { LoginComponent } from "./login/login.component";
 import { AuthGuard } from "./auth.guard";
 import { Ng2Webstorage } from "ngx-webstorage";
 import { ClassListComponent } from './class-list/class-list.component';
+import { ViewExamComponent } from './view-exam/view-exam.component';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { ClassListComponent } from './class-list/class-list.component';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    LoginComponent,    
+    LoginComponent,
+    ViewExamComponent,    
   ],
   exports: [],
   providers: [AuthGuard],
