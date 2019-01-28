@@ -21,6 +21,11 @@ export class BookListingComponent implements OnInit {
     "publisher_name",
     "no_copy",
     "isbn_code",
+    "place_of_pub",
+    "year_of_pub",
+    "edition",
+    // "accession_no",
+    // "call_no",
     "actions"
   ];
   dataSource = new MatTableDataSource<Element>();
@@ -81,5 +86,10 @@ export interface Element {
   author: string;
   no_copy: string;
   publisher_name: string;
+  edition: string;
   isbn_code: string;
+  place_of_pub: string;
+  year_of_pub: string;
+  // accession_no: string;
+  // call_no: string;
 }

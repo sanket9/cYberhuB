@@ -1,0 +1,114 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title ">Select Class and Section</h4>
+            <p class="card-category">Choose class and section from the below list</p>
+          </div>
+          <div class="card-body p-4">
+            <!-- ###################################################################
+            --------------  class and section list generating  ---------------
+            ################################################################### -->
+            <div class="row">                 
+
+                  <div class="col-sm-6">
+                    <mat-form-field class="">                      
+                        <mat-select placeholder="Select Shift" (change)="onChooseShift($event)" [(ngModel)]="shift" (change)="showSameAsPreviousBtn()">
+                          <ng-container *ngFor="let shift of orgShiftLists">                   
+                            <mat-option [value]="shift.orgshift[0]?.id" *ngIf="shift.orgshift[0]?.id" class="shiftOptions">
+                                {{shift.name}}
+                            </mat-option>
+                          </ng-container>
+                        </mat-select>
+                    </mat-form-field> 
+                  </div>
+
+                  <div class="col-sm-6"> 
+                    <mat-form-field class="">                      
+                      <mat-select placeholder="Select Semister" [(ngModel)]="semester" (change)="showSameAsPreviousBtn()">
+                        <ng-container *ngFor="let sem of semList">                   
+                          <mat-option [value]="sem.id" class="shiftOptions">
+                              Sem {{sem.sem_no}}
+                          </mat-option>
+                        </ng-container>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <mat-form-field class="">                      
+                      <mat-select placeholder="Choose Year" [(ngModel)]="year" (change)="showSameAsPreviousBtn()">
+                        <ng-container *ngFor="let year of yearList">                   
+                          <mat-option [value]="year" class="shiftOptions">
+                              {{year}}
+                          </mat-option>
+                        </ng-container>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-12">
+                      <button mat-raised-button color="primary" class="" (click)="increaseField()">Add Stream with Subject +</button>
+                      <button mat-raised-button color="primary" class="ml-3" (click)="sameAsPrevious()" *ngIf="showSameasPreviousButton">Add Details Same as Previous Year</button>
+                  </div>
+            </div>
+
+
+            <div class="row mt-2 border" *ngFor="let field of fieldCountArr"> 
+
+              <div class="col-sm-6" *ngIf="typeId === '1'">                
+                  <mat-form-field>                      
+                      <mat-select placeholder="Select Class" (change)="onChangeClass($event, field)">
+                        <mat-option *ngFor="let class of classList" [value]="class.id">
+                          {{class.class_name}}
+                        </mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+
+              <div class="col-sm-6" *ngIf="typeId === '2'">                
+                <mat-form-field>                      
+                    <mat-select placeholder="Select Stream" (change)="onChangeClass($event, field)">
+                      <mat-option *ngFor="let class of classList" [value]="class.id">
+                        {{class.class_name}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-6" *ngIf="typeId === '1'">
+                  <mat-form-field>
+                      <mat-select placeholder="Select Section" (change)="onChangeSection($event, field)">
+                        <mat-option *ngFor="let section of sectionList" [value]="section.id">
+                          {{section.sec_name}}
+                        </mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+
+              <div class="col-sm-6" *ngIf="typeId === '2'">
+                <mat-form-field>
+                    <mat-select placeholder="Select Subject" (change)="onChangeSection($event, field)">
+                      <mat-option *ngFor="let section of sectionList" [value]="section.id">
+                        {{section.sec_name}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12 mt-3">
+                <button mat-raised-button color="primary" class="pull-right" (click)="onClickSave()">Save</button>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>      
+    </div>
+  </div>
+</div>

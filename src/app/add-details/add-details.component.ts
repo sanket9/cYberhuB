@@ -13,6 +13,9 @@ import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 })
 export class AddDetailsComponent implements OnInit {
   showloader: boolean = false;
+  orgShiftLists;
+  shift_stdnt: any;
+  shift_staff;
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -20,9 +23,11 @@ export class AddDetailsComponent implements OnInit {
     public router: Router
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getShiftLists();
+  }
 
-  uploadStudentFile(event) {
+  uploadStudentFile(event) {        
     this.showloader = true;
     let elem = event.target;
     if (elem.files.length > 0) {
@@ -30,6 +35,7 @@ export class AddDetailsComponent implements OnInit {
       formData.append("file", elem.files[0]);
       var status = this.SessionStore.retrieve("user-data");
       formData.append("org_id", status[0].org_code);
+      formData.append("shift", this.shift_stdnt);
       this.http
         .post(`${environment.apiUrl}student/addstudentexcel`, formData)
         .map(res => res.json())
@@ -55,6 +61,7 @@ export class AddDetailsComponent implements OnInit {
     }
   }
   uploadTeacherFile(event) {
+    
     this.showloader = true;
     let elem = event.target;
     if (elem.files.length > 0) {
@@ -62,16 +69,27 @@ export class AddDetailsComponent implements OnInit {
       formData.append("file", elem.files[0]);
       var status = this.SessionStore.retrieve("user-data");
       formData.append("org_id", status[0].org_code);
+      formData.append("shift", this.shift_staff);
       this.http
         .post(`${environment.apiUrl}staff/addstaffexcel`, formData)
         .map(res => res.json())
         .subscribe(data => {
           this.showloader = false;
           if (data.status == 0) {
-            this.notification.showNotification("top", "right", "success", "Staff Data Added SuccessFuly");
+            this.notification.showNotification(
+              "top",
+              "right",
+              "success",
+              "Staff Data Added SuccessFuly"
+            );
             //this.router.navigate(["/library/index"]);
           } else {
-            this.notification.showNotification("top", "right", "warning", "Something Went Wrong");
+            this.notification.showNotification(
+              "top",
+              "right",
+              "warning",
+              "Something Went Wrong"
+            );
           }
         });
     }
@@ -106,5 +124,20 @@ export class AddDetailsComponent implements OnInit {
           console.log("Completed file download.");
         }
       );
+  }
+
+  getShiftLists() {
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+    var status = this.SessionStore.retrieve("user-data");
+
+    let data = { org_id: status[0].org_code };
+
+    this.http
+      .post(`${environment.apiUrl}shift/orgshiftlist`, data)
+      .map(res => res.json())
+      .subscribe(data => {
+        this.orgShiftLists = data.data;
+      });
   }
 }

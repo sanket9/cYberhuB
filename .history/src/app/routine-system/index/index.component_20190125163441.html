@@ -1,0 +1,45 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Notice Mangament
+      </li>
+    </ol>
+  </nav>
+  <div class="container-fluid">
+    <!-- <div class="row page-title"> -->
+    <!-- </div> -->
+    <!-- <app-loader [show]="showloader"></app-loader> -->
+    <div class="card">
+      <div class="card-header card-header-danger">
+        <h4 class="card-title">Routine</h4>
+        <!-- <p class="card-category">Add a Notice</p> -->
+      </div>
+      <div class="card-body mt-2">
+          <p>Shout Carts</p>
+          <button mat-raised-button class="btn btn-warning" [routerLink]="['/routine/subject-add']">
+            <mat-icon>add</mat-icon> Sub Add Classwise
+          </button>
+          <button mat-raised-button class="btn btn-success mce-btn-large" [routerLink]="['/routine/create']">
+            <mat-icon>add</mat-icon>Priods against Shift
+          </button>
+          <button mat-raised-button class="btn btn-primary" [routerLink]="['/routine/class-assign']">
+            <mat-icon>schedule</mat-icon> Create Routine
+          </button>
+          <button mat-raised-button class="btn btn-primary" [routerLink]="['/routine/view']">
+            <mat-icon>schedule</mat-icon> View Routine
+          </button>
+          <button mat-raised-button class="btn btn-warning" [routerLink]="['/routine/cource-subject']">
+            <mat-icon>schedule</mat-icon> Cource Subject
+          </button>
+        <hr>
+          
+      </div>
+    </div>
+  </div>

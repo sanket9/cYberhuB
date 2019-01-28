@@ -1,0 +1,111 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">        
+          All Books     
+      </li>
+    
+      <li class="float-right">
+        
+      </li>
+    </ol>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row page-title">
+      <div class="col-md-12 col-md-offset-1">
+        <button mat-raised-button [routerLink]="['/library/add-book']">
+          <mat-icon>add</mat-icon> Add a Book
+        </button>
+        <div class="example-header">
+          <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter Data..">
+          </mat-form-field>
+        </div>
+        <mat-table #table [dataSource]="dataSource">
+          <!-- Checkbox Column -->
+          <!-- <ng-container matColumnDef="select">
+                <mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                  </mat-checkbox>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                  </mat-checkbox>
+                </mat-cell>
+              </ng-container> -->
+
+            <!-- Position Column -->
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </mat-cell>
+          </ng-container>
+        
+          <!-- Name Column -->
+          
+          <ng-container matColumnDef="bookname">
+            <mat-header-cell *matHeaderCellDef> Book Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.book_name}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="author">
+            <mat-header-cell *matHeaderCellDef> Author Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.author}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="publisher_name">
+            <mat-header-cell *matHeaderCellDef> Publishar Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.publisher_name}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="no_copy">
+            <mat-header-cell *matHeaderCellDef> Copy Left </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{(element.no_copy - element.book_for_out)}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="isbn_code">
+            <mat-header-cell *matHeaderCellDef> ISBN_no </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.isbn_code}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="place_of_pub">
+            <mat-header-cell *matHeaderCellDef> ISBN_no </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.place_of_pub}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="year_of_pub">
+            <mat-header-cell *matHeaderCellDef> ISBN_no </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.year_of_pub}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="edition">
+            <mat-header-cell *matHeaderCellDef> ISBN_no </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.edition}} </mat-cell>
+          </ng-container>
+          
+          <!-- Name Actions -->
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <button mat-icon-button type="button" matTooltip="Edit this" 
+              [matTooltipPosition]="'above'" 
+              class="btn btn-link btn-sm btn-just-icon" (click)="selectStaff(element.id)">
+                <i class="material-icons">edit</i>
+              </button>
+              <!-- <button mat-icon-button >
+                <mat-icon>remove_red_eye</mat-icon>
+              </button> -->
+            </mat-cell>
+          </ng-container>
+        
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          
+        </mat-table>
+        <mat-paginator #paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 25, 50,100]">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>
