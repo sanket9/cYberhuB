@@ -16,28 +16,48 @@
     <!-- <div class="row page-title"> -->
     <!-- </div> -->
     <app-loader [show]="showloader"></app-loader>
+    <div class="row">
+    <div class="col-md-6">
     <div class="card">
       <div class="card-header card-header-danger">
         <h4 class="card-title">Add Notice</h4>
         <p class="card-category">Add a Notice</p>
       </div>
+
       <div class="card-body mt-4">
         <form id="add-notice-form" [formGroup]="addNoticeForm" (ngSubmit)="onAddNoticeSubmit()">
           <div class="row">
+
             <div class="col-md-12">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Title" type="text" name="title" formControlName="title" />
+                <input matInput placeholder="Title" type="text" name="title" formControlName="title"/>
               </mat-form-field>
             </div>
 
             <div class="col-md-12">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Subject" type="text" name="subject" formControlName="subject" />
+                <input matInput placeholder="Subject" type="text" name="subject" formControlName="subject"/>
               </mat-form-field>
             </div>
 
-            <div class="col-md-6" >
-                <mat-form-field>                      
+            <div class="col-md-12">
+              <mat-form-field class="example-full-width m-0 p-0">
+                <input matInput [matDatepicker]="picker1" placeholder="Choose from date" formControlName="fromDate">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-12">
+              <mat-form-field class="example-full-width m-0 p-0">
+                <input matInput [matDatepicker]="picker2" placeholder="Choose to date" formControlName="toDate">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-12">
+                <mat-form-field class="example-full-width">                      
                     <mat-select placeholder="Select Description Type" (change)="onChooseDescType($event)"> 
                       <mat-option [value]="1">
                         Add Description
@@ -63,7 +83,7 @@
             </div>
 
             <div class="col-sm-12">
-              <div class="example-full-width">
+              <div class="">
                 <button mat-raised-button type="submit" class="btn btn-success pull-right">Submit</button>
               </div>
             </div>
@@ -71,5 +91,7 @@
           </div>
         </form>
       </div>
+    </div>
+    </div>
     </div>
   </div>

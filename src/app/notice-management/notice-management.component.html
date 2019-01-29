@@ -17,7 +17,30 @@
 
 
 
-  <div class="p-0 m-0">  
+  <div class="container-fluid">
+
+      <mat-grid-list gutterSize="10px" cols="4" rowHeight="1:1">
+
+        <mat-grid-tile>
+            <mat-card class="example-card">
+                <a [routerLink]="['/notice-management/notice-type']">
+                  <mat-card-content class="text-center">
+                    <p class="">
+                      <i class="material-icons add-ico-font text-muted">add</i>
+                    </p> 
+                    <p class="add-text text-muted">ADD</p> 
+                  </mat-card-content> 
+                </a>
+            </mat-card>        
+        </mat-grid-tile>
+
+      </mat-grid-list>      
+
+  </div>
+
+
+
+  <div class="container-fluid">  
       <p class="m-0 p-0">Filter by Date : </p>
 
       <mat-form-field class="w-25 m-0 p-0">
@@ -42,9 +65,9 @@
   <div class="container-fluid">
 
     <!-- <div class="row page-title">       -->
-      <mat-grid-list gutterSize="10px" cols="4" rowHeight="1:1">
+      <mat-grid-list gutterSize="10px" cols="4" rowHeight="10em">
 
-        <mat-grid-tile>
+        <!-- <mat-grid-tile>
             <mat-card class="example-card">
                 <a [routerLink]="['/notice-management/notice-type']">
                   <mat-card-content class="text-center">
@@ -55,7 +78,7 @@
                   </mat-card-content> 
                 </a>
             </mat-card>        
-        </mat-grid-tile>
+        </mat-grid-tile> -->
 
         <mat-grid-tile *ngFor="let notice of noticeList">
           <mat-card class="example-card">
@@ -73,7 +96,7 @@
             <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
             <!-- <a [routerLink]="['/notice-management/notice-type']"> -->
             <mat-card-content>
-              <p class="ml-2">{{notice.text}}</p> 
+              <p class="ml-2">{{(notice.text.length > 20)? (notice.text | slice:0:20)+'..':(str)}}</p> 
             </mat-card-content> 
             <!-- </a> -->
             <mat-card-actions>

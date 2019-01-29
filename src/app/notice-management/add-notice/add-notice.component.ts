@@ -25,6 +25,8 @@ export class AddNoticeComponent implements OnInit {
   addNoticeForm: FormGroup;
   title: FormControl;
   subject: FormControl;
+  fromDate: FormControl;
+  toDate: FormControl;
   text: FormControl;
   file_url: FormControl;
   file: File;
@@ -75,6 +77,8 @@ export class AddNoticeComponent implements OnInit {
   createFormControls() {
     this.title = new FormControl("", [Validators.required]);
     this.subject = new FormControl("", [Validators.required]);
+    this.fromDate = new FormControl("", [Validators.required]);
+    this.toDate = new FormControl("", [Validators.required]);
     this.text = new FormControl("", [Validators.required]);
     // this.file_url = new FormControl("", []);
   }
@@ -90,6 +94,8 @@ export class AddNoticeComponent implements OnInit {
     this.addNoticeForm = new FormGroup({
       title: this.title,
       subject: this.subject,
+      fromDate: this.fromDate,
+      toDate: this.toDate,
       text: this.text
       // file_url: this.file_url
     });
