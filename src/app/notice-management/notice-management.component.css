@@ -14,11 +14,11 @@
     margin: 0px !important;
 }
 
-.mat-card{
+.mat-card {
     padding: 15px !important;
 }
 
-.mat-card-header.mat-card-title{
+.mat-card-header.mat-card-title {
     font-size: 18px !important;
 }
 
@@ -35,6 +35,6 @@
     padding: 0px !important;
 }
 
-.cursor{
+.cursor {
   cursor: pointer !important;
 }

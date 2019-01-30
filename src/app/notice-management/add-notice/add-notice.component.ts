@@ -25,8 +25,8 @@ export class AddNoticeComponent implements OnInit {
   addNoticeForm: FormGroup;
   title: FormControl;
   subject: FormControl;
-  fromDate: FormControl;
-  toDate: FormControl;
+  startDate: FormControl;
+  endDate: FormControl;
   text: FormControl;
   file_url: FormControl;
   file: File;
@@ -77,8 +77,8 @@ export class AddNoticeComponent implements OnInit {
   createFormControls() {
     this.title = new FormControl("", [Validators.required]);
     this.subject = new FormControl("", [Validators.required]);
-    this.fromDate = new FormControl("", [Validators.required]);
-    this.toDate = new FormControl("", [Validators.required]);
+    this.startDate = new FormControl("", [Validators.required]);
+    this.endDate = new FormControl("", [Validators.required]);
     this.text = new FormControl("", [Validators.required]);
     // this.file_url = new FormControl("", []);
   }
@@ -94,9 +94,9 @@ export class AddNoticeComponent implements OnInit {
     this.addNoticeForm = new FormGroup({
       title: this.title,
       subject: this.subject,
-      fromDate: this.fromDate,
-      toDate: this.toDate,
-      text: this.text
+      startDate: this.startDate,
+      endDate: this.endDate,
+      text: this.text,
       // file_url: this.file_url
     });
   }
@@ -112,8 +112,6 @@ export class AddNoticeComponent implements OnInit {
   onAddNoticeSubmit() {
     this.showloader = true;
     let addNoticeFormData = this.addNoticeForm.value;
-
-    console.log('selected file : ', this.file);
 
     let header = new Headers();
     header.append("Content-Type", "multipart/form-data");
@@ -137,13 +135,14 @@ export class AddNoticeComponent implements OnInit {
     fd.append("title", addNoticeFormData.title);
     fd.append("subject", addNoticeFormData.subject);
     fd.append("text", addNoticeFormData.text);
+    fd.append("start_date", this.getFullDate(addNoticeFormData.startDate));
+    fd.append("end_date", this.getFullDate(addNoticeFormData.endDate));
     fd.append("file", this.file);
 
-    console.log(fd);
 
     this.http.post(`${environment.apiUrl}notice/addnotice`, fd).map((res)=>res.json())
     .subscribe(data => {
-      console.log('Got some data from backend ', data);
+      // console.log('Got some data from backend ', data);
       if(data){
         this.showloader = false;
         this.notification.showNotification(
@@ -152,6 +151,8 @@ export class AddNoticeComponent implements OnInit {
           "success",
           "Success, Notice Added Successfully."
         );
+        this.addNoticeForm.reset();
+        this.router.navigate(['/notice']);
       }else{
         this.showloader = false;
         this.notification.showNotification(
@@ -191,5 +192,35 @@ export class AddNoticeComponent implements OnInit {
       this.showFileUpload = true;
       this.showDescription = false;
     }
+  }
+
+
+
+
+// ########################################################################
+// ----------- get full year method -----------
+// ########################################################################
+  getFullDate(today) {
+    // var today = new Date();
+    var dd = today.getDate().toString();
+    var mm = today.getMonth().toString();
+    var monthNum = mm + 1;
+    var yyyy = today.getFullYear();
+    // var returnDate;
+
+    // console.log('length : ', dd.length);
+    if (dd.length < 1) {   
+      dd = '0' + dd;
+      // console.log(dd);    
+    }
+
+    // console.log('length : ', monthNum.length);
+    if (monthNum.length < 1) {
+      monthNum = '0' + monthNum;
+      // console.log(monthNum);
+    }
+
+    // console.log(yyyy + '-' + monthNum + '-' + dd);  
+    return yyyy + '-' + monthNum + '-' + dd;    
   }
 }

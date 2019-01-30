@@ -18,24 +18,9 @@
 
 
   <div class="container-fluid">
-
-      <mat-grid-list gutterSize="10px" cols="4" rowHeight="1:1">
-
-        <mat-grid-tile>
-            <mat-card class="example-card">
-                <a [routerLink]="['/notice-management/notice-type']">
-                  <mat-card-content class="text-center">
-                    <p class="">
-                      <i class="material-icons add-ico-font text-muted">add</i>
-                    </p> 
-                    <p class="add-text text-muted">ADD</p> 
-                  </mat-card-content> 
-                </a>
-            </mat-card>        
-        </mat-grid-tile>
-
-      </mat-grid-list>      
-
+    <div class="example-full-width mb-4">
+      <button mat-raised-button type="button" class="btn btn-primary" [routerLink]="['/notice-management/notice-type']">Add Notice</button>
+    </div>
   </div>
 
 
