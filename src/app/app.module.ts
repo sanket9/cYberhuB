@@ -29,6 +29,7 @@ import { AuthGuard } from "./auth.guard";
 import { Ng2Webstorage } from "ngx-webstorage";
 import { ClassListComponent } from './class-list/class-list.component';
 import { ViewExamComponent } from './view-exam/view-exam.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { ViewExamComponent } from './view-exam/view-exam.component';
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    CKEditorModule,
     // AgmCoreModule.forRoot({
     //   apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     // })

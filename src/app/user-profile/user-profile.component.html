@@ -8,7 +8,8 @@
                 </div>
             </div>
         </div> -->
-     
+        <app-loader [show]="showloader"></app-loader>
+
       <div class="row">
           <div class="col-md-8">
               <div class="card">
@@ -31,7 +32,7 @@
                               </div>
                               <div class="col-md-4">
                                   <mat-form-field class="example-full-width">
-                                    <input matInput placeholder="Email address" type="text" formControlName="adhar" name="adhar">
+                                    <input matInput placeholder="Adhar no" type="text" formControlName="adhar" name="adhar">
                                   </mat-form-field>
                               </div>
                           </div>
@@ -96,19 +97,50 @@
               <div class="card card-profile">
                   <div class="card-avatar">
                       <a href="#pablo">
-                          <img class="img" src="../assets/img/faces/marc.jpg" />
+                          <img class="img" [src]="userDetail?.stafftmaster?.orgmaster?.org_logo" />
                       </a>
                   </div>
                   <div class="card-body">
                       <h6 class="card-category text-gray">Princepal</h6>
-                      <h4 class="card-title">Alec Thompson</h4>
-                      <p class="card-description">
-                          Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                      <h4 class="card-title">{{userDetail?.stafftmaster?.name}}</h4>
+                      <p class="card-description" [innerHTML]="userDetail?.stafftmaster?.orgmaster?.org_about">
                       </p>
-                      <button class="btn btn-danger btn-round">Follow</button>
                   </div>
               </div>
           </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header card-header-danger">
+              <h4 class="card-title">College Details</h4>
+              <p class="card-category">Complete your profile</p>
+            </div>
+            <div class="card-body">
+              <form *ngIf="schooldetailsFrm" [formGroup]="schooldetailsFrm">
+                <div class="row">
+                  <div class="col-md-5">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="School Name" name="schcool_name" formControlName="schcool_name">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="College Phone" formControlName="collg_phone" name="collg_phone">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Website" type="text" formControlName="collg_web" name="collg_web">
+                    </mat-form-field>
+                  </div>
+                  <ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
+
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
   </div>
 </div>

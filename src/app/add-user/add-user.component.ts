@@ -10,6 +10,7 @@ import "rxjs/add/observable/of";
 import { log } from 'util';
 declare const $: any;
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
+import {weak} from '../components/config';
 
 @Component({
   selector: "app-add-user",
@@ -41,6 +42,9 @@ export class AddUserComponent implements OnInit {
   orgShiftLists: any;
   shift: any;
   filteredStaff: any;
+  weak: any[] = weak;
+  day_id;
+  class_taken;
   constructor(
     public router: Router,
     public http: Http,
@@ -291,17 +295,18 @@ export class AddUserComponent implements OnInit {
       this.username = this.result.user_name;
       this.dept_id = this.result.dept_id;
       this.rolecattype = this.result.role_cat_id;
-
+      this.class_taken = this.result.week_total_count_class;
+      this.day_id = this.result.week_rest_day
       let rolecats = this.rolecats.find(ele => ele.id == this.rolecattype);
       // console.log(rolecats);
       rolecats.parent_id
-        ? (this.techingtype = rolecats.parent_id)   
+        ? (this.techingtype = rolecats.parent_id)
         : (this.techingtype = 0);
 
       this.techingtype = rolecats.parent_id;
       this.techingtypefilter(this.techingtype);
-    // console.log(this.techingtype);
-   
+      // console.log(this.techingtype);
+
       this.logDetails.user = {
         id: this.result.id,
         name: this.result.name,
@@ -312,8 +317,6 @@ export class AddUserComponent implements OnInit {
       alert("Please Choose a Possition");
       return false;
     }
-
-    
   }
   techingtypefilter(value) {
     this.roleSubcats = this.rolecats.filter(data => data.parent_id == value);
@@ -356,9 +359,11 @@ export class AddUserComponent implements OnInit {
         dept_id: this.dept_id,
         rolecattype: this.rolecattype,
         fname: this.fname,
-        lname: this.lname
+        lname: this.lname,
+        class_taken: this.class_taken,
+        day: this.day_id
       };
-      console.log(data);
+      //console.log(data);
 
       this.http
         .post(`${environment.apiUrl}user/updatestaff`, data)

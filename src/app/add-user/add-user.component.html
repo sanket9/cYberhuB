@@ -128,6 +128,22 @@
                             </mat-select>
                           </mat-form-field>
                         </div>
+                        <div class="col-md-3">
+                          <mat-form-field>
+                            <mat-select placeholder="Select a Day" name="day_id" [(ngModel)]="day_id">
+                          
+                              <mat-option *ngFor="let day of weak" value="{{day.id}}">
+                                {{ day.name }}
+                              </mat-option>
+                          
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                          <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Total Call Taken in a Week" name="class_taken" [(ngModel)]="class_taken">
+                          </mat-form-field>
+                        </div>
                       </div>
                       <button mat-raised-button class="btn btn-light" (click)="updateData()">Save</button>
                     </mat-card>

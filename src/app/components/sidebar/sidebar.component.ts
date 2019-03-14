@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, RequestOptions, Headers } from '@angular/http';
 import { environment } from "../../../environments/environment.prod";
+import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 
 import "rxjs/add/observable/of";
 
@@ -26,28 +27,50 @@ export const ROUTES: RouteInfo[] = [
 ];
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  selector: "app-sidebar",
+  templateUrl: "./sidebar.component.html",
+  styleUrls: ["./sidebar.component.css"]
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
-
-    constructor(public http: Http) { }
+  org_code;
+  orgDetails;
+  constructor(public http: Http, public sessionStore: SessionStorageService) {}
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
     // this.getRouts();
-    
+    this.org_code = this.sessionStore.retrieve("user-data")[0].org_code;
+    this.getOrgdetails();
   }
-//   getRouts(){
-//       this.http.get(`${environment.apiUrl}role/addpermission`);
-//   }
+  //   getRouts(){
+  //       this.http.get(`${environment.apiUrl}role/addpermission`);
+  //   }
   isMobileMenu() {
-      if ($(window).width() > 991) {
-          return false;
-      }
-      return true;
-  };
-
+    if ($(window).width() > 991) {
+      return false;
+    }
+    return true;
+  }
+  getOrgdetails() {
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+    let data = {
+      org_id: this.org_code
+    };
+    this.http
+      .post(`${environment.apiUrl}org/getdetail`, data)
+      .map(res => res.json())
+      .subscribe(
+        data => {
+          // console.log(data);
+          this.orgDetails = data.data;
+          console.log(this.orgDetails);
+          
+        }
+        // error => {
+        //   console.log("Error! ", error);
+        // }
+      );
+  }
 }

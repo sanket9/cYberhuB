@@ -370,6 +370,8 @@ getClassList(){
     }
 
     this.filteredArrayForSectionList = this.sortArray.filter((element)=> {
+      // console.log(element);
+      
       return element.class_id == e.value;
     });
    
@@ -378,7 +380,7 @@ getClassList(){
       this.filteredArrayForSectionList.unshift({ sec_id: "all", section_name: "All"});
     }  
 
-    // console.log('filter section array : ', this.filteredArrayForSectionList);
+    console.log('filter section array : ', this.filteredArrayForSectionList);
   }
 
 
@@ -466,10 +468,12 @@ getClassList(){
 
     if(arr.selectedSections.length > 0){
 
+      console.log("Here.");
       if(arr.selectedSections[0].class_id == "all" || arr.selectedSections[0].class_name == "Arts" || arr.selectedSections[0].class_name == "Science"){
         arr.selectedSections.forEach(element => {
           if(element.class_id != "all"){
             if(element.sections.length > 0){
+              
               element.sections.forEach(ele => {
                 if(ele.sec_id != "all"){
                   this.sendSelectData.sections.push(ele.classSectionIndexId);
@@ -521,41 +525,45 @@ getClassList(){
 // ########################################################################
   createSortArray(arr){
     // var rs = 1;
+    var d = new Date;
     arr.forEach(ele => {
+      if (ele.year == d.getFullYear()) {
 
-      var obj = {
-        class_id: ele.class_id,
-        sec_id: ele.sec_id,
-        class_name: ele.class.class_name,
-        shift_id: ele.org_shift_id,
-        sections: [
-          {
+        var obj = {
+          class_id: ele.class_id,
+          sec_id: ele.sec_id,
+          class_name: ele.class.class_name,
+          shift_id: ele.org_shift_id,
+          sections: [
+            {
+              section_name: ele.section.sec_name,
+              sec_id: ele.sec_id,
+              classSectionIndexId: ele.id
+            }
+          ]
+        }
+
+        let check_exist = this.sortArray.filter((element) => {
+          return element.class_id == ele.class_id;
+        });
+
+        if (check_exist.length > 0) {
+          // console.log('exist');
+          let i = this.sortArray.indexOf(check_exist[0]);
+          this.sortArray.splice(i, 1);
+
+          check_exist[0].sections.push({
             section_name: ele.section.sec_name,
             sec_id: ele.sec_id,
             classSectionIndexId: ele.id
-          }
-        ]
+          });
+
+          this.sortArray.push(check_exist[0]);
+        } else {
+          this.sortArray.push(obj);
+        }
       }
-
-      let check_exist = this.sortArray.filter((element)=> {
-        return element.class_id == ele.class_id;
-      });
-
-      if(check_exist.length > 0){
-        // console.log('exist');
-        let i = this.sortArray.indexOf(check_exist[0]);
-        this.sortArray.splice(i,1); 
-
-        check_exist[0].sections.push({
-          section_name: ele.section.sec_name,
-          sec_id: ele.sec_id,
-          classSectionIndexId: ele.id
-        });
-
-        this.sortArray.push(check_exist[0]);       
-      }else{
-        this.sortArray.push(obj);
-      }
+      
     });
     // console.log(this.sortArray);    
   }

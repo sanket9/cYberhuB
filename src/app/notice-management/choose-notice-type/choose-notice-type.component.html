@@ -95,7 +95,7 @@
                             <mat-select placeholder="Select Section" (change)="onChooseSection($event)" multiple>
                               <!-- <mat-option [value]="all">All</mat-option> -->
                               <ng-container *ngFor="let sec of filteredArrayForSectionList">       
-                                <mat-option [value]="sec.sec_id">
+                                <mat-option [value]="sec.classSectionIndexId">
                                   {{sec.section_name}}
                                 </mat-option>
                               </ng-container>                              

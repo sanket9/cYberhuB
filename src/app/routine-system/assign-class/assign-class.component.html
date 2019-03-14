@@ -8,7 +8,12 @@
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        Notice Mangament
+        <a [routerLink]="['/routine/index']" class="text-gray">
+          Routine
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Add
       </li>
     </ol>
   </nav>
@@ -117,16 +122,17 @@
               </div>
               <div class="col-md-3">
                 <mat-form-field>
-                  <mat-select placeholder="Choose a Teacher" name="teacher_id" formControlName="teacher_id">
+                  <mat-select placeholder="Choose a Teacher" name="teacher_id" formControlName="teacher_id" (change)="teacherOnchange($event)">
                     <mat-option *ngFor="let techer of teachers" [value]="techer.id">
                       {{ techer.short_name }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
+                <p *ngIf="remainClass">Class Remain:- <span style="color:brown">{{remainClass}}</span> </p>
               </div>
               <div class="col-md-3">
                 <mat-form-field>
-                  <mat-select placeholder="Choose a Room" formControlName="room_id" name="teacher_id">
+                  <mat-select placeholder="Choose a Room" formControlName="room_id" name="teacher_id" >
                     <mat-option *ngFor="let room of org_rooms" [value]="room.id">
                       {{ room.name }}
                     </mat-option>
@@ -135,7 +141,7 @@
               </div>
             </div>
           </div>
-          <button type="submit" >Submit</button>
+          <button type="submit" mat-button class="btn btn-primary pb-3">Submit</button>
         </form>
 
 

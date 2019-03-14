@@ -17,7 +17,7 @@
             <p class="tip text-light">Login With Username and Password</p>
           </div>          
           <div class="card-form">
-            <p class="text-center text-danger" *ngIf="showErrors">Email or Password Not Match</p>
+            <p class="text-center text-danger" *ngIf="showErrors">{{errMsg}}</p>
             <form [formGroup]="loginForm">
               <div class="form-row">
                 <i class="material-icons">email</i>

@@ -15,6 +15,7 @@ import { NotificationService } from '../../services/notification.service';
 // import { BrowserModule } from '@angular/platform-browser';
 import { ComponentsModule } from "../../components/components.module";
 import { HttpModule } from "@angular/http";
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 import {
   MatFormFieldModule,
@@ -64,6 +65,7 @@ import {
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    CKEditorModule
   ],
 
   declarations: [

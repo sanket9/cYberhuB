@@ -1,9 +1,10 @@
 <div class="logo">
-    <a href="" class="simple-text">
-        <div class="logo-img">
-            <img src="/assets/img/inunco-dark.png"/>
-        </div>
-        School Name
+    <!-- <div class="logo-img" style="max-height: 0px !important">
+        
+    </div> -->
+    <img style="width: 33%; display: block; margin: 0 auto" [src]="orgDetails && orgDetails[0].org_logo" />
+    <a [routerLink]="['/dashboard']" style="font-size: 15px" class="simple-text">
+        {{orgDetails && orgDetails[0].org_name}}
     </a>
 </div>
 <div class="sidebar-wrapper">

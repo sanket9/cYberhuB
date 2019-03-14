@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   password: FormControl;
   loading: boolean = false;
   showErrors: boolean = false;
-
+  errMsg: string;
 
   constructor(
     public router: Router,
@@ -82,9 +82,17 @@ export class LoginComponent implements OnInit {
         if (data.data.length == 0) {
           this.showErrors = true;
           this.loading = false;
+          this.errMsg = "Email or Password Not Match"
         } else if (data.data.length > 0) {
-          this.router.navigate(["dashboard"]);
-          this.SessionStore.store("user-data", data.data);
+          if (data.data[0].user_type_id == 2 || data.data[0].user_type_id == 1) {
+            
+            this.router.navigate(["dashboard"]);
+            this.SessionStore.store("user-data", data.data);
+          }else{
+            this.showErrors = true;
+            this.loading = false;
+            this.errMsg = "Not Authorized to Access this Loction."
+          }
         }
       });
     // this.router.navigate(["dashboard"]);

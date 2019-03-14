@@ -67,6 +67,7 @@ export class AssignClassComponent implements OnInit {
   rutineDetails;
   allsems;
   Finaldepts;
+  remainClass;
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -325,6 +326,7 @@ export class AssignClassComponent implements OnInit {
         this.showloader = false;
         console.log(data);
         if (!data.error && data.data) {
+          this.remainClass -= 1;
           this.notification.showNotification(
             "top",
             "right",
@@ -393,5 +395,17 @@ export class AssignClassComponent implements OnInit {
         this.rutineDetails = new_arry;
         console.log(this.rutineDetails);
       });
+  }
+
+  teacherOnchange($e) {
+    let teacher = this.teachers.filter(data => data.id == $e.value);
+    let {
+      week_total_count_class,
+      assigned_week_total_count_class
+    } = teacher[0];
+    let remain = week_total_count_class - assigned_week_total_count_class;
+    this.remainClass = remain;
+  
+    //console.log(week_total_count_class, assigned_week_total_count_class);
   }
 }

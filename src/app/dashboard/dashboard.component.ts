@@ -100,7 +100,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.org_code = this.sessionStore.retrieve("user-data")[0].org_code;
-
     this.getShiftsNames();
     this.getExamTypeNames();
     this.getClassSection();
@@ -212,7 +211,7 @@ export class DashboardComponent implements OnInit {
         this.shiftLists = data.data;
       });
   }
-
+  
   // shift change function
   shiftchange(e, id) {
     // console.log(this.checkedBtn);
@@ -328,7 +327,7 @@ export class DashboardComponent implements OnInit {
         .map(res => res.json())
         .subscribe(
           data => {
-            console.log("After exam add success :", data);
+            //console.log("After exam add success :", data);
             this.getExamTypeNames();
           },
           error => {
@@ -370,7 +369,7 @@ export class DashboardComponent implements OnInit {
       .post(`${environment.apiUrl}classsection/getall`, data)
       .map(res => res.json())
       .subscribe(data => {
-        console.log("Org class/stream list ", data.data);
+        // console.log("Org class/stream list ", data.data);
         this.orgClassSectionList = data.data;
         this.createSortArray(this.orgClassSectionList);
       });
@@ -397,7 +396,7 @@ export class DashboardComponent implements OnInit {
       });
 
       if (check_exist.length > 0) {
-        console.log("exist");
+        // console.log("exist");
         let i = this.sortArray.indexOf(check_exist[0]);
         this.sortArray.splice(i, 1);
         check_exist[0].rs += check_exist[0].rs;
@@ -441,7 +440,7 @@ export class DashboardComponent implements OnInit {
   // }
 
   onDeleteSection(id) {
-    console.log(id);
+    // console.log(id);
     let header = new Headers();
     header.set("Content-Type", "application/json");
 
@@ -473,7 +472,7 @@ export class DashboardComponent implements OnInit {
       .post(`${environment.apiUrl}coursecat/getall`, data)
       .map(res => res.json())
       .subscribe(data => {
-        console.log(data);
+        // console.log(data);
         if (data.data) {
           this.showloader = false;
           this.courseCats = data.data;

@@ -9,7 +9,7 @@ import {
   NgForm,
   Validators,
   FormGroupDirective,
-  FormArray
+  FormArray,
 } from "@angular/forms";
 @Component({
   selector: "app-user-profile",
@@ -21,6 +21,7 @@ export class UserProfileComponent implements OnInit {
   showloader: boolean = false;
 
   userdetailsFrm: FormGroup;
+  schooldetailsFrm: FormGroup
   f_name: FormControl;
   l_name: FormControl;
   phone: FormControl;
@@ -74,16 +75,35 @@ export class UserProfileComponent implements OnInit {
         Validators.required
       ]),
       qualification: new FormControl(
-        this.userDetail.stafftmaster.qualification,
-        [Validators.required]
+        this.userDetail.stafftmaster.qualification
       ),
-      adhar: new FormControl(this.userDetail.stafftmaster.adhar, [
-        Validators.required
-      ]),
-      username: new FormControl(this.userDetail.username, [
+      adhar: new FormControl(this.userDetail.stafftmaster.adhar),
+      username: new FormControl({
+        value: this.userDetail.username, disabled: true},  [
         Validators.required
       ])
     });
+
+    this.schooldetailsFrm = new FormGroup({
+      schcool_name: new FormControl(
+          {value : this.userDetail.stafftmaster.orgmaster.org_name, disabled: true},
+          [
+            Validators.required
+          ]
+        ),
+      collg_phone: new FormControl(
+        this.userDetail.stafftmaster.orgmaster.phone_no,
+        [
+          Validators.required
+        ]
+      ),
+      collg_web: new FormControl(
+        this.userDetail.stafftmaster.orgmaster.website,
+        [
+          Validators.required
+        ]
+      ),
+    })
   }
 
   async getdetails() {
@@ -98,7 +118,8 @@ export class UserProfileComponent implements OnInit {
       .post(`${environment.apiUrl}user/user-details`, data, options)
       .map(res => res.json())
       .subscribe(async data => {
-        console.log("from get details : ", data.data[0]);
+        this.showloader = false;
+        // console.log("from get details : ", data.data[0]);
         if (data.data[0]) {
           this.userDetail = await data.data[0];  
           if (this.userDetail){
@@ -108,4 +129,7 @@ export class UserProfileComponent implements OnInit {
         }
       });
   }
+
+
+  
 }
