@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "5.2.9",
     "@angular/platform-server": "5.2.9",
     "@angular/router": "5.2.9",
+    "@ckeditor/ckeditor5-angular": "^1.0.1",
     "@types/csvtojson": "^1.1.5",
     "ajv": "6.4.0",
     "amazing-time-picker": "^1.8.0",
