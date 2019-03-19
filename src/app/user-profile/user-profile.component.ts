@@ -29,6 +29,10 @@ export class UserProfileComponent implements OnInit {
   adhar: FormControl;
   qualification: FormControl;
   username: FormControl;
+  showInfoEditSection: boolean = false;
+  showOrgInfo: boolean = true;
+
+  orgInfo: any;
 
   // userdetailsForm;
   constructor(
@@ -84,6 +88,9 @@ export class UserProfileComponent implements OnInit {
       ])
     });
 
+
+
+
     this.schooldetailsFrm = new FormGroup({
       schcool_name: new FormControl(
           {value : this.userDetail.stafftmaster.orgmaster.org_name, disabled: true},
@@ -103,8 +110,64 @@ export class UserProfileComponent implements OnInit {
           Validators.required
         ]
       ),
-    })
+
+      collg_email: new FormControl(
+        this.userDetail.stafftmaster.orgmaster.email,
+        [
+          Validators.required
+        ]
+      ),
+
+      collg_landmark: new FormControl(
+        this.userDetail.stafftmaster.orgmaster.landmark,
+        [
+          Validators.required
+        ]
+      ),
+
+      collg_city: new FormControl(
+        this.userDetail.stafftmaster.orgmaster.org_city,
+        [
+          Validators.required
+        ]
+      ),
+
+      collg_country: new FormControl(
+        this.userDetail.stafftmaster.orgmaster.org_country,
+        [
+          Validators.required
+        ]
+      ),
+
+
+      collg_pin: new FormControl(
+        this.userDetail.stafftmaster.orgmaster.pin,
+        [
+          Validators.required
+        ]
+      ),
+
+      collg_reg: new FormControl(
+        {value : this.userDetail.stafftmaster.orgmaster.org_reg, disabled: true},
+        [ Validators.required ]
+      ),
+
+      // affi_name
+      // collg_affi: new FormControl(
+      //   this.userDetail.stafftmaster.orgmaster.affi_name,
+      //   [
+      //     Validators.required
+      //   ]
+      // ),
+      
+    });
+
   }
+
+
+
+
+
 
   async getdetails() {
     this.showloader = true;
@@ -119,16 +182,32 @@ export class UserProfileComponent implements OnInit {
       .map(res => res.json())
       .subscribe(async data => {
         this.showloader = false;
-        // console.log("from get details : ", data.data[0]);
+        console.log("college details : ", data.data[0]);
         if (data.data[0]) {
           this.userDetail = await data.data[0];  
           if (this.userDetail){
             // this.createFormControl();
+            this.orgInfo = this.userDetail.stafftmaster.orgmaster.org_about;
             this.createFormGroup();
           }     
         }
       });
   }
+
+
+
+
+
+
+  editOrgInfo() {
+    this.showInfoEditSection = true;
+    this.showOrgInfo = false;
+
+
+  }
+
+
+
 
 
   
