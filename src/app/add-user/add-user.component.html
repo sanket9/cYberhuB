@@ -87,14 +87,14 @@
                         
                         <div class="col-md-3">
                           <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Username" name="username" [(ngModel)]="username">
+                            <input matInput readonly placeholder="Username" name="username" [(ngModel)]="username">
                           </mat-form-field>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-3">
                           <mat-form-field>
-                            <mat-select placeholder="Select a Teaching Types" (change)="techingtypechange($event)" name="techingtype" [(ngModel)]="techingtype">
+                            <mat-select placeholder="Select an Employee Types" (change)="techingtypechange($event)" name="techingtype" [(ngModel)]="techingtype">
                               <mat-option value=0>---Select One--</mat-option>
                               <ng-container *ngFor="let rolecat of rolecats" >
                                 
@@ -108,7 +108,7 @@
                         </div>
                         <div class="col-md-3">
                           <mat-form-field>
-                            <mat-select placeholder="Select a Teaching Types" name="rolecattypes" [(ngModel)]="rolecattype">
+                            <mat-select placeholder="Select a Staff Roll" name="rolecattypes" [(ngModel)]="rolecattype">
                                 <mat-option value=0>---Select One--</mat-option>
                                 <mat-option *ngFor="let rolecat of roleSubcats" value="{{rolecat.id}}">
                                   {{ rolecat.name }}
@@ -130,7 +130,7 @@
                         </div>
                         <div class="col-md-3">
                           <mat-form-field>
-                            <mat-select placeholder="Select a Day" name="day_id" [(ngModel)]="day_id">
+                            <mat-select placeholder="Select Rest-day of Employee" name="day_id" [(ngModel)]="day_id">
                           
                               <mat-option *ngFor="let day of weak" value="{{day.id}}">
                                 {{ day.name }}
@@ -141,7 +141,7 @@
                         </div>
                         <div class="col-md-3">
                           <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Total Call Taken in a Week" name="class_taken" [(ngModel)]="class_taken">
+                            <input matInput placeholder="Total Class Taken in a Week" name="class_taken" [(ngModel)]="class_taken">
                           </mat-form-field>
                         </div>
                       </div>
@@ -248,8 +248,8 @@
             <button id="nextBtn" class="btn btn-success green-a200" 
               *ngIf="tabIndex == 0"
               
-            (click)="nextOnClick()">Next1</button>
-            <button id="nextBtn" class="btn btn-success green-a200" *ngIf="tabIndex == 1" (click)="nextOnClick()">Next2</button>
+            (click)="nextOnClick()">Next</button>
+            <button id="nextBtn" class="btn btn-success green-a200" *ngIf="tabIndex == 1" (click)="nextOnClick()">Next</button>
             <button *ngIf="tabIndex == 2" class="btn btn-success float-right" (click)="finish()">Finish</button>
           </div>
         </div>

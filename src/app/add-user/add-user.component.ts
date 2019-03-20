@@ -101,12 +101,12 @@ export class AddUserComponent implements OnInit {
       this.tabIndex--;
       moveTab.style.left = screenWidth > 990 ? "22vw" : "30vw";
       nextBtn.style.visibility = "visible";
-      moveTab.innerHTML = "Account";
+      moveTab.innerHTML = "Permissions";
     } else if (this.tabIndex === 1) {
       this.tabIndex--;
       moveTab.style.left = "-1vw";
       preBtn.style.visibility = "hidden";
-      moveTab.innerHTML = "About";
+      moveTab.innerHTML = "Select Staff";
     }
     (<HTMLElement>tabs[this.tabIndex]).style.display = "inherit";
   }
@@ -124,12 +124,12 @@ export class AddUserComponent implements OnInit {
       this.tabIndex++;
       moveTab.style.left = screenWidth > 990 ? "22vw" : "30vw";
       preBtn.style.visibility = "visible";
-      moveTab.innerHTML = "Account";
+      moveTab.innerHTML = "Permissions";
     } else if (this.tabIndex === 1) {
       this.tabIndex++;
       moveTab.style.left = screenWidth > 990 ? "49vw" : "61.5vw";
       nextBtn.style.visibility = "hidden";
-      moveTab.innerHTML = "Address";
+      moveTab.innerHTML = "Modules";
     }
     (<HTMLElement>tabs[this.tabIndex]).style.display = "inherit";
   }
