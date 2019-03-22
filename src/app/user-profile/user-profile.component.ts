@@ -11,6 +11,9 @@ import {
   FormGroupDirective,
   FormArray,
 } from "@angular/forms";
+
+import * as ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
 @Component({
   selector: "app-user-profile",
   templateUrl: "./user-profile.component.html",
@@ -19,7 +22,7 @@ import {
 export class UserProfileComponent implements OnInit {
   userDetail: any;
   showloader: boolean = false;
-
+  public Editor: ClassicEditor;
   userdetailsFrm: FormGroup;
   schooldetailsFrm: FormGroup
   f_name: FormControl;

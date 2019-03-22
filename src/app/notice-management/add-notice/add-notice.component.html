@@ -42,7 +42,8 @@
 
             <div class="col-md-12">
               <mat-form-field class="example-full-width m-0 p-0">
-                <input matInput [matDatepicker]="picker1" placeholder="Choose from date" formControlName="startDate">
+                <input matInput [matDatepicker]="picker1" placeholder="Choose Notice Publish date" formControlName="startDate" 
+                (dateChange)="publishDate($event)">
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
               </mat-form-field>
@@ -50,7 +51,7 @@
 
             <div class="col-md-12">
               <mat-form-field class="example-full-width m-0 p-0">
-                <input matInput [matDatepicker]="picker2" placeholder="Choose to date" formControlName="endDate">
+                <input matInput [matDatepicker]="picker2" placeholder="Choose Notice End date" formControlName="endDate">
                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                 <mat-datepicker #picker2></mat-datepicker>
               </mat-form-field>
@@ -81,17 +82,67 @@
                 <label class="custom-file-label" for="customFile">Choose File</label>
               </div>
             </div>
-
-            <div class="col-sm-12">
+            
+            <!-- <div class="col-sm-12">
               <div class="">
-                <button mat-raised-button type="submit" class="btn btn-success pull-right">Submit</button>
+                <button mat-raised-button type="submit" class="btn btn-success pull-right">{{buttonName}}</button>
               </div>
-            </div>
+            </div> -->
 
           </div>
         </form>
       </div>
     </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header card-header-danger">
+          <h4 class="card-title">Schedule Notification</h4>
+          <p class="card-category">Schedule Notification for this notiece</p>
+        </div>
+    
+        <div class="card-body mt-4">
+          <button mat-raised-button type="button" class="btn btn-primay btn-sm pull-right" (click)="addSchedule()" >Add New</button>
+          <form id="add-notice-form" [formGroup]="addNoticeForm" (ngSubmit)="onAddNoticeSubmit()">
+            <div class="row">
+              <div formArrayName="schedule" style="width: 100%">
+                <div *ngFor="let list of addNoticeForm.controls.schedule['controls']; let i=index" [formGroupName]="i" style="border-bottom: 1px solid #b3b3b3;">
+
+                  <div class="col-md-12">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Date" formControlName="noti_date" name="noti_date" type="text" [matDatepicker]="picker3">
+                      <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                      <mat-datepicker #picker3></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-12">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Time" formControlName="noti_time" name="noti_time" type="text">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-12">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Notification Title" formControlName="noti_title" name="noti_title" type="text">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-12">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Notification Body" formControlName="noti_body" name="noti_body" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="col-sm-12">
+                <div class="">
+                  <button mat-raised-button type="submit" class="btn btn-success pull-right">{{buttonName}}</button>
+                </div>
+              </div>
+    
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
     </div>
   </div>

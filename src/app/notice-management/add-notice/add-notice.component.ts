@@ -8,7 +8,8 @@ import {
   FormGroup,
   FormControl,
   FormBuilder,
-  Validators
+  Validators,
+  FormArray
 } from "@angular/forms";
 import { Router } from "@angular/router";
 
@@ -38,7 +39,13 @@ export class AddNoticeComponent implements OnInit {
   showDescription: boolean;
   showFileUpload: boolean;
   shareDataArrayObject: any;
-
+  buttonName: string = "Save"
+  schedule: FormArray;
+  noti_date: FormControl
+  noti_time: FormControl
+  noti_title: FormControl
+  noti_body: FormControl;
+  scheduleNotice: FormGroup;
   // get data() {
   //   return this.apiServ.serviceData;
   // }
@@ -80,10 +87,30 @@ export class AddNoticeComponent implements OnInit {
     this.startDate = new FormControl("", [Validators.required]);
     this.endDate = new FormControl("", [Validators.required]);
     this.text = new FormControl("", [Validators.required]);
+    this.schedule = new FormArray([
+      new FormGroup({
+        noti_date: new FormControl("", [Validators.required]),
+        noti_time: new FormControl("", [Validators.required]),
+        noti_title: new FormControl("", [Validators.required]),
+        noti_body: new FormControl("", [Validators.required]),
+      })  
+    ])
     // this.file_url = new FormControl("", []);
+    // console.log(this.addNoticeForm.controls);
   }
 
-
+  addSchedule(){
+    let data = this.addNoticeForm.get("schedule");
+    const newarry = new FormGroup({
+      noti_date: new FormControl("", [Validators.required]),
+      noti_time: new FormControl("", [Validators.required]),
+      noti_title: new FormControl("", [Validators.required]),
+      noti_body: new FormControl("", [Validators.required]),
+    });
+    (data as FormArray).push(newarry);
+    // console.log(this.addNoticeForm);
+    
+  }
 
 
 
@@ -97,12 +124,20 @@ export class AddNoticeComponent implements OnInit {
       startDate: this.startDate,
       endDate: this.endDate,
       text: this.text,
+      schedule: this.schedule
       // file_url: this.file_url
     });
   }
 
 
-
+  publishDate(e){
+    console.log();
+    var d = new Date;
+    var getdatestring = e.value.toDateString();
+    getdatestring == d.toDateString() ? this.buttonName = 'Publish Now' : this.buttonName = 'Save'; 
+    // console.log(this.buttonName);
+    
+  }
 
 
 
@@ -142,17 +177,34 @@ export class AddNoticeComponent implements OnInit {
 
     this.http.post(`${environment.apiUrl}notice/addnotice`, fd).map((res)=>res.json())
     .subscribe(data => {
-      // console.log('Got some data from backend ', data);
+      
       if(data){
-        this.showloader = false;
-        this.notification.showNotification(
-          "top",
-          "right",
-          "success",
-          "Success, Notice Added Successfully."
-        );
-        this.addNoticeForm.reset();
-        this.router.navigate(['/notice']);
+          let apiData = {
+            org_id: this.sessionValue[0].org_code,
+            type_id: data.data.id,
+            shedule_type: 1,
+            shedule_arry: this.addNoticeForm.value.schedule
+          };
+          console.log(apiData);
+          
+          this.http
+            .post(`${environment.apiUrl}schedule/add`, apiData)
+            .map(res => res.json())
+            .subscribe(retundata => {
+              console.log(
+                "Got some data from backend ",
+                retundata
+              );
+              this.showloader = false;
+              this.notification.showNotification(
+                "top",
+                "right",
+                "success",
+                "Success, Notice Added Successfully."
+              );
+              this.addNoticeForm.reset();
+              this.router.navigate(['/notice']);
+            });
       }else{
         this.showloader = false;
         this.notification.showNotification(
