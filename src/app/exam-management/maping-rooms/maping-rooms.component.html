@@ -8,7 +8,7 @@
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        Exam Room Selection
+        Exam Room Student and Staff Allocations
       </li>
 
       <li class="float-right">
@@ -24,8 +24,8 @@
 
         <div class="card">
           <div class="card-header card-header-danger">
-            <h4 class="card-title">Room Details</h4>
-            <p class="card-category">Add Exam Room Details</p>
+            <h4 class="card-title">Exam Details</h4>
+            <p class="card-category">Exam Room Student and Staff Allocations</p>
           </div>
           <div class="card-body">
            <div class="row">
@@ -40,7 +40,7 @@
             </div>
             <div class="col-md-3">
               <mat-form-field>
-                <mat-select placeholder="Select Date" name="exam_date" (change)="changeDate($event)">
+                <mat-select placeholder="Select Date" name="exam_date" [(ngModel)]="exam_date_selected" (change)="changeDate($event)">
                   <mat-option *ngFor="let item of exam_date_sorted" [value]="item.date">
                     {{ item.date }}
                   </mat-option>
@@ -56,7 +56,7 @@
                 </mat-select>
               </mat-form-field>
             </div>
-           </div>
+           </div> 
             
             <form class="pt-2">
                 <div class="col-md-3">
@@ -68,10 +68,16 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <p ><strong>Total no Of Bench:</strong>{{filtered_room && filtered_room[0].no_of_banches}},
-                  <strong>Per Bench Capacity:</strong>{{filtered_room && filtered_room[0].benchCapacity}},
-                  <strong>Total no Of Capacity:</strong>{{filtered_room && filtered_room[0].total_no_students}}</p>
-                <div class="row" style="border: 1px solid #222222; padding: 10px" *ngFor="let item of RoomClassStruc; let i = index;">
+                <p ><b>Total no Of Bench:</b>{{filtered_room && filtered_room[0].no_of_banches}},
+                  <b>Per Bench Capacity:</b>{{filtered_room && filtered_room[0].benchCapacity}},
+                  <b>Total no Of Capacity:</b>{{filtered_room && filtered_room[0].total_no_students}}</p>
+                  <div class="col-md-3 offset-6" *ngIf="filtered_room">
+                    <p *ngIf="assignStudent() > 0">Total Seat Left: <span class="text-danger">{{assignStudent()}}</span></p>
+                    <p *ngIf="assignStudent() < 0">Total Student Left: <span
+                        class="text-danger">{{ absoluteValue(assignStudent()) }}</span></p>
+                  
+                  </div>
+                  <div class="row" style="border: 1px solid #222222; padding: 10px" *ngFor="let item of RoomClassStruc; let i = index;">
                   <!-- <div class="row" *ngFor="let class of benchcapacity(item.class); let class_index = index;"> -->
                     
                     <div class="col-md-3">
@@ -83,7 +89,7 @@
                     
                     <div class="col-md-3">
                       <mat-form-field>
-                        <mat-select placeholder="Select Year" [(ngModel)]="year && year[i]" name="exam_year">
+                        <mat-select placeholder="Select Year" [(ngModel)]="year && year[i]" [ngModelOptions]="{standalone: true}">
                           <mat-option *ngFor="let item of selectedarray && selectedarray[0].year" [value]="item">
                             {{ item }}
                           </mat-option>
@@ -92,7 +98,7 @@
                     </div>
                     <div class="col-md-3">
                       <mat-form-field>
-                        <mat-select placeholder="Select Sem" [(ngModel)]="sem && sem[i]" name="exam_sem">
+                        <mat-select placeholder="Select Sem" [(ngModel)]="sem && sem[i]" [ngModelOptions]="{standalone: true}">
                           <mat-option *ngFor="let item of selectedarray && selectedarray[0].sem" [value]="item">
                             {{ item }}
                           </mat-option>
@@ -101,18 +107,27 @@
                     </div>
                     <div class="col-md-3">
                       <mat-form-field>
-                        <mat-select placeholder="Select Depts" [(ngModel)]="dept && dept[i]" name="exam_dept">
+                        <mat-select placeholder="Select Depts" [(ngModel)]="dept && dept[i]" [ngModelOptions]="{standalone: true}">
                           <mat-option *ngFor="let item of selectedarray && selectedarray[0].depts" [value]="item">
                             {{ item }}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
                     </div>
-                    <div class="col-md-3 offset-6">
-                      <p *ngIf="assignStudent() > 0">Total Seat Left: <span class="text-danger">{{assignStudent()}}</span></p>
-                      <p *ngIf="assignStudent() < 0">Total Student Left: <span class="text-danger">{{ absoluteValue(assignStudent()) }}</span></p>
+                    <input type="text" [ngModelOptions]="{standalone: true}" (ngModelChange)="examDateDetails(i,$event.target.value)" [(ngModel)]="exam_date_id && exam_date_id[i]" [value]="exam_date_id && exam_date_id[i]">
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="exam_start_time[i]" placeholder="Exam Start Time(E.g. 10:00 am)">
+                      </mat-form-field>
                     
                     </div>
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="exam_end_time[i]" placeholder="Exam End Time(E.g. 01:00 pm)">
+                      </mat-form-field>
+                    
+                    </div>
+                  
                     
                     <div class="col-md-12">
                     
@@ -121,18 +136,23 @@
                       <!-- <button class="btn btn-sm" [disabled]="assignStudent() <= 0" (click)="addclass(i)">Add Class</button> -->
                     </div>
                   </div>
-                     <div class="col-md-6">
-                        <mat-form-field>
-                          <mat-select placeholder="Select Teachers" [(ngModel)]="teacher" name="teacher" multiple>
-                            <mat-option *ngFor="let techer of teacherList" [value]="techer.id">
-                              {{ techer.name }} ({{techer.short_name}}) 
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
+                    <div class="row pt-2">
 
-                      </div>
+                      <div class="col-md-4">
+                         <mat-form-field>
+                           <mat-select placeholder="Select Teachers" [(ngModel)]="teacher" name="teacher" multiple>
+                             <mat-option *ngFor="let techer of teacherList" [value]="techer.id">
+                               {{ techer.name }} ({{techer.short_name}}) 
+                             </mat-option>
+                           </mat-select>
+                         </mat-form-field>
+ 
+                       </div>
+ 
+                       
+                    </div>
                       <div class="col-md-6">
-                        <button class="btn btn-sm " type="button" (click)="assignTeacher()">Assign Teacher</button>
+                        <button mat-button class="btn btn-dark" type="button" (click)="assignTeacher()">Save</button>
                       </div>
                   
                 <!-- </div> -->

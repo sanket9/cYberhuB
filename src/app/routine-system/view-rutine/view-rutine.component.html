@@ -97,7 +97,7 @@
             <tr *ngFor="let rutine of rutineDetails;">
               <td align="center"> {{getDay(rutine.day)}} 
                 <i class="material-icons" [routerLink]="['/routine/edit']"
-                [queryParams]="{day:rutine.day,year: viewRoutine.value.year, dept: deptName && deptName[0].id, sem: samname && samname[0]?.id}"
+                [queryParams]="{day:rutine.day,year: viewRoutine.value.year, dept: deptName && deptName[0].id, sem: samname && samname[0]?.id, stream: viewRoutine.value.stream }"
                 >
                   edit
                 </i>

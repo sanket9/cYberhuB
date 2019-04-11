@@ -30,6 +30,8 @@ export class EditRoutineComponent implements OnInit {
   subjectlist;
   teachers;
   org_rooms;
+  stream;
+  SubjectComponent;
   constructor(
     private _route: ActivatedRoute,
     public http: Http,
@@ -45,6 +47,7 @@ export class EditRoutineComponent implements OnInit {
       this.sem = params.sem;
       this.year = params.year;
       this.dept = params.dept;
+      this.stream = params.stream;
     });
     var status = this.SessionStore.retrieve("user-data");
     this.org_id = status[0].org_code;
@@ -62,7 +65,8 @@ export class EditRoutineComponent implements OnInit {
       sem: this.sem,
       year: this.year,
       dept_id: this.dept,
-      org_id: this.org_id
+      org_id: this.org_id,
+      stream: this.stream
     };
     console.log(data);
 
@@ -166,6 +170,11 @@ export class EditRoutineComponent implements OnInit {
       org_id: this.org_id
     };
 
+    let apidata = {
+      dept_id: this.dept,
+      org_id: this.org_id
+    };
+
     this.http
       .post(`${environment.apiUrl}staff/teacher-search`, data, options)
       .map(res => res.json())
@@ -175,6 +184,17 @@ export class EditRoutineComponent implements OnInit {
         if (data.data) {
           this.teachers = data.data;
           this.getallRooms();
+          this.http
+            .post(
+              `${environment.apiUrl}coursecat/getsubcource`,
+              apidata,
+              options
+            )
+            .map(res => res.json())
+            .subscribe(data => {
+              // console.log("subjst",data);
+              this.SubjectComponent = data.data;
+            });
         }
       });
   }
@@ -199,10 +219,10 @@ export class EditRoutineComponent implements OnInit {
     // console.log(id);
     let data = {
       id,
-      cc_name: this.dayRoutine[i].rutinedetails[0].cc_name,
+      cc_name: this.dayRoutine[i].rutinedetails[0].class_sub_id,
       room_id: this.dayRoutine[i].rutinedetails[0].room.id,
       teacher_id: this.dayRoutine[i].rutinedetails[0].teacher.id
-    }
+    };
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
@@ -212,9 +232,19 @@ export class EditRoutineComponent implements OnInit {
       .subscribe(data => {
         // console.log(data);
         if (!data.error && data.data) {
-          this.notification.showNotification("top", "right", "success", "Routine data Added.");
+          this.notification.showNotification(
+            "top",
+            "right",
+            "success",
+            "Routine data Added."
+          );
         } else {
-          this.notification.showNotification("top", "right", "warning", "Something Went Wrong.");
+          this.notification.showNotification(
+            "top",
+            "right",
+            "warning",
+            "Something Went Wrong."
+          );
         }
       });
   }

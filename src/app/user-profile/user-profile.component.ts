@@ -11,6 +11,7 @@ import {
   FormGroupDirective,
   FormArray,
 } from "@angular/forms";
+import { NotificationService } from "../services/notification.service";
 
 import * as ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
@@ -24,7 +25,7 @@ export class UserProfileComponent implements OnInit {
   showloader: boolean = false;
   public Editor: ClassicEditor;
   userdetailsFrm: FormGroup;
-  schooldetailsFrm: FormGroup
+  schooldetailsFrm: FormGroup;
   f_name: FormControl;
   l_name: FormControl;
   phone: FormControl;
@@ -41,7 +42,8 @@ export class UserProfileComponent implements OnInit {
   constructor(
     public router: Router,
     public http: Http,
-    public SessionStore: SessionStorageService
+    public SessionStore: SessionStorageService,
+    public notification: NotificationService
   ) {}
 
   ngOnInit() {
@@ -56,7 +58,7 @@ export class UserProfileComponent implements OnInit {
 
   // createFormControl() {
   //   this.f_name = new FormControl(// { value: this.userDetail["staffmaster"].f_name, disabled: true },
-  //     this.userDetail.stafftmaster.f_name, 
+  //     this.userDetail.stafftmaster.f_name,
   //     // "aaa",
   //     [Validators.required]);
   //   this.l_name = new FormControl("", [Validators.required]);
@@ -85,75 +87,63 @@ export class UserProfileComponent implements OnInit {
         this.userDetail.stafftmaster.qualification
       ),
       adhar: new FormControl(this.userDetail.stafftmaster.adhar),
-      username: new FormControl({
-        value: this.userDetail.username, disabled: true},  [
-        Validators.required
-      ])
+      username: new FormControl(
+        {
+          value: this.userDetail.username,
+          disabled: true
+        },
+        [Validators.required]
+      )
     });
-
-
-
 
     this.schooldetailsFrm = new FormGroup({
       schcool_name: new FormControl(
-          {value : this.userDetail.stafftmaster.orgmaster.org_name, disabled: true},
-          [
-            Validators.required
-          ]
-        ),
+        {
+          value: this.userDetail.stafftmaster.orgmaster.org_name,
+          disabled: true
+        },
+        [Validators.required]
+      ),
       collg_phone: new FormControl(
         this.userDetail.stafftmaster.orgmaster.phone_no,
-        [
-          Validators.required
-        ]
+        [Validators.required]
       ),
       collg_web: new FormControl(
         this.userDetail.stafftmaster.orgmaster.website,
-        [
-          Validators.required
-        ]
+        [Validators.required]
       ),
 
       collg_email: new FormControl(
         this.userDetail.stafftmaster.orgmaster.email,
-        [
-          Validators.required
-        ]
+        [Validators.required]
       ),
 
       collg_landmark: new FormControl(
         this.userDetail.stafftmaster.orgmaster.landmark,
-        [
-          Validators.required
-        ]
+        [Validators.required]
       ),
 
       collg_city: new FormControl(
         this.userDetail.stafftmaster.orgmaster.org_city,
-        [
-          Validators.required
-        ]
+        [Validators.required]
       ),
 
       collg_country: new FormControl(
         this.userDetail.stafftmaster.orgmaster.org_country,
-        [
-          Validators.required
-        ]
+        [Validators.required]
       ),
 
-
-      collg_pin: new FormControl(
-        this.userDetail.stafftmaster.orgmaster.pin,
-        [
-          Validators.required
-        ]
-      ),
+      collg_pin: new FormControl(this.userDetail.stafftmaster.orgmaster.pin, [
+        Validators.required
+      ]),
 
       collg_reg: new FormControl(
-        {value : this.userDetail.stafftmaster.orgmaster.org_reg, disabled: true},
-        [ Validators.required ]
-      ),
+        {
+          value: this.userDetail.stafftmaster.orgmaster.org_reg,
+          disabled: true
+        },
+        [Validators.required]
+      )
 
       // affi_name
       // collg_affi: new FormControl(
@@ -162,15 +152,8 @@ export class UserProfileComponent implements OnInit {
       //     Validators.required
       //   ]
       // ),
-      
     });
-
   }
-
-
-
-
-
 
   async getdetails() {
     this.showloader = true;
@@ -187,31 +170,42 @@ export class UserProfileComponent implements OnInit {
         this.showloader = false;
         console.log("college details : ", data.data[0]);
         if (data.data[0]) {
-          this.userDetail = await data.data[0];  
-          if (this.userDetail){
+          this.userDetail = await data.data[0];
+          if (this.userDetail) {
             // this.createFormControl();
             this.orgInfo = this.userDetail.stafftmaster.orgmaster.org_about;
             this.createFormGroup();
-          }     
+          }
         }
       });
   }
 
-
-
-
-
+  editOrg(values) {
+    // console.log(values);
+    this.showloader = true;
+    var headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    let options = new RequestOptions({ headers: headers });
+    var status = this.SessionStore.retrieve("user-data");
+    values.org_id = status[0].org_code;
+    this.http
+      .post(`${environment.apiUrl}org/edit`, values, options)
+      .map(res => res.json())
+      .subscribe(data => {
+        this.showloader = false;
+        if (data.status == 0) {
+          this.notification.showNotification(
+            "top",
+            "right",
+            "success",
+            "Student data Added SuccessFuly"
+          );
+        }
+      });
+  }
 
   editOrgInfo() {
     this.showInfoEditSection = true;
     this.showOrgInfo = false;
-
-
   }
-
-
-
-
-
-  
 }

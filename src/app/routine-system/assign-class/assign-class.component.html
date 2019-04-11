@@ -114,8 +114,8 @@
               <div class="col-md-3">
                 <mat-form-field>
                   <mat-select placeholder="Choose a Component" formControlName="component_name" name="sub">
-                    <mat-option *ngFor="let sub of coursesubjects" [value]="sub">
-                      {{ sub }}
+                    <mat-option *ngFor="let sub of SubjectComponent" [value]="sub.id">
+                      {{ sub?.subcourse[0]?.count_name }} - ({{sub.subject_name}})
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -158,7 +158,7 @@
             <td align="center" *ngFor="let priods of rutine?.priods">
               <p *ngFor="let item of priods?.rutinedetails">
                 {{item.class.section.sec_name}} / {{item.teacher.short_name}} / {{item.room.name}}
-                <small style="font-weight:bold; color:brown">{{item.cc_name}}</small>
+                <small style="font-weight:bold; color:brown">{{item?.class_sub?.subcourse[0]?.count_name}}</small>
               </p>
             </td>
             <!-- <ng-container *ngFor="let priods of rutine?.priods; let i=index">

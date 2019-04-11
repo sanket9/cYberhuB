@@ -108,7 +108,8 @@
 
 
 
-                        <form *ngIf="schooldetailsFrm" [formGroup]="schooldetailsFrm">
+                        <form *ngIf="schooldetailsFrm" [formGroup]="schooldetailsFrm" (submit) = "editOrg(schooldetailsFrm.value)"
+                        >
                           <div class="row">
                             <div class="col-md-5">
                               <mat-form-field class="example-full-width">
@@ -167,13 +168,13 @@
                                   <input matInput placeholder="Pin" type="text" formControlName="collg_pin" name="collg_pin">
                                 </mat-form-field>
                             </div>
-                            <div class="col-md-12">
+                            <!-- <div class="col-md-12">
 
                               <ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
-                            </div>
+                            </div> -->
 
                             <div class="col-md-12">
-                              <button mat-raised-button type="submit" class="btn btn-danger pull-right">Update Profile</button>
+                              <button mat-raised-button type="submit" class="btn btn-danger pull-right">Update Instituation Details</button>
                             <!-- <div class="clearfix"></div> -->
                             </div>
           

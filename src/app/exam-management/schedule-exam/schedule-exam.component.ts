@@ -94,7 +94,11 @@ export class ScheduleExamComponent implements OnInit {
       .post(`${environment.apiUrl}exam/create`, fd)
       .map(res => res.json())
       .subscribe(data => {
-        console.log(data);
+        // console.log(data);
+        if (data.data) {
+          
+          this.router.navigateByUrl("exam/room-select");
+        }
       });
   }
 }

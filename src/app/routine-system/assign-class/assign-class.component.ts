@@ -68,6 +68,7 @@ export class AssignClassComponent implements OnInit {
   allsems;
   Finaldepts;
   remainClass;
+  SubjectComponent;
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -164,6 +165,7 @@ export class AssignClassComponent implements OnInit {
         //console.log(data);
         this.shifs = data.data;
       });
+      
     this.http
       .post(`${environment.apiUrl}coursecat/allsubcours`, data, options)
       .map(res => res.json())
@@ -208,7 +210,7 @@ export class AssignClassComponent implements OnInit {
         this.classlist.push(element.class.class_name);
       }
     });
-    // console.log(this.newclassList);
+    console.log(this.classlist);
     var status = this.SessionStore.retrieve("user-data");
     let routinedata = { org_id: status[0].org_code, shift_id: e.value };
     var headers = new Headers();
@@ -294,7 +296,10 @@ export class AssignClassComponent implements OnInit {
       dept_id: selectedclass[0].section.dept_id,
       org_id: status[0].org_code
     };
-
+    let apidata = {
+      dept_id: e.value,
+      org_id: status[0].org_code
+    };
     this.http
       .post(`${environment.apiUrl}staff/teacher-search`, data, options)
       .map(res => res.json())
@@ -303,13 +308,25 @@ export class AssignClassComponent implements OnInit {
         console.log(data);
         if (data.data) {
           this.teachers = data.data;
+          this.http
+            .post(`${environment.apiUrl}coursecat/getsubcource`, apidata, options)
+            .map(res => res.json())
+            .subscribe(data => {
+              // console.log("subjst",data);
+              this.SubjectComponent = data.data;
+            });
           // return data.data;
         }
         //this.subjects = data.data;
       });
   }
   onSemselect($e) {
-    this.Finaldepts = this.depts.filter(itm => itm.sem_id == $e.value);
+    
+    this.Finaldepts = this.depts.filter(
+      itm =>
+      itm.sem_id == $e.value && itm.year == this.routineForm.value.year
+      );
+    console.log(this.Finaldepts);
   }
 
   submitForm(values: any) {
@@ -326,7 +343,11 @@ export class AssignClassComponent implements OnInit {
         this.showloader = false;
         console.log(data);
         if (!data.error && data.data) {
-          this.remainClass -= 1;
+          if (this.remainClass > 0) {
+            this.remainClass -= 1;
+          }else{
+            alert("This Teacher Have Maximum class");
+          }
           this.notification.showNotification(
             "top",
             "right",
@@ -404,7 +425,12 @@ export class AssignClassComponent implements OnInit {
       assigned_week_total_count_class
     } = teacher[0];
     let remain = week_total_count_class - assigned_week_total_count_class;
-    this.remainClass = remain;
+    if (remain > 0) {
+      
+      this.remainClass = remain;
+    }else{
+      alert("This Teacher Have Maximum class");
+    }
   
     //console.log(week_total_count_class, assigned_week_total_count_class);
   }

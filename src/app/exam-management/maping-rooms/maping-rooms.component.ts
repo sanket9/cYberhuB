@@ -36,6 +36,10 @@ export class MapingRoomsComponent implements OnInit {
   selectedStudent = [];
   teacherList;
   teacher;
+  exam_date_id: any = []
+  exam_start_time: any = [];
+  exam_end_time: any = [];
+  exam_date_selected;
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -60,9 +64,9 @@ export class MapingRoomsComponent implements OnInit {
       .post(`${environment.apiUrl}exam/last-exam`, values, options)
       .map(res => res.json())
       .subscribe(data => {
-        console.log(data);
+        // console.log(data);
         this.exam_data = data.data;
-        // console.log(this.exam_data);
+        console.log(this.exam_data);
         this.getallRooms();
 
         let arry = [];
@@ -116,7 +120,7 @@ export class MapingRoomsComponent implements OnInit {
           }
         });
         this.exam_date_sorted = arry;
-        console.log(arry);
+        console.log("sorted",arry);
       });
   };
 
@@ -161,7 +165,7 @@ export class MapingRoomsComponent implements OnInit {
       .post(`${environment.apiUrl}exam/search-room`, data, options)
       .map(res => res.json())
       .subscribe(data => {
-        console.log(data);
+        // console.log(data);
         if (data.data) {
           data.data.exam_date.forEach(element => {
             if (element.exam_room.length > 0) {
@@ -169,9 +173,20 @@ export class MapingRoomsComponent implements OnInit {
                 Year: ${element.year}
                 Sem: ${element.sem}
                 Deperment: ${element.dept}
+                Shift: ${element.shift}
+                Position in Row: ${element.exam_room[0].position + 1}
               `);
+
+              this.sheats[element.exam_room[0].position] = element.exam_room.length
+              this.assignStudent();
+              // this.year[element.exam_room[0].position] = element.year;
+              // this.sem[element.exam_room[0].position] = element.sem;
+              // this.dept[element.exam_room[0].position] = element.dept;
+              // this.exam_date_id[element.exam_room[0].position] = element.id;
+              // this.examDateDetails(element.exam_room[0].position, element.id)
             }
           });
+
         }
       });
     // console.log(this.RoomClassStruc);
@@ -190,7 +205,9 @@ export class MapingRoomsComponent implements OnInit {
     );
     console.log(this.exam_date_sorted);
   }
-  searchstudent(i) {
+
+
+  searchstudent(i) {    
     this.examDaySelected = this.exam_data.exam_date.filter(
       item =>
         item.shift == this.shift &&
@@ -198,19 +215,50 @@ export class MapingRoomsComponent implements OnInit {
         item.dept == this.dept[i] &&
         item.year == this.year[i]
     );
-    let _i = 0;
-    this.examDaySelected[0].exam_room.forEach(ele => {
-      if (ele.room_id == null && ele.position == null) {
-        _i++;
-      }
-    });
-    alert(`${_i} of Student Found`);
-    this.sheats[i] = _i;
+    // let _i = 0;
+    console.log(this.examDaySelected[0]);
+    
+    if (this.examDaySelected.length > 0) {
+      var _i = 0;
+      this.exam_date_id[i] = this.examDaySelected[0].id;
+      this.examDateDetails(i,this.examDaySelected[0].id);
+      this.examDaySelected[0].exam_room.map(ele => {
+        if (ele.room_id == null && ele.position == null) {
+            _i++;
+        } 
+      });
+      alert(`${_i} of Student Found`);
+      this.sheats[i] = _i;
+    }else{
+
+      alert(`No Student Found`);
+    }
     // if (this.examDaySelected[0].exam_room.length) {
 
     // }
     //console.log(this.examDaySelected);
   }
+
+  examDateDetails(i,id) {
+    console.log(id);
+    
+    let api_data = {
+      id
+    }
+    this.http.post(`${environment.apiUrl}exam/examdetails`, api_data).map(res => res.json())
+      .subscribe(data => {
+        // console.log(responce);
+        if (data.data) {
+          console.log(i);
+          
+          this.exam_start_time[i] = data.data.exam_from
+          this.exam_end_time[i] = data.data.exam_to
+
+        }
+      })
+  }
+
+
   assignStudent() {
     let remain_Std = [];
     let total = 0;
@@ -232,7 +280,9 @@ export class MapingRoomsComponent implements OnInit {
       this.selectedStudent = slice_array;
     } else {
       this.selectedStudent = [];
-      if (this.examDaySelected) {
+      // console.log(this.examDaySelected);
+      
+      if (this.examDaySelected && this.examDaySelected.length > 0 ) {
         this.examDaySelected[0].exam_room.forEach(ele => {
           if (ele.room_id == null && ele.position == null) {
             // this.selectedStudent.findIndex(ele => ele.id == )
@@ -241,6 +291,8 @@ export class MapingRoomsComponent implements OnInit {
         });
       }
     }
+    console.log(total_remain);
+    
     return total_remain;
   }
 
@@ -250,6 +302,29 @@ export class MapingRoomsComponent implements OnInit {
   addclass(i) {
     this.RoomClassStruc[i].class += 1;
   }
+  // yearchange(e) {
+  //   console.log(e);
+  //   console.log("Exam data",this.exam_data);
+    
+  //   let a  = this.exam_data.exam_date.filter(ele => {
+  //     return ele.exam_date == this.selectedarray[0].date && ele.year == e.value
+  //   })
+  //   this.semOptions = a
+    
+  // }
+
+  // semchange(e) {
+  //   console.log(e);
+  //   console.log("Exam data", this.exam_data);
+
+  //   let a = this.exam_data.exam_date.filter(ele => {
+  //     return ele.exam_date == this.selectedarray[0].date && ele.year == e.value
+  //   })
+  //   console.log(a);
+
+  // }
+
+
   saveStudentRoom(i) {
     // console.log(this.selectedStudent);
     let send_data: any = [];
@@ -277,8 +352,23 @@ export class MapingRoomsComponent implements OnInit {
       .map(res => res.json())
       .subscribe(data => {
         console.log(data);
+        this.updateExamTime(i);
       });
   }
+
+  updateExamTime(i) {
+      let api_data = {
+        exam_from: this.exam_start_time[i],
+        exam_to: this.exam_end_time[i],
+        exam_date: this.exam_date_id[i]
+      }
+      this.http.post(`${environment.apiUrl}exam/addExamtime`, api_data).map(res => res.json())
+      .subscribe(responce => {
+        console.log(responce);
+        
+      })
+  }
+
   getStaffList() {
     let data = { org_id: this.org_id };
     var headers = new Headers();
@@ -298,7 +388,7 @@ export class MapingRoomsComponent implements OnInit {
 
     let data = {
       org_id: this.org_id,
-      exam_date: this.exam_data.id,
+      exam_date: this.exam_date_selected,
       theacher_ids: this.teacher,
       room_id: this.filtered_room[0].id
     };
@@ -309,22 +399,33 @@ export class MapingRoomsComponent implements OnInit {
       .post(`${environment.apiUrl}exam/assign-staff`, data, options)
       .map(res => res.json())
       .subscribe(data => {
-        this.showloader = false;
-        if (!data.error && data.data) {
-          this.notification.showNotification(
-            "top",
-            "right",
-            "success",
-            "Teacher Assign SuccessFuly"
-          );
-        } else {
-          this.notification.showNotification(
-            "top",
-            "right",
-            "warning",
-            "Something Went Wrong"
-          );
-        }
+        // let api_data = {
+        //   exam_from: this.exam_start_time,
+        //   exam_to: this.exam_end_time,
+        //   exam_date: this.exam_date_id
+        // }
+        // this.http.post(`${environment.apiUrl}exam/addExamtime`, api_data).map(res => res.json())
+        // .subscribe(responce => {
+          // console.log(responce);
+          
+          this.showloader = false;
+          if (!data.error && data.data) {
+            this.notification.showNotification(
+              "top",
+              "right",
+              "success",
+              "Teacher Assign SuccessFuly"
+            );
+          } else {
+            this.notification.showNotification(
+              "top",
+              "right",
+              "warning",
+              "Something Went Wrong"
+            );
+          }
+        // })
+
       });
   }
 }

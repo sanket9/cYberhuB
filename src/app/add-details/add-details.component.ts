@@ -102,7 +102,7 @@ export class AddDetailsComponent implements OnInit {
         //search: // query string if have
       })
       .map(res => {
-        return { filename: "student.csv", data: res.blob() };
+        return { filename: url.indexOf("Staff.csv") > -1 ? "staff.csv" : "student.csv", data: res.blob() };
       })
       .subscribe(
         res => {

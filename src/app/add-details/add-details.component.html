@@ -75,8 +75,9 @@
                       <button mat-raised-button color="primary" (click)="file_staff.click()" >
                         Add File</button>
                       <input type="file" hidden #file_staff name="file_staff" (change)="uploadTeacherFile($event)">
+                      <button mat-raised-button class="mt-2" color="warn" (click)="downloadFile('assets/demofiles/Staff.csv')">
+                        Download Demo File</button>
                     </div>
-                    
                     <img class="card-image" src="assets/img/teacher.png">
                   </form>
 
