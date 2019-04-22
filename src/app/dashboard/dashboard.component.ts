@@ -297,6 +297,7 @@ export class DashboardComponent implements OnInit {
         // let jsonResponse = data.json();
         // console.log("Org exam pattern list ", data.data);
         this.orgExamPatList = data.data;
+        this.showloader = false;
       });
 
     // this.http

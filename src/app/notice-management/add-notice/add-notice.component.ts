@@ -101,13 +101,19 @@ export class AddNoticeComponent implements OnInit {
 
   addSchedule(){
     let data = this.addNoticeForm.get("schedule");
-    const newarry = new FormGroup({
-      noti_date: new FormControl("", [Validators.required]),
-      noti_time: new FormControl("", [Validators.required]),
-      noti_title: new FormControl("", [Validators.required]),
-      noti_body: new FormControl("", [Validators.required]),
-    });
-    (data as FormArray).push(newarry);
+    if ((data as FormArray).length < 2) {
+      
+      const newarry = new FormGroup({
+        noti_date: new FormControl("", [Validators.required]),
+        noti_time: new FormControl("", [Validators.required]),
+        noti_title: new FormControl("", [Validators.required]),
+        noti_body: new FormControl("", [Validators.required]),
+        
+      });
+      (data as FormArray).push(newarry);
+    }else{
+      alert('Maximum Number selected');
+    }
     // console.log(this.addNoticeForm);
     
   }
@@ -179,6 +185,7 @@ export class AddNoticeComponent implements OnInit {
     .subscribe(data => {
       
       if(data){
+        
           let apiData = {
             org_id: this.sessionValue[0].org_code,
             type_id: data.data.id,

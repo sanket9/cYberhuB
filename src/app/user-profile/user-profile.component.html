@@ -20,7 +20,7 @@
                           <p class="card-category">Complete your profile</p>
                       </div>
                       <div class="card-body">
-                          <form *ngIf="userdetailsFrm" [formGroup]="userdetailsFrm" >
+                          <form *ngIf="userdetailsFrm" [formGroup]="userdetailsFrm" (submit) = "editProfile(userdetailsFrm.value)">
                               <div class="row">
                                   <div class="col-md-5">
                                     <mat-form-field class="example-full-width">
@@ -101,7 +101,7 @@
               <div class="col-md-12">
                   <div class="card">
                       <div class="card-header card-header-danger">
-                        <h4 class="card-title">College Details</h4>
+                        <h4 class="card-title">Organisation Details</h4>
                         <p class="card-category">Details of your organisation</p>
                       </div>
                       <div class="card-body">
@@ -195,40 +195,76 @@
               <div class="col-md-12">
                   <div class="card">
                       <div class="card-header card-header-danger">
-                        <h4 class="card-title">College Details</h4>
+                        <h4 class="card-title">Affiliations </h4>
                         <p class="card-category">Complete your profile</p>
                       </div>
                       <div class="card-body">
 
-                        <!-- <form *ngIf="schooldetailsFrm" [formGroup]="schooldetailsFrm"> -->
+                        <form *ngIf="schooldetailsFrm" [formGroup]="">
+                          <!-- <div class="row">
+
+                              <div class="col-md-6">
+                                  <mat-form-field class="example-full-width">
+                                      <input matInput placeholder="Affiliations Name" type="text" name="name">
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="Affiliations label" type="text" name="label">
+                                </mat-form-field>
+                              </div>
+                              <div class="col-md-12">
+                                <label>Choose file to upload</label>
+                                <button mat-raised-button color="primary" (click)="file_staff.click()">Add File</button>
+                                  <input type="file" hidden #file_staff name="file_staff">
+                              </div>
+
+                              <div class="col-md-4">
+                                <button mat-raised-button class="btn btn-block btn-danger pull-right mt-4">Upload</button>
+                              </div>
+
+                          </div> -->
                           <div class="row">
+                            <mat-table #table [dataSource]="dataSource" style="width: 100%">
+                              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                              <ng-container matColumnDef="id">
+                                <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+                                <mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </mat-cell>
+                              </ng-container>
 
-                            <div class="col-md-4">
-                                <div class="row">
+                              <ng-container matColumnDef="title">
+                                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.affi_name}} </mat-cell>
+                              </ng-container>
+                              <ng-container matColumnDef="image">
+                                <mat-header-cell *matHeaderCellDef> Image </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> 
+                                  <img src="{{element.affi_img}} " alt="{{element.affi_name}}" style="width: 100px">
+                                  <!-- {{element.affi_img}}  -->
+                                </mat-cell>
+                              </ng-container>
+                              <ng-container matColumnDef="affi_type">
+                                <mat-header-cell *matHeaderCellDef> Affiliation Type </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                   <p style="text-align: center">{{element.affi_type}}</p>  </mat-cell>
+                              </ng-container>
+                              <ng-container matColumnDef="actions">
+                                <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                  <!-- <button mat-icon-button type="button" matTooltip="Edit this" [matTooltipPosition]="'above'"
+                                    class="btn btn-link btn-sm btn-just-icon" (click)="selectStaff(element.id)">
+                                    <i class="material-icons">edit</i>
+                                  </button> -->
+                                  <!-- <button mat-icon-button >
+                                              <mat-icon>remove_red_eye</mat-icon>
+                                            </button> -->
+                                </mat-cell>
+                              </ng-container>
+                            </mat-table>
 
-                                  <div class="col-md-12">
-                                      <mat-form-field class="example-full-width">
-                                          <input matInput placeholder="Title" type="text" name="upload_title">
-                                      </mat-form-field>
-                                  </div>
-
-                                  <div class="col-md-12">
-                                    <label>Choose file to upload</label>
-                                    <button mat-raised-button color="primary" (click)="file_staff.click()">Add File</button>
-                                      <input type="file" hidden #file_staff name="file_staff">
-                                  </div>
-
-                                  <div class="col-md-12">
-                                    <button mat-raised-button class="btn btn-block btn-danger pull-right mt-4">Upload</button>
-                                  </div>
-                                </div>
-                                
-                            </div>
-
-                            
-          
                           </div>
-                        <!-- </form> -->
+                        </form>
                       </div>
                     </div>
               </div>
@@ -246,11 +282,11 @@
                       </a>
                   </div>
                   <div class="card-body">
-                      <h6 class="card-category text-gray">Princepal</h6>
+                      <h6 class="card-category text-gray">Principal</h6>
                       <h4 class="card-title">{{userDetail?.stafftmaster?.name}} 
-                        <span class="pull-right" style="font-size: 14px;" (click)="editOrgInfo()"><i class="material-icons" style="font-size: 14px;">
+                        <!-- <span class="pull-right" style="font-size: 14px;" (click)="editOrgInfo()"><i class="material-icons" style="font-size: 14px;">
                             border_color
-                            </i> Edit</span>
+                            </i> Edit</span> -->
                       </h4>
                       <p class="card-description" [innerHTML]="userDetail?.stafftmaster?.orgmaster?.org_about" *ngIf="showOrgInfo">
                       </p>

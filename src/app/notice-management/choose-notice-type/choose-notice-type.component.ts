@@ -154,7 +154,7 @@ getClassList(){
     .map(res => res.json())
     .subscribe(
       data => {
-        // console.log("Org Class list : ", data.data);
+        console.log("Org Class list : ", data.data);
         this.orgClassSectionList = data.data;
         // this.createSortArray(this.orgClassSectionList);
         // this.sortArray.unshift({
@@ -538,6 +538,7 @@ getClassList(){
             {
               section_name: ele.section.sec_name,
               sec_id: ele.sec_id,
+              sem: ele.sem.sem_no,
               classSectionIndexId: ele.id
             }
           ]
@@ -555,6 +556,7 @@ getClassList(){
           check_exist[0].sections.push({
             section_name: ele.section.sec_name,
             sec_id: ele.sec_id,
+            sem: ele.sem.sem_no,
             classSectionIndexId: ele.id
           });
 

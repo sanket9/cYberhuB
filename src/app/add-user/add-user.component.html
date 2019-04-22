@@ -17,9 +17,10 @@
       <div class="col-md-12 col-md-offset-1">
         <div class="wizard-panel card">
           <div class="wizard-header">
-            <h3 class="text-center">Build Your Profile</h3>
-            <h5 class="text-center" style="margin-top: 5px; padding: 0 20px;">This information will let us know more about
-              you.</h5>
+            <h3 class="text-center">Build User Roll Management</h3>
+            <h5 class="text-center" style="margin-top: 5px; padding: 0 20px;">
+              This is not an individual user this Role for every one.
+            </h5>
           </div>
           <div class="wizard-navigation">
             <ul class="nav nav-pills">
@@ -246,7 +247,7 @@
           <div class="wizard-footer">            
             <button id="preBtn" class="btn btn-danger" (click)="preOnClick()">Previous</button>
             <button id="nextBtn" class="btn btn-success green-a200" 
-              *ngIf="tabIndex == 0"
+              *ngIf="tabIndex == 0 && result && result.f_name"
               
             (click)="nextOnClick()">Next</button>
             <button id="nextBtn" class="btn btn-success green-a200" *ngIf="tabIndex == 1" (click)="nextOnClick()">Next</button>

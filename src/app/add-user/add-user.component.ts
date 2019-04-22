@@ -60,6 +60,7 @@ export class AddUserComponent implements OnInit {
     }, 600);
   }
   ngAfterViewInit() {
+
     const preBtn = <HTMLElement>document.getElementById("preBtn");
     const moveTab = <HTMLElement>document.querySelector(".move-tab");
     preBtn.style.visibility = "hidden";

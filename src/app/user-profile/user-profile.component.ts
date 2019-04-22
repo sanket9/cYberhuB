@@ -12,6 +12,7 @@ import {
   FormArray,
 } from "@angular/forms";
 import { NotificationService } from "../services/notification.service";
+import { MatTableDataSource, MatPaginator } from "@angular/material";
 
 import * as ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
@@ -39,6 +40,15 @@ export class UserProfileComponent implements OnInit {
   orgInfo: any;
 
   // userdetailsForm;
+  displayedColumns = [
+    "id",
+    "title",
+    "image",
+    "affi_type",
+    "actions"
+  ];
+  dataSource = new MatTableDataSource<Element>();
+
   constructor(
     public router: Router,
     public http: Http,
@@ -174,12 +184,57 @@ export class UserProfileComponent implements OnInit {
           if (this.userDetail) {
             // this.createFormControl();
             this.orgInfo = this.userDetail.stafftmaster.orgmaster.org_about;
+            this.getOrgdetails();
             this.createFormGroup();
           }
         }
       });
   }
 
+  getOrgdetails () {
+    var headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    let options = new RequestOptions({ headers: headers });
+    var status = this.SessionStore.retrieve("user-data");
+    let data = { org_id: status[0].org_code};
+
+    this.http
+      .post(`${environment.apiUrl}org/getdetail`, data, options)
+      .map(res => res.json())
+      .subscribe(data => {
+        // this.showloader = false;
+        if (data.data) {
+
+          // console.log(data.data[0].affileats);
+          this.dataSource.data = data.data[0].affileats;
+          
+        }
+      });
+  }
+
+  editProfile(values) {
+    console.log(values);
+    var headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    let options = new RequestOptions({ headers: headers });
+    var status = this.SessionStore.retrieve("user-data");
+    values.id = status[0].master_id;
+    this.http
+      .post(`${environment.apiUrl}staff/webupdate`, values, options)
+      .map(res => res.json())
+      .subscribe(data => {
+        this.showloader = false;
+        if (data.data) {
+          this.notification.showNotification(
+            "top",
+            "right",
+            "success",
+            "Student data Added SuccessFuly"
+          );
+        }
+      });
+    
+  }
   editOrg(values) {
     // console.log(values);
     this.showloader = true;
@@ -208,4 +263,11 @@ export class UserProfileComponent implements OnInit {
     this.showInfoEditSection = true;
     this.showOrgInfo = false;
   }
+}
+export interface Element {
+  id: number;
+  title: string;
+  image: string;
+  affi_type: string;
+
 }
