@@ -121,15 +121,15 @@ export class ChooseNoticeTypeComponent implements OnInit {
         data => {
           // console.log("Org shift list ", data.data);
           this.orgShiftLists = data.data;
-          this.orgShiftLists.unshift({
-            id: "all",
-            name: "All",
-            orgshift: [
-              {
-                id: "all"
-              }
-            ]
-          });
+          // this.orgShiftLists.unshift({
+          //   id: "all",
+          //   name: "All",
+          //   orgshift: [
+          //     {
+          //       id: "all"
+          //     }
+          //   ]
+          // });
     });
   }
 
@@ -154,7 +154,7 @@ getClassList(){
     .map(res => res.json())
     .subscribe(
       data => {
-        console.log("Org Class list : ", data.data);
+        // console.log("Org Class list : ", data.data);
         this.orgClassSectionList = data.data;
         // this.createSortArray(this.orgClassSectionList);
         // this.sortArray.unshift({
@@ -234,7 +234,7 @@ getClassList(){
       .map(res => res.json())
       .subscribe(
         data => {
-          console.log("found stuff details : ", data.data); 
+          // console.log("found stuff details : ", data.data); 
           this.getAllStuff = data.data;         
           // this.foundStudentForSearch = data.data[0];
     });
@@ -247,7 +247,7 @@ getClassList(){
 //    ------------------ After choose stuff type ------------------
 // ########################################################################
   onChangeStuffType(e){
-    console.log(e.value);
+    // console.log(e.value);
     if(e.value != "3"){
 
       let teachOrNonTeachthis = this.getAllStuff.filter((ele) => {
@@ -255,8 +255,8 @@ getClassList(){
       });
 
       this.teachingOrNonteachingStuff = teachOrNonTeachthis;
-      this.teachingOrNonteachingStuff.unshift({id: "all", name: "All"});
-      console.log(this.teachingOrNonteachingStuff); 
+      // this.teachingOrNonteachingStuff.unshift({id: "all", name: "All"});
+      // console.log(this.teachingOrNonteachingStuff); 
 
     }else{
 
@@ -271,7 +271,7 @@ getClassList(){
 //        ------------------ After choose stuff ------------------
 // ########################################################################
   onChangeStuff(e) {
-    console.log(e.value);
+    // console.log(e.value);
 
     this.selectedData.selectedStuff = [];
 
@@ -300,7 +300,7 @@ getClassList(){
       this.selectedData.selectedStuff = e.value;
     }  
 
-    console.log(this.selectedData.selectedStuff);    
+    // console.log(this.selectedData.selectedStuff);    
   }
 
 
@@ -316,7 +316,7 @@ getClassList(){
     this.shiftID = e.value;
     // console.log(e);
     // console.log(this.allSelected);        
-    console.log('shift : ', e.value);  
+    // console.log('shift : ', e.value);  
     
     let ifAllSelect = e.value.filter((ele)=>{
       return ele == "all";
@@ -327,10 +327,10 @@ getClassList(){
       this.selectedData.selectedShifts = this.orgShiftLists;
 
       this.createSortArray(this.orgClassSectionList);
-      this.sortArray.unshift({
-        class_name: "All",
-        class_id: "all"
-      });
+      // this.sortArray.unshift({
+      //   class_name: "All",
+      //   class_id: "all"
+      // });
 
       // console.log("filter class list for choosen shift : ", this.sortArray); 
     }else{
@@ -341,12 +341,12 @@ getClassList(){
         return ele.org_shift_id == e.value;
       });
 
-      console.log(this.filteredArrayForClassList);
+      // console.log(this.filteredArrayForClassList);
       this.createSortArray(this.filteredArrayForClassList);
-      this.sortArray.unshift({
-        class_name: "All",
-        class_id: "all"
-      });
+      // this.sortArray.unshift({
+      //   class_name: "All",
+      //   class_id: "all"
+      // });
     }
   }
 
@@ -377,10 +377,10 @@ getClassList(){
    
     if(this.filteredArrayForSectionList.length > 0){
       this.filteredArrayForSectionList = this.filteredArrayForSectionList[0].sections;
-      this.filteredArrayForSectionList.unshift({ sec_id: "all", section_name: "All"});
+      // this.filteredArrayForSectionList.unshift({ sec_id: "all", section_name: "All"});
     }  
 
-    console.log('filter section array : ', this.filteredArrayForSectionList);
+    // console.log('filter section array : ', this.filteredArrayForSectionList);
   }
 
 
@@ -434,7 +434,7 @@ getClassList(){
 // ----- sorting selected data method for sending to add notice --------
 // ########################################################################
   sortSelectedFilterData(arr) {
-    console.log(arr);
+    // console.log(arr);
     
     this.sendSelectData.noticeType = arr.selectedNoticeType;
     this.sendSelectData.shifts = [];
@@ -468,7 +468,7 @@ getClassList(){
 
     if(arr.selectedSections.length > 0){
 
-      console.log("Here.");
+      // console.log("Here.");
       if(arr.selectedSections[0].class_id == "all" || arr.selectedSections[0].class_name == "Arts" || arr.selectedSections[0].class_name == "Science"){
         arr.selectedSections.forEach(element => {
           if(element.class_id != "all"){
@@ -491,7 +491,7 @@ getClassList(){
 
 
     if(arr.selectedStuff && arr.selectedStuff.length > 0){
-      console.log('selected stuff : ', arr.selectedStuff);
+      // console.log('selected stuff : ', arr.selectedStuff);
       this.sendSelectData.stuffs = arr.selectedStuff;
     }
 
@@ -525,6 +525,8 @@ getClassList(){
 // ########################################################################
   createSortArray(arr){
     // var rs = 1;
+    console.log('create sort array :...', arr);
+    
     var d = new Date;
     arr.forEach(ele => {
       if (ele.year == d.getFullYear()) {
@@ -578,7 +580,7 @@ getClassList(){
 //    ----------- searching for student by roll -----------
 // ########################################################################
   onClickSearchBtn() {
-    console.log(this.searchRoll); 
+    // console.log(this.searchRoll); 
     this.showFoundStudentTable = false;
     this.foundStudentForSearch = null;
 
@@ -595,7 +597,7 @@ getClassList(){
       .map(res => res.json())
       .subscribe(
         data => {
-          console.log("found student : ", data.data[0]);          
+          // console.log("found student : ", data.data[0]);          
           this.foundStudentForSearch = data.data[0];
 
           if(data.data.length > 0){
@@ -630,8 +632,8 @@ getClassList(){
   onClickFoundStdCheckBox(e) {
     // console.log('event value : ', e); 
     this.sendSelectData.studentsArr = [];
-    console.log('roll value : ', e.target.value); 
-    console.log('check value : ', e.target.checked);
+    // console.log('roll value : ', e.target.value); 
+    // console.log('check value : ', e.target.checked);
 
     if(e.target.checked){
 
@@ -641,7 +643,7 @@ getClassList(){
 
       if(is_exist.length > 0){
 
-        console.log('already exist.'); 
+        // console.log('already exist.'); 
 
         this.notification.showNotification(
           "top",
@@ -654,7 +656,7 @@ getClassList(){
         this.foundStudentForSearch = null;
       }else{
 
-        console.log('not exist.');
+        // console.log('not exist.');
         this.selectStdArr.push(e.target.value);
       }
     }else{
@@ -675,7 +677,7 @@ getClassList(){
       this.studentSelectedForPersonelNotice = false;
     }
 
-    console.log('selected Student array : ', this.selectStdArr);
+    // console.log('selected Student array : ', this.selectStdArr);
     this.sendSelectData.noticeType = this.selectedData.noticeType;
     this.sendSelectData.studentsArr = this.selectStdArr;
   }
@@ -689,7 +691,7 @@ getClassList(){
 // ########################################################################
   onClickGoNextForPersonelNotice() {
     this.apiServ.changeData(this.sendSelectData);
-    console.log('send data : ', this.sendSelectData);
+    // console.log('send data : ', this.sendSelectData);
     this.routes.navigate(['/notice-management/add-notice']);
   }
 
@@ -699,8 +701,8 @@ getClassList(){
 
   selectAllShifts(e){
     if(e.value == "all") {
-      console.log("native element : ", e.source._parentFormField._elementRef.nativeElement);
-      console.log("Sibling : ", e.source._parentFormField._elementRef.nativeElement.nextSibling);  
+      // console.log("native element : ", e.source._parentFormField._elementRef.nativeElement);
+      // console.log("Sibling : ", e.source._parentFormField._elementRef.nativeElement.nextSibling);  
     }
   }
 
