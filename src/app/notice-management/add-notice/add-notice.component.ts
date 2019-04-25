@@ -19,9 +19,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./add-notice.component.scss"]
 })
 export class AddNoticeComponent implements OnInit {
-  // title: string = null;
-  // subTitle: string = null;
-  // description: string = null;
+  
   showloader: boolean = false;
   addNoticeForm: FormGroup;
   title: FormControl;
@@ -71,8 +69,8 @@ export class AddNoticeComponent implements OnInit {
     this.multipartItem.formData = null;
     this.shareData = this.data;
     this.shareDataArrayObject = {};
-    console.log("sent from filter page : ", this.shareData);
-    console.log("session value : ", this.sessionValue);
+    // console.log("sent from filter page : ", this.shareData);
+    // console.log("session value : ", this.sessionValue);
   }
 
 
@@ -137,12 +135,11 @@ export class AddNoticeComponent implements OnInit {
 
 
   publishDate(e){
-    console.log();
+    // console.log();
     var d = new Date;
     var getdatestring = e.value.toDateString();
     getdatestring == d.toDateString() ? this.buttonName = 'Publish Now' : this.buttonName = 'Save'; 
-    // console.log(this.buttonName);
-    
+    // console.log(this.buttonName);    
   }
 
 
@@ -192,16 +189,12 @@ export class AddNoticeComponent implements OnInit {
             shedule_type: 1,
             shedule_arry: this.addNoticeForm.value.schedule
           };
-          console.log(apiData);
+          // console.log(apiData);
           
           this.http
             .post(`${environment.apiUrl}schedule/add`, apiData)
             .map(res => res.json())
             .subscribe(retundata => {
-              console.log(
-                "Got some data from backend ",
-                retundata
-              );
               this.showloader = false;
               this.notification.showNotification(
                 "top",
@@ -213,6 +206,7 @@ export class AddNoticeComponent implements OnInit {
               this.router.navigate(['/notice']);
             });
       }else{
+
         this.showloader = false;
         this.notification.showNotification(
           "top",
@@ -220,6 +214,7 @@ export class AddNoticeComponent implements OnInit {
           "warning",
           "Sorry, Something Went Wrong."
         );
+        
       }
       
     });

@@ -30,7 +30,7 @@ export class NoticeManagementComponent implements OnInit {
   ngOnInit() {
     this.sessionValue = this.sessionStore.retrieve('user-data')[0];
     this.getAllNotice();
-    console.log(this.sessionValue );
+    // console.log(this.sessionValue );
   }
 
 
@@ -45,7 +45,7 @@ export class NoticeManagementComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      // console.log('The dialog was closed');
       // this.animal = result;
     });
 
@@ -68,7 +68,7 @@ export class NoticeManagementComponent implements OnInit {
 
     this.http.post(`${environment.apiUrl}notice/noticelist`, data, {headers: header}).map((res)=>res.json())
     .subscribe(data => {
-      console.log('All notice list : ', data.data);
+      // console.log('All notice list : ', data.data);
       this.noticeList = data.data;
     });
   }
@@ -78,7 +78,7 @@ export class NoticeManagementComponent implements OnInit {
 
   onClickDeleteNotice(id){
 
-    console.log(id); 
+    // console.log(id); 
     let header = new Headers();
     header.append('Content-Type', 'application/json');
 
@@ -88,7 +88,7 @@ export class NoticeManagementComponent implements OnInit {
 
     this.http.post(`${environment.apiUrl}notice/deletenotice`, data, {headers: header}).map((res)=>res.json())
     .subscribe(data => {
-      console.log(data.data);
+      // console.log(data.data);
       if(data.data){
         this.getAllNotice();
       }
@@ -153,7 +153,7 @@ export class NoticeManagementComponent implements OnInit {
 
     this.http.post(`${environment.apiUrl}notice/filter`, data, {headers: header}).map((res)=>res.json())
     .subscribe(data => {
-      console.log('Filter notice list : ', data.data);
+      // console.log('Filter notice list : ', data.data);
       this.noticeList = data.data;
     });
   }
