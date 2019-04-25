@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Http, RequestOptions, Headers } from '@angular/http';
 import { environment } from "../../../environments/environment.prod";
 import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import "rxjs/add/observable/of";
 
@@ -13,16 +14,16 @@ declare interface RouteInfo {
     class: string;
 }
 export const ROUTES: RouteInfo[] = [
-    { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '' },
-    { path: '/user-profile', title: 'User Profile',  icon:'person', class: '' },
+    { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '0' },
+    { path: '/user-profile', title: 'User Profile',  icon:'person', class: '0' },
     // { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
-  { path: '/add-user-details', title: 'Upload Details',  icon:'notifications', class: '' },
-    { path: '/add-user', title: 'Add User Role', icon: 'person', class: '' },
-    { path: '/notice', title: 'Notice', icon: 'notes', class: '' },
-    { path: '/library/index', title: 'Library', icon: 'library_books', class: '' },
-    { path: '/event/index', title: 'Events', icon: 'speaker', class: '' },
-    { path: '/routine/index', title: 'Routine', icon: 'event_available', class: '' },
-    { path: '/exam/index', title: 'Exam System', icon: 'event_available', class: '' },
+    { path: '/add-user-details', title: 'Upload Details',  icon:'notifications', class: '1' },
+    { path: '/add-user', title: 'Add User Role', icon: 'person', class: '3' },
+    { path: '/notice', title: 'Notice', icon: 'notes', class: '2' },
+    { path: '/library/index', title: 'Library', icon: 'library_books', class: '4' },
+    { path: '/event/index', title: 'Events', icon: 'speaker', class: '5' },
+    { path: '/routine/index', title: 'Routine', icon: 'event_available', class: '6' },
+    { path: '/exam/index', title: 'Exam System', icon: 'event_available', class: '7' },
     // { path: '/add-user-details', title: 'Add Details', icon: 'event_available', class: '' },
 ];
 
@@ -35,12 +36,14 @@ export class SidebarComponent implements OnInit {
   menuItems: any[];
   org_code;
   orgDetails;
-  constructor(public http: Http, public sessionStore: SessionStorageService) {}
+  user_id;
+  constructor(public http: Http, public sessionStore: SessionStorageService, private router: Router,) {}
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter(menuItem => menuItem);
+    // this.menuItems = ROUTES.filter(menuItem => menuItem);
     // this.getRouts();
     this.org_code = this.sessionStore.retrieve("user-data")[0].org_code;
+    this.user_id = this.sessionStore.retrieve("user-data")[0].master_id;
     this.getOrgdetails();
   }
   //   getRouts(){
@@ -65,12 +68,72 @@ export class SidebarComponent implements OnInit {
         data => {
           // console.log(data);
           this.orgDetails = data.data;
-          console.log(this.orgDetails);
+          this.getRollList();
           
         }
         // error => {
         //   console.log("Error! ", error);
         // }
       );
+  }
+
+  getRollList() {
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+    let data = {
+      org_id: this.org_code,
+      master_id: this.user_id
+    };
+    this.http
+      .post(`${environment.apiUrl}role/roledetails`, data)
+      .map(res => res.json())
+      .subscribe(
+        data => {
+          // console.log("Roll List",data);
+          let routes = [];
+          if (this.sessionStore.retrieve("user-data")[0].user_type_id == 1) {
+            let searchroutes = ROUTES.filter(menuItem => {
+              return menuItem.class == "0" || menuItem.class == "1"
+            });
+            // console.log(searchroutes);
+
+            routes = searchroutes;
+          } else if (this.sessionStore.retrieve("user-data")[0].user_type_id == 2) {
+            let searchroutes = ROUTES.filter(menuItem => {
+              return menuItem.class == "0"
+            });
+            routes = searchroutes;
+          }
+
+          if (data.data.length > 0) {
+
+            data.data.forEach(ele => {
+  
+              if (ele.module_id) {
+                let searchroutes = ROUTES.filter(menuItem => {
+                  return menuItem.class == ele.module_id
+                });
+                // console.log(routes);
+                if (searchroutes.length > 0) {
+                  routes.push(searchroutes[0])
+                }       
+              }
+            });
+            this.menuItems = routes;
+          }else{
+            alert('You are not Athorized to this area. Contact to Institute Admin');
+            this.logout()
+          }
+          
+          
+          
+        }
+        
+      );
+  }
+
+  logout() {
+    this.sessionStore.clear("user-data");
+    this.router.navigate(["/"]);
   }
 }

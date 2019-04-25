@@ -135,7 +135,7 @@
       </div> -->
         <app-loader [show]="showloader"></app-loader>
 
-        <div class="row">
+        <div class="row" *ngIf="user_type_id == 1">
             <div class="col-lg-6 col-md-12">
                 <div class="card">
                     <div class="card-header card-header-tabs card-header-primary">
@@ -261,7 +261,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="user_type_id == 1">
             <div class="col-lg-6 col-md-12">
                 <div class="card">
                     <div class="card-header card-header-warning">
@@ -318,12 +318,13 @@
                         <form>
                             <div class="example-container">
                                 <mat-form-field>
-                                    <input matInput name="cc_name" [(ngModel)]="cc_name" placeholder="Course Categories Name">
-                                </mat-form-field>
-                                <mat-form-field>
                                     <mat-select placeholder="Parent Category" name="cc_parent" [(ngModel)]="cc_parent" >
+                                        <mat-option value="0">--None--</mat-option>
                                         <mat-option *ngFor="let item of courseCats;" value="{{item.id}}">{{item.name}}</mat-option>
                                     </mat-select>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <input matInput name="cc_name" [(ngModel)]="cc_name" placeholder="Course Categories Name">
                                 </mat-form-field>
                                 <mat-form-field>
                                     <input matInput name="cc_short_name" [(ngModel)]="cc_short_name"placeholder="Short Name">
@@ -344,12 +345,12 @@
                         <form>
                             <div class="example-container">
                                 <mat-form-field>
-                                    <input matInput name="cc_name_edit" [(ngModel)]="cc_name_edit" placeholder="Course Categories Name">
-                                </mat-form-field>
-                                <mat-form-field>
                                     <mat-select placeholder="Parent Category" name="cc_parent_edit" [(ngModel)]="cc_parent_edit">
                                         <mat-option *ngFor="let item of courseCats;" value="{{item.id}}">{{item.name}}</mat-option>
                                     </mat-select>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <input matInput name="cc_name_edit" [(ngModel)]="cc_name_edit" placeholder="Course Categories Name">
                                 </mat-form-field>
                                 <mat-form-field>
                                     <input matInput name="cc_short_name_edit" [(ngModel)]="cc_short_name_edit" placeholder="Short Name">

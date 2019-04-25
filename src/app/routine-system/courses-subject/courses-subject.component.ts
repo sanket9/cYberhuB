@@ -169,6 +169,7 @@ export class CoursesSubjectComponent implements OnInit {
       .post(`${environment.apiUrl}coursecat/getall`, data)
       .map(res => res.json())
       .subscribe(data => {
+        
         this.showloader = false;
         console.log(data);
         let arry = [];
@@ -193,7 +194,7 @@ export class CoursesSubjectComponent implements OnInit {
         });
         //
         this.compponents = arry;
-        // console.log(arry);
+        console.log("SubArray",arry);
       });
   }
 

@@ -112,7 +112,7 @@ export class AddNoticeComponent implements OnInit {
       });
       (data as FormArray).push(newarry);
     }else{
-      alert('Maximum Number selected');
+      alert('Maximum Number Scheduled Notification are Set.');
     }
     // console.log(this.addNoticeForm);
     
@@ -180,52 +180,76 @@ export class AddNoticeComponent implements OnInit {
     fd.append("end_date", this.getFullDate(addNoticeFormData.endDate));
     fd.append("file", this.file);
 
-
-    this.http.post(`${environment.apiUrl}notice/addnotice`, fd).map((res)=>res.json())
-    .subscribe(data => {
+    if (this.hasNull(addNoticeFormData)) {
+      // console.log("hereeee");
       
-      if(data){
+      this.http.post(`${environment.apiUrl}notice/addnotice`, fd).map((res)=>res.json())
+      .subscribe(data => {
         
-          let apiData = {
-            org_id: this.sessionValue[0].org_code,
-            type_id: data.data.id,
-            shedule_type: 1,
-            shedule_arry: this.addNoticeForm.value.schedule
-          };
-          console.log(apiData);
+        if(data){
           
-          this.http
-            .post(`${environment.apiUrl}schedule/add`, apiData)
-            .map(res => res.json())
-            .subscribe(retundata => {
-              console.log(
-                "Got some data from backend ",
-                retundata
-              );
-              this.showloader = false;
-              this.notification.showNotification(
-                "top",
-                "right",
-                "success",
-                "Success, Notice Added Successfully."
-              );
-              this.addNoticeForm.reset();
-              this.router.navigate(['/notice']);
-            });
-      }else{
-        this.showloader = false;
-        this.notification.showNotification(
-          "top",
-          "right",
-          "warning",
-          "Sorry, Something Went Wrong."
-        );
-      }
+            let apiData = {
+              org_id: this.sessionValue[0].org_code,
+              type_id: data.data.id,
+              shedule_type: 1,
+              shedule_arry: this.addNoticeForm.value.schedule
+            };
+            console.log(apiData);
+            
+            this.http
+              .post(`${environment.apiUrl}schedule/add`, apiData)
+              .map(res => res.json())
+              .subscribe(retundata => {
+                console.log(
+                  "Got some data from backend ",
+                  retundata
+                );
+                this.showloader = false;
+                this.notification.showNotification(
+                  "top",
+                  "right",
+                  "success",
+                  "Success, Notice Added Successfully."
+                );
+                this.addNoticeForm.reset();
+                this.router.navigate(['/notice']);
+              });
+        }else{
+          this.showloader = false;
+          this.notification.showNotification(
+            "top",
+            "right",
+            "warning",
+            "Sorry, Something Went Wrong."
+          );
+        }
+        
+      });
+    }else{
+      console.log(addNoticeFormData);
       
-    });
+      this.showloader = false;
+      this.notification.showNotification(
+        "top",
+        "right",
+        "danger",
+        "Sorry, Field is missing "
+      );
+    }
+
   }
 
+// ########################################################################
+// ----------- Null Checking -----------
+// #######################################################################
 
+  hasNull(target) {
+    for (var member in target) {
+      if (target[member] == null)
+        return true;
+    }
+    return false;
+  }
 
 
 // ########################################################################
@@ -261,25 +285,28 @@ export class AddNoticeComponent implements OnInit {
 // ########################################################################
   getFullDate(today) {
     // var today = new Date();
-    var dd = today.getDate().toString();
-    var mm = today.getMonth().toString();
-    var monthNum = mm + 1;
-    var yyyy = today.getFullYear();
-    // var returnDate;
-
-    // console.log('length : ', dd.length);
-    if (dd.length < 1) {   
-      dd = '0' + dd;
-      // console.log(dd);    
+    if (today) {
+      
+      var dd = today.getDate().toString();
+      var mm = today.getMonth().toString();
+      var monthNum = mm + 1;
+      var yyyy = today.getFullYear();
+      // var returnDate;
+  
+      // console.log('length : ', dd.length);
+      if (dd.length < 1) {   
+        dd = '0' + dd;
+        // console.log(dd);    
+      }
+  
+      // console.log('length : ', monthNum.length);
+      if (monthNum.length < 1) {
+        monthNum = '0' + monthNum;
+        // console.log(monthNum);
+      }
+  
+      // console.log(yyyy + '-' + monthNum + '-' + dd);  
+      return yyyy + '-' + monthNum + '-' + dd;    
     }
-
-    // console.log('length : ', monthNum.length);
-    if (monthNum.length < 1) {
-      monthNum = '0' + monthNum;
-      // console.log(monthNum);
-    }
-
-    // console.log(yyyy + '-' + monthNum + '-' + dd);  
-    return yyyy + '-' + monthNum + '-' + dd;    
   }
 }

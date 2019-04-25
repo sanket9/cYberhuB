@@ -37,7 +37,7 @@
               <div class="col-md-6">
                 <button mat-raised-button type="button" color="primary" (click)="fileInput.click()" >
                   Add File</button>
-                <input type="file" hidden #fileInput name="file" (change)="handleFileSelect($event)">
+                <input type="file" hidden accept=".csv" #fileInput name="file" (change)="handleFileSelect($event)">
               </div>
               <button mat-raised-button class="btn btn-primary"e="submit" >Submit</button>
             </form>

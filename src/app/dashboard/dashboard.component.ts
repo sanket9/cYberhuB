@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit {
   cc_parent_edit;
   cc_short_name_edit;
   cc_edit_id;
+  user_type_id;
   constructor(
     public route: ActivatedRoute,
     public http: Http,
@@ -100,6 +101,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.org_code = this.sessionStore.retrieve("user-data")[0].org_code;
+    this.user_type_id = this.sessionStore.retrieve("user-data")[0].user_type_id;
     this.getShiftsNames();
     this.getExamTypeNames();
     this.getClassSection();

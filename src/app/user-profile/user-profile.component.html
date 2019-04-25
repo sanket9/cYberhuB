@@ -98,7 +98,7 @@
 
 
 
-              <div class="col-md-12">
+              <div class="col-md-12" *ngIf="user_type_id == 1">
                   <div class="card">
                       <div class="card-header card-header-danger">
                         <h4 class="card-title">Organisation Details</h4>
@@ -168,10 +168,10 @@
                                   <input matInput placeholder="Pin" type="text" formControlName="collg_pin" name="collg_pin">
                                 </mat-form-field>
                             </div>
-                            <!-- <div class="col-md-12">
+                            <div class="col-md-12">
 
-                              <ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
-                            </div> -->
+                              <ckeditor [(ngModel)]="orgInfo" [editor]="Editor" data="{{orgInfo}}" [ngModelOptions]="{standalone: true}"></ckeditor>
+                            </div>
 
                             <div class="col-md-12">
                               <button mat-raised-button type="submit" class="btn btn-danger pull-right">Update Instituation Details</button>
@@ -284,7 +284,7 @@
                   <div class="card-body">
                       <h6 class="card-category text-gray">Principal</h6>
                       <h4 class="card-title">{{userDetail?.stafftmaster?.name}} 
-                        <!-- <span class="pull-right" style="font-size: 14px;" (click)="editOrgInfo()"><i class="material-icons" style="font-size: 14px;">
+                        <!-- <span *ngIf="user_type_id == 1" class="pull-right" style="font-size: 14px;" (click)="editOrgInfo()"><i class="material-icons" style="font-size: 14px;">
                             border_color
                             </i> Edit</span> -->
                       </h4>

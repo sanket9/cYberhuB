@@ -24,7 +24,7 @@ import * as ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 export class UserProfileComponent implements OnInit {
   userDetail: any;
   showloader: boolean = false;
-  public Editor: ClassicEditor;
+  public Editor = ClassicEditor;
   userdetailsFrm: FormGroup;
   schooldetailsFrm: FormGroup;
   f_name: FormControl;
@@ -38,7 +38,7 @@ export class UserProfileComponent implements OnInit {
   showOrgInfo: boolean = true;
 
   orgInfo: any;
-
+  user_type_id
   // userdetailsForm;
   displayedColumns = [
     "id",
@@ -58,12 +58,16 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     this.getdetails();
+    // console.log(this.Editor);
+    
     // if (this.userDetail.stafftmaster) {
     //   this.createFormControl();
     //   this.createFormGroup();
     // }
     // this.createFormControl();
     // this.createFormGroup();
+
+    this.user_type_id = this.SessionStore.retrieve("user-data")[0].user_type_id;
   }
 
   // createFormControl() {
@@ -178,7 +182,7 @@ export class UserProfileComponent implements OnInit {
       .map(res => res.json())
       .subscribe(async data => {
         this.showloader = false;
-        console.log("college details : ", data.data[0]);
+        // console.log("college details : ", data.data[0]);
         if (data.data[0]) {
           this.userDetail = await data.data[0];
           if (this.userDetail) {
@@ -229,7 +233,7 @@ export class UserProfileComponent implements OnInit {
             "top",
             "right",
             "success",
-            "Student data Added SuccessFuly"
+            "Profile data Added SuccessFuly"
           );
         }
       });
@@ -243,6 +247,7 @@ export class UserProfileComponent implements OnInit {
     let options = new RequestOptions({ headers: headers });
     var status = this.SessionStore.retrieve("user-data");
     values.org_id = status[0].org_code;
+    values.org_info = this.orgInfo
     this.http
       .post(`${environment.apiUrl}org/edit`, values, options)
       .map(res => res.json())
@@ -253,8 +258,9 @@ export class UserProfileComponent implements OnInit {
             "top",
             "right",
             "success",
-            "Student data Added SuccessFuly"
+            "Institution data Updated SuccessFuly"
           );
+          this.getdetails();
         }
       });
   }
