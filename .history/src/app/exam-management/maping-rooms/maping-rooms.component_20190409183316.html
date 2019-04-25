@@ -1,0 +1,156 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Exam Room Student and Staff Allocations
+      </li>
+
+      <li class="float-right">
+
+      </li>
+    </ol>
+  </nav>
+
+  <div class="container-fluid">
+    <app-loader [show]="showloader"></app-loader>
+    <div class="row page-title">
+      <div class="col-md-10 col-md-offset-1">
+
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title">Exam Details</h4>
+            <p class="card-category">Exam Room Student and Staff Allocations</p>
+          </div>
+          <div class="card-body">
+           <div class="row">
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Exam Name" name="exam_data_id" [(ngModel)]="exam_data && exam_data.id">
+                  <mat-option [value]="exam_data && exam_data.id">
+                    {{ exam_data && exam_data.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Select Date" name="exam_date" (change)="changeDate($event)">
+                  <mat-option *ngFor="let item of exam_date_sorted" [value]="item.date">
+                    {{ item.date }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Select Shift" [(ngModel)]="shift" name="exam_shift">
+                  <mat-option *ngFor="let item of selectedarray && selectedarray[0].shift" [value]="item">
+                    {{ item }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+           </div>
+            
+            <form class="pt-2">
+                <div class="col-md-3">
+                  <mat-form-field>
+                    <mat-select placeholder="Select Room" name="room_id" (change)="changeRoom($event)" >
+                      <mat-option *ngFor="let item of org_rooms" [value]="item.id" >
+                        {{ item.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <p ><strong>Total no Of Bench:</strong>{{filtered_room && filtered_room[0].no_of_banches}},
+                  <strong>Per Bench Capacity:</strong>{{filtered_room && filtered_room[0].benchCapacity}},
+                  <strong>Total no Of Capacity:</strong>{{filtered_room && filtered_room[0].total_no_students}}</p>
+                <div class="row" style="border: 1px solid #222222; padding: 10px" *ngFor="let item of RoomClassStruc; let i = index;">
+                  <!-- <div class="row" *ngFor="let class of benchcapacity(item.class); let class_index = index;"> -->
+                    
+                    <div class="col-md-3">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Row No" value={{item.row}}>
+                      </mat-form-field>
+                    </div>
+                    
+                    
+                    <div class="col-md-3">
+                      <mat-form-field>
+                        <mat-select placeholder="Select Year" [(ngModel)]="year && year[i]" name="exam_year" >
+                          <mat-option *ngFor="let item of selectedarray && selectedarray[0].year" [value]="item">
+                            {{ item }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-form-field>
+                        <mat-select placeholder="Select Sem" [(ngModel)]="sem && sem[i]" name="exam_sem">
+                          <mat-option *ngFor="let item of selectedarray && selectedarray[0].sem" [value]="item">
+                            {{ item }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-form-field>
+                        <mat-select placeholder="Select Depts" [(ngModel)]="dept && dept[i]" name="exam_dept">
+                          <mat-option *ngFor="let item of selectedarray && selectedarray[0].depts" [value]="item">
+                            {{ item }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <input type="hidden" name="exam_date_id" [(ngModel)]="exam_date_id && exam_date_id[i]" [value]="exam_date_id && exam_date_id[i]">
+                    
+                    <div class="col-md-3 offset-6">
+                      <p *ngIf="assignStudent() > 0">Total Seat Left: <span class="text-danger">{{assignStudent()}}</span></p>
+                      <p *ngIf="assignStudent() < 0">Total Student Left: <span class="text-danger">{{ absoluteValue(assignStudent()) }}</span></p>
+                    
+                    </div>
+                    
+                    <div class="col-md-12">
+                    
+                      <button class="btn btn-sm" type="button" (click)="searchstudent(i)">Search Student</button>
+                      <button class="btn btn-sm" type="button" (click)="saveStudentRoom(i)">Assign Students</button>
+                      <!-- <button class="btn btn-sm" [disabled]="assignStudent() <= 0" (click)="addclass(i)">Add Class</button> -->
+                    </div>
+                  </div>
+                     <div class="col-md-4">
+                        <mat-form-field>
+                          <mat-select placeholder="Select Teachers" [(ngModel)]="teacher" name="teacher" multiple>
+                            <mat-option *ngFor="let techer of teacherList" [value]="techer.id">
+                              {{ techer.name }} ({{techer.short_name}}) 
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+
+                      </div>
+
+                      <div class="col-md-4">
+                        <mat-form-field class="example-full-width">
+                          <input matInput placeholder="Exam Start Time(E.g. 10.00 pm)" >
+                        </mat-form-field>
+                      
+                      </div>
+                      <div class="col-md-6">
+                        <button class="btn btn-sm " type="button" (click)="assignTeacher()">Assign Teacher</button>
+                      </div>
+                  
+                <!-- </div> -->
+            </form>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>

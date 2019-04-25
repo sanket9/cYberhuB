@@ -1,0 +1,51 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Exam Room Details
+      </li>
+
+      <li class="float-right">
+
+      </li>
+    </ol>
+  </nav>
+
+  <div class="container-fluid">
+    <app-loader [show]="showloader"></app-loader>
+    <div class="row page-title">
+      <div class="col-md-10 col-md-offset-1">
+
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title">Room Details</h4>
+            <p class="card-category">Add Exam Room Details</p>
+          </div>
+          <div class="card-body">
+            <form class="pt-2" [formGroup]="examForm" (submit)="FormSubmit(examForm.value)" >
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Exam Name" formControlName="exam_name">
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <button mat-raised-button type="button" color="primary" (click)="fileInput.click()" >
+                  Add File</button>
+                <input type="file" hidden #fileInput name="file" (change)="handleFileSelect($event)">
+              </div>
+              <button mat-raised-button class="btn btn-primary"e="submit" >Submit</button>
+            </form>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,109 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        All Rooms
+      </li>
+
+      <li class="float-right">
+
+      </li>
+    </ol>
+  </nav>
+  <app-loader [show]="showloader"></app-loader>
+  <div class="container-fluid">
+    <div class="row page-title">
+      <div class="col-md-12 col-md-offset-1">
+        <button mat-raised-button class="btn btn-success" [routerLink]="['/exam/addroom']">
+          <mat-icon>add</mat-icon> Add a Room
+        </button>
+        <button mat-raised-button class="btn btn-primary" [routerLink]="['/exam/schedule']">
+          <mat-icon>schedule</mat-icon> Schedule A Exam
+        </button>
+        <!-- <app-loading *ngIf="showloader"></app-loading> -->
+
+        <div class="example-header">
+          <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter Data..">
+          </mat-form-field>
+        </div>
+        <mat-table #table [dataSource]="dataSource">
+          <!-- Checkbox Column -->
+          <!-- <ng-container matColumnDef="select">
+                <mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                  </mat-checkbox>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                  </mat-checkbox>
+                </mat-cell>
+              </ng-container> -->
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </mat-cell>
+          </ng-container>
+
+          <!-- Name Column -->
+
+          <ng-container matColumnDef="room_name">
+            <mat-header-cell *matHeaderCellDef> Room Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="floor_name">
+            <mat-header-cell *matHeaderCellDef> Floor </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.floor_name}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="sheating_type">
+            <mat-header-cell *matHeaderCellDef> Seating Type </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.sheating_type}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="banchtypes">
+            <mat-header-cell *matHeaderCellDef> Bench Types </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.banchtypes}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="benchCapacity">
+            <mat-header-cell *matHeaderCellDef>Per Bench/Table Capacity </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.benchCapacity}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="no_of_banches">
+            <mat-header-cell *matHeaderCellDef>No Of Benches </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.no_of_banches}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="total_no_students">
+            <mat-header-cell *matHeaderCellDef>Total Capacity </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.total_no_students}} </mat-cell>
+          </ng-container>
+          <!-- Name Actions -->
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <button mat-icon-button type="button" matTooltip="Edit this" [matTooltipPosition]="'above'" class="btn btn-link btn-sm btn-just-icon"
+                (click)="selectStaff(element.id)">
+                <i class="material-icons">edit</i>
+              </button>
+              <!-- <button mat-icon-button >
+                <mat-icon>remove_red_eye</mat-icon>
+              </button> -->
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+        </mat-table>
+        <mat-paginator #paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 25, 50,100]">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>
