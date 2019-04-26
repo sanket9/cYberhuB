@@ -12,6 +12,7 @@ import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
   styleUrls: ["./listroom.component.scss"]
 })
 export class ListroomComponent implements OnInit {
+  
   displayedColumns = [
     "id",
     "room_name",
@@ -40,9 +41,9 @@ export class ListroomComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-   
+    this.dataSource.paginator = this.paginator;   
   }
+
   getAllRooms() {
     var status = this.SessionStore.retrieve("user-data");
     var headers = new Headers();

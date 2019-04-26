@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -13,13 +13,18 @@ import { Router, ActivatedRoute } from "@angular/router";
 // import { NotificationService } from "../../services/notification.service";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import { AmazingTimePickerService } from "amazing-time-picker";
+import { MatTableDataSource, MatPaginator } from "@angular/material";
+import { SelectionModel } from "@angular/cdk/collections";
 
 @Component({
   selector: "app-add-routine",
   templateUrl: "./add-routine.component.html",
   styleUrls: ["./add-routine.component.scss"]
 })
+
 export class AddRoutineComponent implements OnInit {
+
+  panelOpenState = false;
   showloader: boolean = false;
   createpriodForm: FormGroup;
   no_of_preiod: FormControl;
@@ -31,6 +36,25 @@ export class AddRoutineComponent implements OnInit {
   classList: any;
   shift: any;
   shifs: any;
+
+  displayedColumns = [
+    "id",
+    "room_name",
+    "floor_name",
+    "sheating_type",
+    "banchtypes",
+    "benchCapacity",
+    "no_of_banches",
+    "total_no_students"
+  ];
+
+  dataSource = new MatTableDataSource<Element>();
+  selection = new SelectionModel<Element>(true, []);
+
+  @ViewChild(MatPaginator)
+  paginator: MatPaginator;
+  shiftClass: any;
+  
   constructor(
     public http: Http,
     // public notification: NotificationService,
@@ -43,8 +67,17 @@ export class AddRoutineComponent implements OnInit {
     this.createFormControl();
     this.createFormGroup();
     this.getClassList();
+    this.getOrgShiftClass();
     // console.log(this.createpriodForm.value);
   }
+
+
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;   
+  }
+
+
 
   getClassList() {
     this.showloader = true;
@@ -63,12 +96,19 @@ export class AddRoutineComponent implements OnInit {
         this.showloader =false;
       });
   }
+
+
+
   open() {
     const amazingTimePicker = this.atp.open();
     amazingTimePicker.afterClose().subscribe(time => {
       console.log(time);
     });
   }
+
+
+
+
   getClass() {
     // this.showloader = true;
     // var status = this.SessionStore.retrieve("user-data");
@@ -86,11 +126,19 @@ export class AddRoutineComponent implements OnInit {
     //     this.showloader = false;
     //   });
   }
+
+
+
+  
   createFormControl() {
     this.no_of_preiod = new FormControl("", [Validators.required]);
     this.shift = new FormControl("", [Validators.required]);
     this.priods = new FormArray([], [Validators.required]);
   }
+
+
+
+
 
   createFormGroup() {
     this.createpriodForm = new FormGroup({
@@ -100,6 +148,10 @@ export class AddRoutineComponent implements OnInit {
       // file_url: this.file_url
     });
   }
+
+
+
+
 
   priodchange(e) {
     //console.log(e.target.value);
@@ -124,6 +176,10 @@ export class AddRoutineComponent implements OnInit {
     }
   }
 
+
+
+
+
   createpriod(value) {
     console.log(value);
     this.showloader = true;
@@ -142,4 +198,47 @@ export class AddRoutineComponent implements OnInit {
         //this.classList = data.data;
       });
   }
+
+
+
+
+
+  getOrgShiftClass() {
+    var status = this.SessionStore.retrieve("user-data");
+
+    var headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    let options = new RequestOptions({ headers: headers });
+
+    let data = { 
+      org_id: status[0].org_code 
+    };
+
+    this.http
+      .post(`${environment.apiUrl}shift/orgshiftclass`, data, options)
+      .map(res => res.json())
+      .subscribe(data => {
+        //console.log(data);
+        this.showloader = false;
+        // this.dataSource.data = data.data;
+        this.shiftClass = data.data;
+      });
+  }
+
+
+
+
+
+  onClickEditShiftClass(data) {
+    // console.log(data);
+    this.router.navigate([`routine/edit-shift-class/${data.id}`]);    
+  }
+
+
+  onClickDeleteShiftClass(data) {
+    console.log(data);
+    // this.router.navigate([`routine/edit-shift-class/${data.id}`]);
+  }
+
 }

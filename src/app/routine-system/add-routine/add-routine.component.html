@@ -12,10 +12,13 @@
       </li>
     </ol>
   </nav>
+
+
   <div class="container-fluid">
     <!-- <div class="row page-title"> -->
     <!-- </div> -->
     <app-loader [show]="showloader"></app-loader>
+
     <div class="card">
       <div class="card-header card-header-danger">
         <h4 class="card-title">Routine</h4>
@@ -90,6 +93,62 @@
             </div>
           </div> 
         </form>
+
+      </div>
+    </div>
+
+
+
+
+
+    <div class="card">
+      <div class="card-header card-header-danger">
+        <h4 class="card-title">Routine List</h4>
+      </div>
+      <div class="card-body mt-2">
+        
+        <mat-accordion *ngFor="let shift of shiftClass">
+
+          <mat-expansion-panel>
+
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{shift.name}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+
+            <table class="table table-sm">
+
+              <thead>
+                <tr>
+                  <th scope="col" class="text-center">Priod Name</th>
+                  <th scope="col" class="text-center">From Time</th>
+                  <th scope="col" class="text-center">To Time</th>
+                  <th scope="col" class="text-center">Edit</th>
+                  <th scope="col" class="text-center">Delete</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let routine of shift.routinehift">
+                  <th scope="row" class="text-center">{{routine.priod_name}}</th>
+                  <td class="text-center">{{routine.from_time}}</td>
+                  <td class="text-center">{{routine.to_time}}</td>
+
+                  <td class="text-center">
+                    <i class="fa fa-pencil-square-o tableIconLogo" aria-hidden="true" (click)="onClickEditShiftClass(routine)"></i>
+                  </td>
+
+                  <td class="text-center">
+                    <i class="fa fa-trash-o tableIconLogo" aria-hidden="true" (click)="onClickDeleteShiftClass(routine)"></i>
+                  </td>                  
+                </tr>
+              </tbody>
+            </table>
+          </mat-expansion-panel>
+        </mat-accordion>
+        
 
       </div>
     </div>

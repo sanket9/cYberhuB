@@ -21,6 +21,7 @@ import {
   MatPaginatorModule,
   MatProgressSpinnerModule
 } from "@angular/material";
+
 import { ListroomComponent } from './listroom/listroom.component';
 import { ComponentsModule } from "../components/components.module";
 import { ScheduleExamComponent } from './schedule-exam/schedule-exam.component';
@@ -46,8 +47,7 @@ import { MapingRoomsComponent } from './maping-rooms/maping-rooms.component';
     MatTabsModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
-    ExamManagementRoutingModule,
-    
+    ExamManagementRoutingModule,    
   ],
   declarations: [AddRoomComponent, ListroomComponent, ScheduleExamComponent, MapingRoomsComponent],
   providers: [NotificationService]

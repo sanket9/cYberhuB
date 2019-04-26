@@ -525,7 +525,7 @@ getClassList(){
 // ########################################################################
   createSortArray(arr){
     // var rs = 1;
-    console.log('create sort array :...', arr);
+    // console.log('create sort array :...', arr);
     
     var d = new Date;
     arr.forEach(ele => {

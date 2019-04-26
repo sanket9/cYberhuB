@@ -1,0 +1,73 @@
+<div class="main-content">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a [routerLink]="['/dashboard']" class="text-success">
+            <i class="material-icons">home</i>
+            Dashboard
+          </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          Notice Mangament
+        </li>
+      </ol>
+    </nav>
+  
+  
+    <div class="container-fluid">
+      <!-- <div class="row page-title"> -->
+      <!-- </div> -->
+      <app-loader [show]="showloader"></app-loader>  
+  
+      <div class="card">
+        <div class="card-header card-header-danger">
+          <h4 class="card-title">Edit Shift Class</h4>
+        </div>
+
+        <div class="card-body mt-2">          
+            <div class="row">
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Room Name" name="room_name" type="text">
+                  </mat-form-field>
+                  <!-- <mat-error *ngIf="roomaddForm.controls.room_name.hasError('required') && roomaddForm.controls.room_name.touched">
+                    <small>Room Name is <strong>required</strong></small>
+                  </mat-error> -->
+                </div>  
+                
+                <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Room Name" name="room_name" type="text">
+                    </mat-form-field>
+                    <!-- <mat-error *ngIf="roomaddForm.controls.room_name.hasError('required') && roomaddForm.controls.room_name.touched">
+                      <small>Room Name is <strong>required</strong></small>
+                    </mat-error> -->
+                </div>
+
+                <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Room Name" name="room_name" type="text">
+                      </mat-form-field>
+                      <!-- <mat-error *ngIf="roomaddForm.controls.room_name.hasError('required') && roomaddForm.controls.room_name.touched">
+                        <small>Room Name is <strong>required</strong></small>
+                      </mat-error> -->
+                </div>
+
+                <div class="col-md-4">
+                        <mat-form-field class="example-full-width">
+                          <input matInput placeholder="Room Name" name="room_name" type="text">
+                        </mat-form-field>
+                        <!-- <mat-error *ngIf="roomaddForm.controls.room_name.hasError('required') && roomaddForm.controls.room_name.touched">
+                          <small>Room Name is <strong>required</strong></small>
+                        </mat-error> -->
+                </div>
+                <div>
+                  <button mat-raised-button class="btn btn-light" type="submit">Add Room</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  

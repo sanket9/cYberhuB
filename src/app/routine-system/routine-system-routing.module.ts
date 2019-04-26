@@ -8,6 +8,7 @@ import { SubjectAddComponent } from "./subject-add/subject-add.component";
 import { CoursesSubjectComponent } from "./courses-subject/courses-subject.component";
 import { ViewRutineComponent } from './view-rutine/view-rutine.component';
 import { EditRoutineComponent } from "./edit-routine/edit-routine.component";
+import { EditShiftClassComponent } from "./edit-shift-class/edit-shift-class.component";
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
   {
     path: "edit",
     component: EditRoutineComponent
+  },
+  {
+    path: "edit-shift-class/:id",
+    component: EditShiftClassComponent
   }
 ];
 

@@ -8,6 +8,22 @@ import { ComponentsModule } from "../components/components.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NotificationService } from "../services/notification.service";
 import { AmazingTimePickerModule } from "amazing-time-picker";
+// import {
+//   MatFormFieldModule,
+//   MatButtonModule,
+//   MatInputModule,
+//   MatRippleModule,
+//   MatTooltipModule,
+//   MatOptionModule,
+//   MatSelectModule,
+//   MatTableModule,
+//   MatCheckboxModule,
+//   MatCardModule,
+//   MatIconModule,
+//   MatExpansionModule,
+//   
+// MatGridListModule,
+// } from "@angular/material";
 import {
   MatFormFieldModule,
   MatButtonModule,
@@ -20,14 +36,18 @@ import {
   MatCheckboxModule,
   MatCardModule,
   MatIconModule,
+  MatTabsModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
   MatExpansionModule,
-  MatGridListModule,
+  MatGridListModule
 } from "@angular/material";
 import { AssignClassComponent } from './assign-class/assign-class.component';
 import { SubjectAddComponent } from './subject-add/subject-add.component';
 import { CoursesSubjectComponent } from './courses-subject/courses-subject.component';
 import { ViewRutineComponent } from './view-rutine/view-rutine.component';
 import { EditRoutineComponent } from './edit-routine/edit-routine.component';
+import { EditShiftClassComponent } from './edit-shift-class/edit-shift-class.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -50,7 +70,10 @@ import { EditRoutineComponent } from './edit-routine/edit-routine.component';
     MatExpansionModule,
     MatGridListModule,
     ComponentsModule,
-    RoutineSystemRoutingModule
+    RoutineSystemRoutingModule,
+    MatTabsModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule
   ],
   providers: [NotificationService],
   declarations: [
@@ -60,7 +83,8 @@ import { EditRoutineComponent } from './edit-routine/edit-routine.component';
     SubjectAddComponent,
     CoursesSubjectComponent,
     ViewRutineComponent,
-    EditRoutineComponent
+    EditRoutineComponent,
+    EditShiftClassComponent
   ]
 })
 export class RoutineSystemModule {}
