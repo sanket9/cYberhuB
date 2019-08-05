@@ -21,6 +21,10 @@ export class AddLibraryComponent implements OnInit {
   edition: FormControl;
   no_of_copy: FormControl;
   book_for_out: FormControl;
+  year_of_pub: FormControl;
+  place_of_pub: FormControl;
+  accession_no: FormControl;
+  call_no: FormControl;
   showErrors: boolean = false;
   showloader: boolean = false;
   constructor(
@@ -43,6 +47,10 @@ export class AddLibraryComponent implements OnInit {
     this.edition = new FormControl("", [Validators.required]);
     this.book_for_out = new FormControl("", [Validators.required]);
     this.no_of_copy = new FormControl("", [Validators.required]);
+    this.year_of_pub = new FormControl("", [Validators.required]);
+    this.place_of_pub = new FormControl("", [Validators.required]);
+    this.accession_no = new FormControl("", [Validators.required]);
+    this.call_no = new FormControl("", [Validators.required]);
   }
 
   createFormGroup() {
@@ -54,6 +62,10 @@ export class AddLibraryComponent implements OnInit {
       isbn_code: this.isbn_code,
       book_for_out: this.book_for_out,
       no_of_copy: this.no_of_copy,
+      year_of_pub: this.year_of_pub,
+      place_of_pub: this.place_of_pub,
+      accession_no: this.accession_no,
+      call_no: this.call_no,
 
     });
     // console.log(this.bookaddForm);

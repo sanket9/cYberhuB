@@ -30,7 +30,8 @@ export class BookListingComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource<Element>();
   selection = new SelectionModel<Element>(true, []);
-
+  modele_id = 4;
+  filterRole;
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
   constructor(
@@ -41,10 +42,20 @@ export class BookListingComponent implements OnInit {
 
   ngOnInit() {
     this.getAllBooks();
+    this.getRole();
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     
+  }
+
+  getRole() {
+    var role = this.SessionStore.retrieve('user-role');
+    // console.log(role);
+    
+    // role = JSON.parse(role);
+    let filterRole = role.filter(ele => ele.module_id == this.modele_id);
+    this.filterRole = filterRole[0]
   }
   getAllBooks() {
     var status = this.SessionStore.retrieve('user-data');

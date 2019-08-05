@@ -12,6 +12,9 @@
         </li>
       </ol>
     </nav>
+
+      <app-loader [show]="showloader"></app-loader>
+
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-6">
@@ -105,7 +108,7 @@
                     
                     <div class="col-sm-6" *ngIf="showRollField">
                         <mat-form-field>                      
-                            <mat-select placeholder="Select Search Type">
+                            <mat-select placeholder="Select Search Type" [(ngModel)]="searchType">
                               <!-- <mat-option [value]="all">All</mat-option> -->
                               <!-- <ng-container *ngFor="">        -->
                                 <mat-option [value]="1">Roll No</mat-option>
@@ -144,7 +147,8 @@
                                         <td>
                                             <div class="form-check">
                                                 <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" value="{{foundStudentForSearch?.id}}" (change)="onClickFoundStdCheckBox($event)">
+                                                    <input *ngIf="searchType == 1" class="form-check-input" type="checkbox" value="{{foundStudentForSearch?.id}}" (change)="onClickFoundStdCheckBox($event, foundStudentForSearch?.roll_no)">
+                                                    <input *ngIf="searchType == 2" class="form-check-input" type="checkbox" value="{{foundStudentForSearch?.id}}" (change)="onClickFoundStdCheckBox($event, foundStudentForSearch?.registration_no)">
                                                     <span class="form-check-sign">
                                                         <span class="check"></span>
                                                     </span>
@@ -200,23 +204,53 @@
 
                 <div class="card-header card-header-danger">
                   <h4 class="card-title">Student List</h4>
-                  <p class="card-category">List for Personel Notice</p>
+                  <p class="card-category">List of Student Who will Receive this Notiece</p>
                 </div>
 
                 <div class="card-body mt-2">
                   <div class="row">        
 
-                    <div class="col-sm-12" *ngIf="!showSearchField">
+                    <!-- <div class="col-sm-12" *ngIf="!showSearchField">
                         <div class="example-full-width">
                           <button mat-raised-button type="submit" class="btn btn-success pull-right" (click)="onClickSubmitBtn()">Go Next</button>
                         </div>
+                    </div> -->
+                    <div class="table table-sm table-bordered table-responsive p-3 text-center">
+
+                      <table class="table">
+                        <thead class="text-primary">
+                          <th>
+                            NO.
+                          </th>
+                          <th *ngIf="searchType == 1">
+                            Roll No
+                          </th>
+                          <th *ngIf="searchType == 2">
+                            Registration No
+                          </th>
+                         
+
+                        </thead>
+                        <tbody >
+                          <tr *ngFor="let item of searchedIdNos; let i = index">
+
+                            <td>
+                              {{i+1}}
+                            </td>
+                            <td>
+                              {{item}}
+                            </td>
+                            
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
 
-                    <!-- <div class="col-sm-12" *ngIf="showSearchField">
+                   <!-- <div class="col-sm-12" *ngIf="showSearchField">
                         <div class="example-full-width">
                           <button mat-raised-button type="submit" class="btn btn-success pull-right" (click)="onClickGoNextForPersonelNotice()">Go Next</button>
                         </div>
-                    </div> -->                    
+                    </div>  -->
 
                   </div>                    
                 </div>

@@ -17,6 +17,8 @@ export class NoticeManagementComponent implements OnInit {
   noticeList: any;
   fromDate: any;
   toDate: any;
+  modele_id = 2;
+  filterRole;
 
   constructor(
     public router: Router,
@@ -30,9 +32,19 @@ export class NoticeManagementComponent implements OnInit {
   ngOnInit() {
     this.sessionValue = this.sessionStore.retrieve('user-data')[0];
     this.getAllNotice();
+    this.getRole()
     // console.log(this.sessionValue );
   }
+  getRole() {
+    var role = this.sessionStore.retrieve('user-role');
+    // console.log(role);
 
+    // role = JSON.parse(role);
+    let filterRole = role.filter(ele => ele.module_id == this.modele_id);
+    if (filterRole.length > 0) {
+      this.filterRole = filterRole[0]
+    }
+  }
 
 
 
@@ -68,7 +80,7 @@ export class NoticeManagementComponent implements OnInit {
 
     this.http.post(`${environment.apiUrl}notice/noticelist`, data, {headers: header}).map((res)=>res.json())
     .subscribe(data => {
-      // console.log('All notice list : ', data.data);
+      console.log('All notice list : ', data.data);
       this.noticeList = data.data;
     });
   }
@@ -77,22 +89,25 @@ export class NoticeManagementComponent implements OnInit {
 
 
   onClickDeleteNotice(id){
-
+    
+    if (confirm("Do you want to delete this?")) {
+      
+      let header = new Headers();
+      header.append('Content-Type', 'application/json');
+  
+      let data = {
+        id
+      }   
+  
+      this.http.post(`${environment.apiUrl}notice/deletenotice`, data, {headers: header}).map((res)=>res.json())
+      .subscribe(data => {
+        // console.log(data.data);
+        if(data.data){
+          this.getAllNotice();
+        }
+      });    
+    }
     // console.log(id); 
-    let header = new Headers();
-    header.append('Content-Type', 'application/json');
-
-    let data = {
-      id
-    }   
-
-    this.http.post(`${environment.apiUrl}notice/deletenotice`, data, {headers: header}).map((res)=>res.json())
-    .subscribe(data => {
-      // console.log(data.data);
-      if(data.data){
-        this.getAllNotice();
-      }
-    });    
   }
 
 

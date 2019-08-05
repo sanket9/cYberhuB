@@ -1,4 +1,24 @@
 <div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/routine']" class="text-success">
+          Routine
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Course Subject
+      </li>
+    </ol>
+  </nav>
+
+
   <div class="container-fluid">
 
     <!-- <div class="row justify-content-center">
@@ -14,12 +34,12 @@
         <app-loader [show]="showloader"></app-loader>
         <div class="card">
           <div class="card-header card-header-danger">
-            <h4 class="card-title">Edit Profile</h4>
+            <h4 class="card-title">Add/Alter Course Subject</h4>
           </div>
           <div class="card-body">
             <form >
               <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-3">
                   <mat-form-field>
                     <mat-select name="shift" placeholder="Select Shift" (change)="onChooseShift($event)" >
                       <ng-container *ngFor="let shift of orgShiftLists">
@@ -31,6 +51,7 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
+                
                 <div class="col-md-3">
                   <mat-form-field class="example-full-width">
                     <mat-select placeholder="Select Class/Stream" name="class" (change)="onChooseClass($event)" [(ngModel)]="defaultclass">
@@ -41,11 +62,24 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Select Sem" name="class" (change)="onChooseSem($event)">
+                      <mat-option value="-1" selected>--Select One--</mat-option>
+                      <ng-container *ngFor="let sem of semList">
+                        <mat-option [value]="sem.id">
+                          Sem {{sem.sem_no}}
+                        </mat-option>
+                      </ng-container>
+                      
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
                   <mat-form-field class="example-full-width">
                     <mat-select placeholder="Select Subject" name="subject" (change)="onChooseClassStream($event)" [(ngModel)]="defaultsubject">
                       <mat-option value="-1" selected>--Select One--</mat-option>
-                      <ng-container *ngFor="let classStream of newsortArray">
+                      <ng-container *ngFor="let classStream of sortedSubjectList">
                         <mat-option [value]="classStream.id">
                           {{classStream.section.sec_name}}
                         </mat-option>
@@ -53,8 +87,9 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
+                
               </div>
-              <form *ngIf="subjectFrm.controls.subject" [formGroup]="subjectFrm" (ngSubmit)="addForm(subjectFrm.controls.subject)">
+              <form *ngIf="subjectFrm.controls.subject['length'] > 0" [formGroup]="subjectFrm" (ngSubmit)="addForm(subjectFrm.controls.subject)">
                 <div formArrayName="subject">
                     <div class="row" *ngFor="let item of subjectFrm.controls.subject.controls; let i=index" [formGroupName]="i">
                       <div class="col-md-4">

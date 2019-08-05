@@ -1,0 +1,78 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Gallery
+      </li>
+
+    </ol>
+  </nav>
+  <div class="container-fluid">
+    <!-- <app-loader [show]="showloader"></app-loader> -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h3 class="card-title">Add Image</h3>
+            <p class="card-category">
+              Uploaded Images will show in Gallery.
+            </p>
+          </div>
+          <div class="card-body">
+            <form class="pt-2">
+              <div class="row">
+                
+                <div class="col-md-8">
+                  <mat-form-field>
+                    <textarea matInput name="title" [(ngModel)]="title" rows="3" placeholder="Add Description about Image"></textarea>
+                  </mat-form-field>
+                  <!-- <button mat-raised-button color="primary" (click)="fileInput.click()" (change)="fileChange($event)"> -->
+                  <button mat-raised-button color="primary" (click)="fileInput.click()">
+                    <i class="material-icons">attach_file</i>
+                    Add File</button>
+              
+                  <input type="file" accept="image/png, image/jpeg" hidden #fileInput name="file" (change)="selectImage($event)">
+                  <small class="pl-1 text-gray">{{filename}}</small>
+                  <br>
+                  
+                </div>
+              </div>
+              <button mat-raised-button class="btn btn-success mt-4" (click)="uploadDetails()">
+                <i class="material-icons">save</i>
+                Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+
+      <mat-card class="col-md-4 m-1 col-sm-12 example-card" *ngFor="let item of allImages">
+        <!-- <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>Shiba Inu</mat-card-title>
+          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+        </mat-card-header> -->
+        <img mat-card-image src="http://inunco.com/school_hub/public/uploads/Gallery/{{item.img_path}}" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+          {{item.img_title}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button	color="warn" (click) = "deleteImage(item.id)">
+            <i class="material-icons">
+              delete
+            </i>
+            Delete</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -284,7 +284,7 @@ getSemList() {
   increaseField(){
     // console.log(this.fieldCountArr.length);
     let lengthIncValue = this.fieldCountArr.length;
-    this.fieldCountArr.push(++lengthIncValue);
+    this.fieldCountArr.push(lengthIncValue++);
     // console.log(this.fieldCountArr);        
   }
 

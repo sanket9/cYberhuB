@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 // import { BrowserModule } from '@angular/platform-browser';
 import { ApiService } from "../services/api/api.service";
 import { ComponentsModule } from "../components/components.module";
+import { FlatpickrModule } from 'angularx-flatpickr';
 
 import {
   MatFormFieldModule,
@@ -49,6 +50,7 @@ import { ChooseNoticeTypeComponent } from './choose-notice-type/choose-notice-ty
     ComponentsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    FlatpickrModule.forRoot()
   ],
 
   declarations: [AddNoticeComponent, ChooseNoticeTypeComponent],

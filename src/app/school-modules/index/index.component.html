@@ -1,0 +1,46 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        More Options
+      </li>
+    </ol>
+  </nav>
+  <div class="container-fluid">
+    <!-- <div class="row page-title"> -->
+    <!-- </div> -->
+    <!-- <app-loader [show]="showloader"></app-loader> -->
+    <div class="card">
+      <div class="card-header card-header-danger">
+        <h4 class="card-title">More Options</h4>
+        <!-- <p class="card-category">Add a Notice</p> -->
+      </div>
+      <div class="card-body mt-2">
+        <p>Shortcuts</p>
+        <button mat-raised-button class="btn btn-success mce-btn-large">
+          <mat-icon style="padding: 3px;">add</mat-icon>PT Meating
+        </button>
+        <button mat-raised-button class="btn btn-warning">
+          <mat-icon style="padding: 3px;">add</mat-icon> Home Assignment
+        </button>
+        <button mat-raised-button class="btn btn-warning" >
+          <mat-icon style="padding: 3px;">schedule</mat-icon>Class Work
+        </button>
+
+        <button mat-raised-button class="btn btn-primary">
+          <mat-icon style="padding: 3px;">schedule</mat-icon>Syllabus
+        </button>
+        <!-- <button mat-raised-button class="btn btn-primary">
+          <mat-icon style="padding: 3px;">schedule</mat-icon> View Routine
+        </button> -->
+        <hr>
+
+      </div>
+    </div>
+  </div>

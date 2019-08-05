@@ -44,14 +44,6 @@ export class SubjectAddComponent implements OnInit {
           class_id: new FormControl("", [Validators.required]),
           subject_name: new FormControl("", [Validators.required]),
           dept_id: new FormControl("", [Validators.required])
-        }), new FormGroup({
-          class_id: new FormControl("", [Validators.required]),
-          subject_name: new FormControl("", [Validators.required]),
-          dept_id: new FormControl("", [Validators.required])
-        }), new FormGroup({
-          class_id: new FormControl("", [Validators.required]),
-          subject_name: new FormControl("", [Validators.required]),
-          dept_id: new FormControl("", [Validators.required])
         })], [Validators.required]);
   }
   createFormGroup() {
@@ -154,7 +146,16 @@ export class SubjectAddComponent implements OnInit {
     (data as FormArray).push(newarry);
     // console.log(this.addSubjectForm);
   }
+  remoevField() {
+    let data = this.addSubjectForm.get("subjects");    
+    (data as FormArray).removeAt((data as FormArray).length - 1)
+  }
 
+
+  formArray() {
+    let data = this.addSubjectForm.get("subjects");
+    return (data as FormArray).length
+  }
   addSubject(values) {
     console.log(values);
     
@@ -204,7 +205,7 @@ export class SubjectAddComponent implements OnInit {
         .map(res => res.json())
         .subscribe(data => {
           console.log(data);
-          if (data.state == 0) {
+          if (data.data.class_id) {
             this.notification.showNotification("top", "right", "success", "Subjects Deleted SuccessFuly");
             this.getClass();
             //this.router.navigate(["/library/index"]);

@@ -46,7 +46,9 @@ export class ChooseNoticeTypeComponent implements OnInit {
 
   selectedShifts: any[];
   shifts: any[]; 
-
+  searchType: number;
+  searchedIdNos: any = [];
+  showloader: boolean = false;
   @ViewChild('allSelected') private allSelected: MatOption;
 
   constructor(
@@ -85,6 +87,7 @@ export class ChooseNoticeTypeComponent implements OnInit {
 //    ------------------ getting all notice type -----------------
 // ###################################################################
   getNoticeTypeSection(){
+    this.showloader = true;
     let header = new Headers();
     header.set("Content-Type", "application/json");
 
@@ -97,8 +100,11 @@ export class ChooseNoticeTypeComponent implements OnInit {
       .map(res => res.json())
       .subscribe(
         data => {
+          if (data.data) {
+            this.showloader = false;
+            this.noticeTypes = data.data;
+          }
           // console.log("notice types list ", data.data);
-          this.noticeTypes = data.data;
     });
   }
 
@@ -108,6 +114,7 @@ export class ChooseNoticeTypeComponent implements OnInit {
 //       ------------------ getting all shifts here -----------------
 // ########################################################################
   getShiftLists() {
+    this.showloader = true;
     let header = new Headers();
     header.set("Content-Type", "application/json");
     let data = {
@@ -119,8 +126,11 @@ export class ChooseNoticeTypeComponent implements OnInit {
       .map(res => res.json())
       .subscribe(
         data => {
+          if (data.data) {
+            this.orgShiftLists = data.data;
+            this.showloader = false;
+          }
           // console.log("Org shift list ", data.data);
-          this.orgShiftLists = data.data;
           // this.orgShiftLists.unshift({
           //   id: "all",
           //   name: "All",
@@ -142,6 +152,7 @@ export class ChooseNoticeTypeComponent implements OnInit {
 //     ------------------ getting all class list here -----------------
 // ########################################################################
 getClassList(){
+  this.showloader = true;
   let header = new Headers();
   header.set("Content-Type", "application/json");
 
@@ -154,8 +165,11 @@ getClassList(){
     .map(res => res.json())
     .subscribe(
       data => {
+        if (data.data) {
+          this.orgClassSectionList = data.data;
+          this.showloader = false;
+        }
         // console.log("Org Class list : ", data.data);
-        this.orgClassSectionList = data.data;
         // this.createSortArray(this.orgClassSectionList);
         // this.sortArray.unshift({
         //   class_name: "All",
@@ -174,7 +188,8 @@ getClassList(){
 // ------------------ After choose notice type function -----------------
 // ########################################################################
   onChooseNoticeType(e) {
-
+    console.log(e.value);
+    
     this.selectedData.noticeType = e.value;
 
     if(e.value == "1" || e.value == "4"){
@@ -184,6 +199,8 @@ getClassList(){
       this.showStuffTypeField = false;
       this.showSearchField = false;
       this.showRollField = false;
+      this.showFoundStudentTable = false;
+      this.studentSelectedForPersonelNotice = false;
     }else if(e.value == "5"){
       this.showShiftField = true;
       this.showClassField = true;
@@ -191,14 +208,18 @@ getClassList(){
       this.showStuffTypeField = true;
       this.showSearchField = false;
       this.showRollField = false;
+      this.showFoundStudentTable = false;
+      this.studentSelectedForPersonelNotice = false;
       this.getStuffs();
-    }else if(e.value == "2"){
+    }else if(e.value == 2){
       this.showShiftField = false;
       this.showClassField = false;
       this.showSectionField = false;
       this.showStuffTypeField = false;
       this.showSearchField = false;
       this.showRollField = false;
+      this.showFoundStudentTable = false;
+      this.studentSelectedForPersonelNotice = false;
     }else{
       this.showShiftField = false;
       this.showClassField = false;
@@ -226,6 +247,7 @@ getClassList(){
 //    -------- get list of teaching and non teaching stuff ---------
 // ########################################################################
   getStuffs() {
+    this.showloader = true;
     let header = new Headers();
     header.set("Content-Type", "application/json");
   
@@ -234,8 +256,11 @@ getClassList(){
       .map(res => res.json())
       .subscribe(
         data => {
+          if (data.data) {
+            this.showloader = false;
+            this.getAllStuff = data.data;         
+          }
           // console.log("found stuff details : ", data.data); 
-          this.getAllStuff = data.data;         
           // this.foundStudentForSearch = data.data[0];
     });
   }
@@ -580,6 +605,7 @@ getClassList(){
 //    ----------- searching for student by roll -----------
 // ########################################################################
   onClickSearchBtn() {
+    this.showloader = true;
     // console.log(this.searchRoll); 
     this.showFoundStudentTable = false;
     this.foundStudentForSearch = null;
@@ -599,7 +625,7 @@ getClassList(){
         data => {
           // console.log("found student : ", data.data[0]);          
           this.foundStudentForSearch = data.data[0];
-
+          this.showloader = false;
           if(data.data.length > 0){
             this.notification.showNotification(
               "top",
@@ -629,7 +655,7 @@ getClassList(){
 // ########################################################################
 // ----------- check box click function for selecting student -----------
 // ########################################################################
-  onClickFoundStdCheckBox(e) {
+  onClickFoundStdCheckBox(e, collegeId) {
     // console.log('event value : ', e); 
     this.sendSelectData.studentsArr = [];
     // console.log('roll value : ', e.target.value); 
@@ -658,6 +684,7 @@ getClassList(){
 
         // console.log('not exist.');
         this.selectStdArr.push(e.target.value);
+        this.searchedIdNos.push(collegeId);
       }
     }else{
       let is_exist =  this.selectStdArr.filter(()=> {
@@ -667,6 +694,11 @@ getClassList(){
       if(is_exist.length > 0){
         let index = this.selectStdArr.indexOf(e.target.value);
         this.selectStdArr.splice(index, 1);
+
+        let indexNos = this.selectStdArr.indexOf(collegeId);
+        this.searchedIdNos.splice(indexNos, 1);
+
+
       }
     }
      
@@ -682,8 +714,34 @@ getClassList(){
     this.sendSelectData.studentsArr = this.selectStdArr;
   }
 
+// ########################################################################
+// ----------- Student Details -----------
+// ########################################################################
+  // getStudentDetails(id) {
+  //   let header = new Headers();
+  //   header.set("Content-Type", "application/json");
 
+  //   let data = {
+  //     master_id: id     
+  //   };
 
+  //   this.http
+  //     .post(`${environment.apiUrl}student/studentdetail`, data)
+  //     .map(res => res.json())
+  //     .subscribe(
+  //       data => {
+  //         if (data.data) {
+  //           if (this.searchType == 1) {
+              
+  //             return data.data[0].registration_no
+  //           }
+  //           if (this.searchType == 2) {
+              
+  //             return data.data[0].roll_no
+  //           }
+  //         }
+  //       })
+  // }
 
 
 // ########################################################################

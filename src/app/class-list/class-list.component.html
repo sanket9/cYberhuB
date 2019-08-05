@@ -58,7 +58,7 @@
 
             <div class="row mt-2 border" *ngFor="let field of fieldCountArr"> 
 
-              <div class="col-sm-6" *ngIf="typeId === '1'">                
+              <div class="col-sm-6" *ngIf="typeId == 1">                
                   <mat-form-field>                      
                       <mat-select placeholder="Select Class" (change)="onChangeClass($event, field)">
                         <mat-option *ngFor="let class of classList" [value]="class.id">
@@ -68,7 +68,7 @@
                   </mat-form-field>
               </div>
 
-              <div class="col-sm-6" *ngIf="typeId === '2'">                
+              <div class="col-sm-6" *ngIf="typeId == 2">                
                 <mat-form-field>                      
                     <mat-select placeholder="Select Stream" (change)="onChangeClass($event, field)">
                       <mat-option *ngFor="let class of classList" [value]="class.id">
@@ -78,7 +78,7 @@
                 </mat-form-field>
               </div>
 
-              <div class="col-sm-6" *ngIf="typeId === '1'">
+              <div class="col-sm-6" *ngIf="typeId == 1">
                   <mat-form-field>
                       <mat-select placeholder="Select Section" (change)="onChangeSection($event, field)">
                         <mat-option *ngFor="let section of sectionList" [value]="section.id">
@@ -88,7 +88,7 @@
                   </mat-form-field>
               </div>
 
-              <div class="col-sm-6" *ngIf="typeId === '2'">
+              <div class="col-sm-6" *ngIf="typeId == 2">
                 <mat-form-field>
                     <mat-select placeholder="Select Subject" (change)="onChangeSection($event, field)">
                       <mat-option *ngFor="let section of sectionList" [value]="section.id">

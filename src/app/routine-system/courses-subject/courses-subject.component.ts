@@ -32,6 +32,10 @@ export class CoursesSubjectComponent implements OnInit {
   newsortArray: any;
   defaultsubject = -1;
   defaultclass = -1;
+  semList: any;
+  sortedSubjectList: any;
+
+
   constructor(
     public router: Router,
     public http: Http,
@@ -46,6 +50,7 @@ export class CoursesSubjectComponent implements OnInit {
     this.subjectFrm = new FormGroup({ subject: new FormArray([]) });
     this.getcourcecat();
     this.allcoursesubject();
+    this.getAllSem();
   }
 
   getshift() {
@@ -81,6 +86,22 @@ export class CoursesSubjectComponent implements OnInit {
         this.orgClassSectionList = data.data;
       });
   }
+
+  getAllSem() {
+    let data = {
+      org_id: this.org_code
+    };
+    this.http
+      .post(`${environment.apiUrl}classsection/getallsem`, data)
+      .map(res => res.json())
+      .subscribe(data => {
+      
+        this.semList = data.data;
+      });
+  }
+
+  
+
   onChooseShift(e) {
     this.classlist = [];
     // this.class = "";
@@ -105,6 +126,13 @@ export class CoursesSubjectComponent implements OnInit {
       itm => itm.class.class_name === e.value
     );
   }
+
+  onChooseSem(e: any) {
+    var d = new Date();
+    this.sortedSubjectList = this.newsortArray.filter(item => item.sem_id == e.value && item.year == d.getFullYear())
+  }
+
+
   onChooseClassStream(e) {
     // console.log(e);
     let subs = this.subjectFrm.get("subject");
@@ -121,7 +149,7 @@ export class CoursesSubjectComponent implements OnInit {
       .map(res => res.json())
       .subscribe(data => {
         this.showloader = false;
-        // console.log(data);
+        console.log(data);
         if (data.data) {
           for (let index = 0; index < data.data.length; index++) {
             let frm_data = new FormGroup({
@@ -136,10 +164,16 @@ export class CoursesSubjectComponent implements OnInit {
                 },
                 [Validators.required]
               ),
-              component_id: new FormControl("", [
+              component_id: new FormControl({
+                value: data.data[index].subcourse.length > 0 ? data.data[index].subcourse[0].course_cat_id : "",
+                disabled: false
+              }, [
                 Validators.required
               ]),
-              count_name: new FormControl("", [
+              count_name: new FormControl({
+                value: data.data[index].subcourse.length > 0 ? data.data[index].subcourse[0].count_name : "",
+                disabled: false
+              }, [
                 Validators.required
               ]),
             });
@@ -158,6 +192,7 @@ export class CoursesSubjectComponent implements OnInit {
       formArray.removeAt(0);
     }
   };
+  
   getcourcecat() {
     this.showloader = true;
     let header = new Headers();
@@ -212,7 +247,7 @@ export class CoursesSubjectComponent implements OnInit {
         if (data.status == 1) {
           this.notification.showNotification("top", "right", "success", "Subjects Added SuccessFuly");
           //this.getClass();
-          this.subjectFrm.reset();
+          this.subjectFrm = new FormGroup({ subject: new FormArray([]) });
           this.allcoursesubject();
           //this.router.navigate(["/library/index"]);
         } else {
@@ -231,7 +266,7 @@ export class CoursesSubjectComponent implements OnInit {
       .map(res => res.json())
       .subscribe(data => {
         this.showloader = false;
-        console.log(data);
+        console.log("subjectlist",data);
 
         // this.orgShiftLists = data.data;
         this.subjectlist = [];
@@ -294,33 +329,36 @@ export class CoursesSubjectComponent implements OnInit {
   }
 
   deleteClass(class_id) {
+    if (confirm('Are want to Delete it ?')) {
+      
+      let header = new Headers();
+      header.set("Content-Type", "application/json");
+      let data = { org_id: this.org_code, class_id };
+      // this.checkshift = [];
+      this.http
+        .post(`${environment.apiUrl}subject/deletesubjectcourse`, data)
+        .map(res => res.json())
+        .subscribe(data => {
+          //this.showloader = false;
+          //console.log(data);
+          if (data.status == 1) {
+            this.notification.showNotification(
+              "top",
+              "right",
+              "success",
+              "Subjects Added SuccessFuly"
+            );
+            this.allcoursesubject();
+          } else {
+            this.notification.showNotification(
+              "top",
+              "right",
+              "warning",
+              "Something Went Wrong"
+            );
+          }
+        });
+    }
     //console.log(class_id);
-    let header = new Headers();
-    header.set("Content-Type", "application/json");
-    let data = { org_id: this.org_code, class_id };
-    // this.checkshift = [];
-    this.http
-      .post(`${environment.apiUrl}subject/deletesubjectcourse`, data)
-      .map(res => res.json())
-      .subscribe(data => {
-        //this.showloader = false;
-        //console.log(data);
-        if (data.status == 1) {
-          this.notification.showNotification(
-            "top",
-            "right",
-            "success",
-            "Subjects Added SuccessFuly"
-          );
-          this.allcoursesubject();
-        } else {
-          this.notification.showNotification(
-            "top",
-            "right",
-            "warning",
-            "Something Went Wrong"
-          );
-        }
-      });
   }
 }

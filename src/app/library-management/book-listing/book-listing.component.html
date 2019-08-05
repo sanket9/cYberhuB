@@ -20,7 +20,7 @@
   <div class="container-fluid">
     <div class="row page-title">
       <div class="col-md-12 col-md-offset-1">
-        <button mat-raised-button [routerLink]="['/library/add-book']">
+        <button mat-raised-button *ngIf="filterRole.add == 1" [routerLink]="['/library/add-book']">
           <mat-icon>add</mat-icon> Add a Book
         </button>
         <div class="example-header">
@@ -28,7 +28,7 @@
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter Data..">
           </mat-form-field>
         </div>
-        <mat-table #table [dataSource]="dataSource">
+        <mat-table #table [dataSource]="dataSource" *ngIf="filterRole.view == 1">
           <!-- Checkbox Column -->
           <!-- <ng-container matColumnDef="select">
                 <mat-header-cell *matHeaderCellDef>
@@ -85,7 +85,7 @@
           </ng-container>
           
           <!-- Name Actions -->
-          <ng-container matColumnDef="actions">
+          <ng-container matColumnDef="actions" *ngIf="filterRole.edit == 1">
             <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
             <mat-cell *matCellDef="let element">
               <button mat-icon-button type="button" matTooltip="Edit this" 

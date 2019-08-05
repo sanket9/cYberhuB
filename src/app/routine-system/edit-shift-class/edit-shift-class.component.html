@@ -8,7 +8,17 @@
           </a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">
-          Notice Mangament
+           <a [routerLink]="['/routine']" class="text-success">
+            Routine
+          </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+           <a [routerLink]="['/routine/create']" class="text-success">
+            Schedule Period
+          </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          Edit
         </li>
       </ol>
     </nav>
@@ -21,23 +31,16 @@
   
       <div class="card">
         <div class="card-header card-header-danger">
-          <h4 class="card-title">Edit Shift Class</h4>
+          <h4 class="card-title">Edit Period</h4>
         </div>
 
         <div class="card-body mt-2">          
             <div class="row">
-                <div class="col-md-4">
-                  <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Room Name" name="room_name" type="text">
-                  </mat-form-field>
-                  <!-- <mat-error *ngIf="roomaddForm.controls.room_name.hasError('required') && roomaddForm.controls.room_name.touched">
-                    <small>Room Name is <strong>required</strong></small>
-                  </mat-error> -->
-                </div>  
+                 
                 
                 <div class="col-md-4">
                     <mat-form-field class="example-full-width">
-                      <input matInput placeholder="Room Name" name="room_name" type="text">
+                      <input matInput placeholder="Room Name" [(ngModel)]="period_name" name="room_name" type="text">
                     </mat-form-field>
                     <!-- <mat-error *ngIf="roomaddForm.controls.room_name.hasError('required') && roomaddForm.controls.room_name.touched">
                       <small>Room Name is <strong>required</strong></small>
@@ -46,7 +49,7 @@
 
                 <div class="col-md-4">
                       <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Room Name" name="room_name" type="text">
+                        <input matInput placeholder="From Time" [(ngModel)]="from_time" name="from_time" type="time">
                       </mat-form-field>
                       <!-- <mat-error *ngIf="roomaddForm.controls.room_name.hasError('required') && roomaddForm.controls.room_name.touched">
                         <small>Room Name is <strong>required</strong></small>
@@ -55,14 +58,14 @@
 
                 <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input matInput placeholder="Room Name" name="room_name" type="text">
+                          <input matInput placeholder="To Time" [(ngModel)]="to_time" name="to_time" type="time">
                         </mat-form-field>
                         <!-- <mat-error *ngIf="roomaddForm.controls.room_name.hasError('required') && roomaddForm.controls.room_name.touched">
                           <small>Room Name is <strong>required</strong></small>
                         </mat-error> -->
                 </div>
                 <div>
-                  <button mat-raised-button class="btn btn-light" type="submit">Add Room</button>
+                  <button mat-raised-button class="btn btn-primary" (click) = "update()"  type="button">Update Details</button>
                 </div>
             </div>
         </div>

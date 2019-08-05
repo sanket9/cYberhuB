@@ -11,6 +11,7 @@ import { log } from 'util';
 declare const $: any;
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import {weak} from '../components/config';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: "app-add-user",
@@ -29,8 +30,7 @@ export class AddUserComponent implements OnInit {
   displayedColumns = ["id", "name", "employee_id", "actions"];
   dataSource = new MatTableDataSource<Element>();
   selection = new SelectionModel<Element>(true, []);
-  fname: string;
-  lname: string;
+  name: string;
   username: string;
   dept_id: number;
   rolecattype: number = 0;
@@ -45,13 +45,17 @@ export class AddUserComponent implements OnInit {
   weak: any[] = weak;
   day_id;
   class_taken;
+  showloader: boolean = false;
+  useModelList: any = [];
   constructor(
     public router: Router,
     public http: Http,
-    public SessionStore: SessionStorageService
+    public SessionStore: SessionStorageService,
+    public notification: NotificationService
   ) {}
 
   ngOnInit() {
+    this.showloader = true;
     this.getValue();
     this.roleList();
     setTimeout(() => {
@@ -101,8 +105,9 @@ export class AddUserComponent implements OnInit {
     if (this.tabIndex === 2) {
       this.tabIndex--;
       moveTab.style.left = screenWidth > 990 ? "22vw" : "30vw";
-      nextBtn.style.visibility = "visible";
-      moveTab.innerHTML = "Permissions";
+      moveTab.innerHTML = "Modules";
+      
+      // nextBtn.style.visibility = "visible";
     } else if (this.tabIndex === 1) {
       this.tabIndex--;
       moveTab.style.left = "-1vw";
@@ -125,12 +130,13 @@ export class AddUserComponent implements OnInit {
       this.tabIndex++;
       moveTab.style.left = screenWidth > 990 ? "22vw" : "30vw";
       preBtn.style.visibility = "visible";
-      moveTab.innerHTML = "Permissions";
+      moveTab.innerHTML = "Modules"; 
+      this.getSeclectStaffRoll();
     } else if (this.tabIndex === 1) {
       this.tabIndex++;
       moveTab.style.left = screenWidth > 990 ? "49vw" : "61.5vw";
       nextBtn.style.visibility = "hidden";
-      moveTab.innerHTML = "Modules";
+      moveTab.innerHTML = "Permissions";
     }
     (<HTMLElement>tabs[this.tabIndex]).style.display = "inherit";
   }
@@ -198,14 +204,21 @@ export class AddUserComponent implements OnInit {
   }
 
   finish() {
+    this.showloader = true;
+    var status = this.SessionStore.retrieve("user-data");
+    
+    this.logDetails.org_id = status[0].org_code
     this.http
       .post(`${environment.apiUrl}role/addpermission`, this.logDetails)
       .map(res => res.json())
       .subscribe(data => {
         if (data.length == this.logDetails.modules.length) {
-          console.log(data);
-          this.showNotification("top", "right");
-          this.router.navigate(["add-user"]);
+          // console.log(data);
+          if (data) {
+            this.showloader = false
+            this.showNotification("top", "right");
+            this.router.navigate(["add-user"]);
+          }
         }
         //
       });
@@ -247,6 +260,7 @@ export class AddUserComponent implements OnInit {
     };
   }
   getValue() {
+    
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
@@ -257,10 +271,14 @@ export class AddUserComponent implements OnInit {
       .post(`${environment.apiUrl}user/stafflist`, data)
       .map(res => res.json())
       .subscribe(data => {
-        console.log(data);
-        this.items = data.data;
-        this.getroleCats();
-        this.dataSource.data = this.items;
+        if (data.data) {
+          
+          console.log(data);
+          this.showloader = false
+          this.items = data.data;
+          this.getroleCats();
+          this.dataSource.data = this.items;
+        }
       });
   }
   getroleCats() {
@@ -291,27 +309,27 @@ export class AddUserComponent implements OnInit {
     if (this.logDetails) {
       this.result = this.filteredStaff.find(item => item.id === id);
       console.log(this.result);
-      this.fname = this.result.f_name;
-      this.lname = this.result.l_name;
+      this.name = this.result.name
+      // this.shortName = this.result.short_name
       this.username = this.result.user_name;
       this.dept_id = this.result.dept_id;
       this.rolecattype = this.result.role_cat_id;
       this.class_taken = this.result.week_total_count_class;
       this.day_id = this.result.week_rest_day
       let rolecats = this.rolecats.find(ele => ele.id == this.rolecattype);
-      // console.log(rolecats);
+      // console.log("rolecats",rolecats);
       rolecats.parent_id
         ? (this.techingtype = rolecats.parent_id)
         : (this.techingtype = 0);
 
-      this.techingtype = rolecats.parent_id;
+      // this.techingtype = rolecats.parent_id;
       this.techingtypefilter(this.techingtype);
-      // console.log(this.techingtype);
+      // console.log("teaching types",this.techingtype);
 
       this.logDetails.user = {
         id: this.result.id,
         name: this.result.name,
-        user_type_id: this.result.user_type_id
+        user_type_id: 2
       };
       this.logDetails.modules = [];
     } else {
@@ -319,8 +337,11 @@ export class AddUserComponent implements OnInit {
       return false;
     }
   }
-  techingtypefilter(value) {
+
+  techingtypefilter(value: number) {
     this.roleSubcats = this.rolecats.filter(data => data.parent_id == value);
+    // console.log(this.roleSubcats);
+    
   }
 
   getShiftLists() {
@@ -334,7 +355,9 @@ export class AddUserComponent implements OnInit {
       .post(`${environment.apiUrl}shift/orgshiftlist`, data)
       .map(res => res.json())
       .subscribe(data => {
-        this.orgShiftLists = data.data;
+        if (data.data) {
+          this.orgShiftLists = data.data;
+        }
       });
   }
 
@@ -348,32 +371,65 @@ export class AddUserComponent implements OnInit {
       });
   }
   updateData() {
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    let options = new RequestOptions({ headers: headers });
-    var status = this.SessionStore.retrieve("user-data");
-    if (this.username) {
-      let data = {
-        org_id: status[0].org_code,
-        id: this.result.id,
-        username: this.username,
-        dept_id: this.dept_id,
-        rolecattype: this.rolecattype,
-        fname: this.fname,
-        lname: this.lname,
-        class_taken: this.class_taken,
-        day: this.day_id
-      };
-      //console.log(data);
+    if (this.name == "" || this.name == null) {
+      this.notification.showNotification(
+        "top",
+        "right",
+        "danger",
+        "Error!. Please Add Staff name"
+      );
+    }
+    else if (!this.rolecattype  || this.rolecattype == null) {
+      this.notification.showNotification(
+        "top",
+        "right",
+        "danger",
+        "Error!. Please Select Staff Roll and Employee Type."
+      );
+    }
+    else{
 
-      this.http
-        .post(`${environment.apiUrl}user/updatestaff`, data)
-        .map(res => res.json())
-        .subscribe(data => {
-          console.log(data);
-        });
-    } else {
-      alert("Username and Password Require");
+      var headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      let options = new RequestOptions({ headers: headers });
+      var status = this.SessionStore.retrieve("user-data");
+      if (this.username) {
+        let data = {
+          org_id: status[0].org_code,
+          id: this.result.id,
+          username: this.username,
+          dept_id: this.dept_id,
+          rolecattype: this.rolecattype,
+          name: this.name,
+          class_taken: this.class_taken,
+          day: this.day_id
+        };
+        //console.log(data);
+  
+        this.http
+          .post(`${environment.apiUrl}user/updatestaff`, data)
+          .map(res => res.json())
+          .subscribe(data => {
+            // console.log(data);
+            if (data.data) {
+              this.notification.showNotification(
+                "top",
+                "right",
+                "success",
+                "Success, Staff Data Updated Successfully."
+              );
+            }else{
+              this.notification.showNotification(
+                "top",
+                "right",
+                "warning",
+                "Sorry, Something Went Wrong."
+              );
+            }
+          });
+      } else {
+        alert("Username and Password Require");
+      }
     }
   }
 
@@ -392,7 +448,7 @@ export class AddUserComponent implements OnInit {
         1
       );
     }
-    // console.log(this.logDetails);
+    console.log(this.logDetails);
     // console.log(event.source._elementRef.nativeElement.textContent);
   }
 
@@ -434,6 +490,54 @@ export class AddUserComponent implements OnInit {
 
     this.filteredStaff = this.items.filter(itm => itm.shift_id == e.value);
   }
+
+  getSeclectStaffRoll() {
+    this.showloader = true;
+    let session = this.SessionStore.retrieve("user-data");
+    let apiData = {
+      master_id : this.result.id,
+      org_id: session[0].org_code
+    }
+    this.http
+      .post(`${environment.apiUrl}role/roledetails`, apiData)
+      .map(res => res.json())
+      .subscribe(data => {
+        //console.log("user roll",data);
+        data.data.forEach(element => {
+          let isPresent = this.logDetails["modules"].filter(ele => ele.id == element.module_id);
+          // console.log("find length", isPresent);
+          // console.log("find length", this.logDetails);
+          
+          if (isPresent.length == 0){
+
+            this.useModelList.push(element.module_id)
+            let data = {
+              id: element.module_id,
+              name: element.module.module_name,
+              permissions: {
+                add: element.add == 1 ? true : false,
+                edit: element.edit == 1 ? true : false,
+                view: element.view == 1 ? true : false,
+                delete: element.delete == 1 ? true : false,
+                all: element.add == 1 && element.edit == 1 && element.view == 1 && element.delete == 1 ? true : false
+              }
+            }; 
+            this.logDetails["modules"].push(data);
+          }
+        });
+        this.showloader = false;
+      })
+
+  }
+
+  checkedModel (id: number, name: string) {
+    if (this.useModelList.length > 0) {
+      if(this.useModelList.indexOf(id) > -1) return true;
+    } 
+    return false;
+  }
+
+
 }
 export interface Element {
   id: number;

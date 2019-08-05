@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
@@ -11,6 +12,7 @@ import { AddUserComponent } from '../../add-user/add-user.component';
 import { NoticeManagementComponent, ModalDialog } from "../../notice-management/notice-management.component";
 import { AddDetailsComponent } from '../../add-details/add-details.component';
 import { ClassListComponent } from "app/class-list/class-list.component";
+import { GalleryUploadComponent } from "../../gallery-upload/gallery-upload.component";
 import { NotificationService } from '../../services/notification.service';
 // import { BrowserModule } from '@angular/platform-browser';
 import { ComponentsModule } from "../../components/components.module";
@@ -77,7 +79,8 @@ import {
     NoticeManagementComponent,
     AddDetailsComponent,
     ClassListComponent,
-    ModalDialog
+    ModalDialog,
+    GalleryUploadComponent
   ],
 
   entryComponents: [ModalDialog],

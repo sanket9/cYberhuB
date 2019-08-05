@@ -25,7 +25,8 @@ export class ListEventsComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource<Element>();
   selection = new SelectionModel<Element>(true, []);
-
+  modele_id = 5;
+  filterRole;
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
   constructor(public http: Http, public router: Router,  
@@ -33,9 +34,21 @@ export class ListEventsComponent implements OnInit {
 
   ngOnInit() {
     this.getAllEvents();
+    this.getRole();
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  getRole() {
+    var role = this.SessionStore.retrieve('user-role');
+    // console.log(role);
+
+    // role = JSON.parse(role);
+    let filterRole = role.filter(ele => ele.module_id == this.modele_id);
+    if (filterRole.length > 0) {
+      this.filterRole = filterRole[0]
+    }
   }
 
   getAllEvents() {

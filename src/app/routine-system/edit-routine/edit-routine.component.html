@@ -7,6 +7,11 @@
           Dashboard
         </a>
       </li>
+      <li class="breadcrumb-item" aria-current="page">
+        <a [routerLink]="['/routine/index']" class="text-success">
+          Routine
+        </a>
+      </li>
       <li class="breadcrumb-item active" aria-current="page">
         Edit Routine
       </li>
@@ -18,7 +23,7 @@
     <app-loader [show]="showloader"></app-loader>
     <div class="card">
       <div class="card-header card-header-danger">
-        <h4 class="card-title">Routine</h4>
+        <h4 class="card-title">Edit Routine</h4>
         <!-- <p class="card-category">Add a Notice</p> -->
       </div>
       <div class="card-body mt-2">
@@ -28,7 +33,7 @@
             <mat-expansion-panel *ngFor="let routine of dayRoutine; let i = index;">
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  Priod : {{routine.priod.priod_name}}
+                  Period : {{routine.priod.period_name}}
                 </mat-panel-title>
                 <mat-panel-description>
                  Update Routine
@@ -39,7 +44,7 @@
                   <div class="col-md-6">
                     {{routine.rutinedetails[0].class_sub_id}} 
                     <mat-form-field>
-                      <mat-select placeholder="Select Component" [(ngModel)]="routine.rutinedetails[0].class_sub_id" name="component">
+                      <mat-select placeholder="Select Component with Subject" [(ngModel)]="routine.rutinedetails[0].class_sub_id" name="component">
                         <mat-option *ngFor="let sub of SubjectComponent" [value]="sub.id" >
                           {{ sub?.subcourse[0]?.count_name }} - ({{sub.subject_name}})
                         </mat-option>
@@ -88,7 +93,7 @@
           <!-- <table border="2" class="routine" *ngIf="rutineDetails" cellspacing="3" align="center">
             <tr>
               <td align="center">
-              <td *ngFor="let priod of org_priods">{{ priod.priod_name }} ({{priod.from_time}} - {{priod.to_time}})
+              <td *ngFor="let priod of org_priods">{{ priod.period_name }} ({{priod.from_time}} - {{priod.to_time}})
             </tr>
             <tr *ngFor="let rutine of rutineDetails;">
               <td align="center"> {{getDay(rutine.day)}}

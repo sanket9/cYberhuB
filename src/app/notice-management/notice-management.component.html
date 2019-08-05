@@ -18,81 +18,71 @@
 
 
   <div class="container-fluid">
-    <div class="example-full-width mb-4">
-      <button mat-raised-button type="button" class="btn btn-primary" [routerLink]="['/notice-management/notice-type']">Add Notice</button>
+    <div class="row">
+
+      <div class="example-full-width mb-4" *ngIf="filterRole.add == 1">
+        <button mat-raised-button type="button" class="btn btn-primary" [routerLink]="['/notice-management/notice-type']">Add Notice</button>
+      </div>
+    </div>
+    <div class="row">
+      <p class="m-0 p-0">Filter by Date : </p>
+      <div class="example-container">
+
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker1" placeholder="Choose from date" disabled [(ngModel)]="fromDate">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker2" placeholder="Choose to date" disabled [(ngModel)]="toDate">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2 disabled="false"></mat-datepicker>
+        </mat-form-field>
+        
+        <button mat-raised-button type="submit" class="btn btn-success" (click)="onFilterSubmit()">Submit</button>
+      </div>
+      
+      
+    </div>
+
+    <div class="row ml-3" *ngIf="filterRole.view == 1">
+
+        <mat-card class="col-md-4 m-1 example-card" style="height: 151px;" *ngFor="let notice of noticeList">
+          <div class="" *ngIf="filterRole.delete == 1">
+            <i class="material-icons pull-right text-muted cursor" (click)="onClickDeleteNotice(notice.id)">close</i>
+          </div>
+
+          <mat-card-header>
+            <!-- <div mat-card-avatar class="example-header-image"></div> -->
+            <mat-card-title class="m-0 p-0">
+              <i class="fa fa-commenting-o" aria-hidden="true"></i>
+              {{notice.title}}
+            </mat-card-title>
+            <mat-card-subtitle class="m-0 p-0">{{notice.subject}}</mat-card-subtitle>
+          </mat-card-header>
+
+          <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+          <!-- <a [routerLink]="['/notice-management/notice-type']"> -->
+          <mat-card-content>
+            <p class="ml-2">{{(notice.text.length > 20)? (notice.text | slice:0:20)+'..':(str)}}</p>
+          </mat-card-content>
+          <!-- </a> -->
+          <mat-card-actions>
+            <button class="btn btn-info btn-sm pull-right mr-4 mb-4" (click)="openDialog(notice)"
+              style="position: absolute; bottom: 0px; right: 0px;">Details</button>
+          </mat-card-actions>
+        </mat-card>
+
     </div>
   </div>
 
 
 
   <div class="container-fluid">  
-      <p class="m-0 p-0">Filter by Date : </p>
-
-      <mat-form-field class="w-25 m-0 p-0">
-          <input matInput [matDatepicker]="picker1" placeholder="Choose from date" [(ngModel)]="fromDate">
-          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-          <mat-datepicker #picker1></mat-datepicker>
-      </mat-form-field>
-
-      <mat-form-field class="w-25 m-0 p-0">
-          <input matInput [matDatepicker]="picker2" placeholder="Choose to date" [(ngModel)]="toDate">
-          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-datepicker #picker2></mat-datepicker>
-      </mat-form-field>
-
-      <div class="example-full-width">
-          <button mat-raised-button type="submit" class="btn btn-success" (click)="onFilterSubmit()">Submit</button>
-      </div> 
+      
   </div>
 
 
 
-  <div class="container-fluid">
-
-    <!-- <div class="row page-title">       -->
-      <mat-grid-list gutterSize="10px" cols="4" rowHeight="12em">
-
-        <!-- <mat-grid-tile>
-            <mat-card class="example-card">
-                <a [routerLink]="['/notice-management/notice-type']">
-                  <mat-card-content class="text-center">
-                    <p class="">
-                      <i class="material-icons add-ico-font text-muted">add</i>
-                    </p> 
-                    <p class="add-text text-muted">ADD</p> 
-                  </mat-card-content> 
-                </a>
-            </mat-card>        
-        </mat-grid-tile> -->
-
-        <mat-grid-tile *ngFor="let notice of noticeList">
-          <mat-card class="example-card" style="height: 90%;">
-              <div class="">
-                  <i class="material-icons pull-right text-muted cursor" (click)="onClickDeleteNotice(notice.id)">close</i>
-              </div>
-
-            <mat-card-header>
-              <!-- <div mat-card-avatar class="example-header-image"></div> -->              
-              <mat-card-title class="m-0 p-0">
-                <i class="fa fa-commenting-o" aria-hidden="true"></i>
-                {{notice.title}}
-              </mat-card-title>
-              <mat-card-subtitle class="m-0 p-0">{{notice.subject}}</mat-card-subtitle>
-            </mat-card-header>
-
-            <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-            <!-- <a [routerLink]="['/notice-management/notice-type']"> -->
-            <mat-card-content>
-              <p class="ml-2">{{(notice.text.length > 20)? (notice.text | slice:0:20)+'..':(str)}}</p> 
-            </mat-card-content> 
-            <!-- </a> -->
-            <mat-card-actions>
-              <button class="btn btn-info btn-sm pull-right mr-4 mb-4" (click)="openDialog(notice)" style="position: absolute; bottom: 0px; right: 0px;">Details</button>
-            </mat-card-actions>
-          </mat-card>
-        </mat-grid-tile>
-
-      </mat-grid-list>      
-    <!-- </div> -->
-  </div>
+    
 </div>

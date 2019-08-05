@@ -14,17 +14,17 @@ declare interface RouteInfo {
     class: string;
 }
 export const ROUTES: RouteInfo[] = [
-    { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '0' },
-    { path: '/user-profile', title: 'User Profile',  icon:'person', class: '0' },
-    // { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
-    { path: '/add-user-details', title: 'Upload Details',  icon:'notifications', class: '1' },
-    { path: '/add-user', title: 'Add User Role', icon: 'person', class: '3' },
-    { path: '/notice', title: 'Notice', icon: 'notes', class: '2' },
-    { path: '/library/index', title: 'Library', icon: 'library_books', class: '4' },
-    { path: '/event/index', title: 'Events', icon: 'speaker', class: '5' },
-    { path: '/routine/index', title: 'Routine', icon: 'event_available', class: '6' },
-    { path: '/exam/index', title: 'Exam System', icon: 'event_available', class: '7' },
-    // { path: '/add-user-details', title: 'Add Details', icon: 'event_available', class: '' },
+    { path: '/dashboard/', title: 'Dashboard',  icon: 'dashboard', class: '0', },
+    { path: '/user-profile/', title: 'User Profile',  icon:'person', class: '0' },
+    { path: '/gallery/', title: 'Gallery', icon:'photo_library', class: '1' },
+    { path: '/add-user-details/', title: 'Upload Details',  icon:'notifications', class: '1' },
+    { path: '/add-user/', title: 'Add User Role', icon: 'person', class: '3' },
+    { path: '/notice/', title: 'Notice', icon: 'notes', class: '2' },
+    { path: '/library/index/', title: 'Library', icon: 'library_books', class: '4' },
+    { path: '/event/index/', title: 'Events', icon: 'speaker', class: '5' },
+    { path: '/routine/index/', title: 'Routine', icon: 'event_available', class: '6' },
+    { path: '/exam/index/', title: 'Exam System', icon: 'event_available', class: '7' },
+    { path: '/school/module/index/', title: 'More', icon: 'settings_remote', class: '1' },
 ];
 
 @Component({
@@ -104,9 +104,10 @@ export class SidebarComponent implements OnInit {
             });
             routes = searchroutes;
           }
-
+          // console.log(routes);
+          
           if (data.data.length > 0) {
-
+            this.sessionStore.store("user-role", data.data);
             data.data.forEach(ele => {
   
               if (ele.module_id) {
@@ -119,7 +120,10 @@ export class SidebarComponent implements OnInit {
                 }       
               }
             });
+            // routes.splice(routes.length, 0, routes.splice(4, 1)[0]);
             this.menuItems = routes;
+            // console.log(this.menuItems);
+            
           }else{
             alert('You are not Athorized to this area. Contact to Institute Admin');
             this.logout()

@@ -7,8 +7,13 @@
           Dashboard
         </a>
       </li>
+      <li class="breadcrumb-item" aria-current="page">
+        <a [routerLink]="['/routine/index']" class="text-success">
+          Routine
+        </a>
+      </li>
       <li class="breadcrumb-item active" aria-current="page">
-        Notice Mangament
+        View Routine
       </li>
     </ol>
   </nav>
@@ -18,7 +23,7 @@
     <app-loader [show]="showloader"></app-loader>
     <div class="card">
       <div class="card-header card-header-danger">
-        <h4 class="card-title">Routine</h4>
+        <h4 class="card-title">View Routine</h4>
         <!-- <p class="card-category">Add a Notice</p> -->
       </div>
       <div class="card-body mt-2">
@@ -65,7 +70,7 @@
               <mat-form-field>
                 <mat-select placeholder="Choose a Sem" formControlName="sem" name="sem" (change)="onSemselect($event)">
                   <mat-option *ngFor="let sem of allsems" [value]="sem.id">
-                    {{ sem.sem_no }}
+                   Sem {{ sem.sem_no }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -81,31 +86,42 @@
             </div>
           </div>
 
-          <button type="submit">Submit</button>
+          <button mat-button [disabled]="!viewRoutine.valid" 
+                  [ngClass]="{'btn-success': viewRoutine.valid, 'btn-light': !viewRoutine.valid}" class="btn" type="submit">Search</button>
+          <button mat-button class="btn btn-warning" type="button" (click)="printit()" *ngIf="rutineDetails">PrintIt</button>
         </form>
-        <button (click)="printit()" *ngIf="rutineDetails">PrintIt</button>
 
         <!-- formControlName="dept_id" -->
         <!-- formControlName="teacher_id" -->
         <div id="printtable">
-          <p *ngIf="rutineDetails" class="text-center display-3"> Deprment: {{ deptName && deptName[0].section?.sec_name }} | Sem:{{ samname && samname[0]?.sem_no}} | Year: {{viewRoutine.value.year}} </p>
+          <p *ngIf="rutineDetails" class="text-center display-3"> Department: {{ deptName && deptName[0].section?.sec_name }} | Sem:{{ samname && samname[0]?.sem_no}} | Year: {{viewRoutine.value.year}} </p>
           <table border="2" class="routine" *ngIf="rutineDetails" cellspacing="3" align="center">
             <tr>
               <td align="center">
-              <td *ngFor="let priod of org_priods">{{ priod.priod_name }} ({{priod.from_time}} - {{priod.to_time}})
+              <td *ngFor="let priod of org_priods">{{ priod.period_name }} ({{priod.from_time}} - {{priod.to_time}})
             </tr>
             <tr *ngFor="let rutine of rutineDetails;">
-              <td align="center"> {{getDay(rutine.day)}} 
-                <i class="material-icons" [routerLink]="['/routine/edit']"
+              <td align="center" style="cursor: pointer;" *ngIf="filterRole.edit == 1" [routerLink]="['/routine/edit']"
+                [queryParams]="{day:rutine.day,year: viewRoutine.value.year, dept: deptName && deptName[0].id, sem: samname && samname[0]?.id, stream: viewRoutine.value.stream }"> {{getDay(rutine.day)}} 
+                <!-- <i class="material-icons" [routerLink]="['/routine/edit']"
                 [queryParams]="{day:rutine.day,year: viewRoutine.value.year, dept: deptName && deptName[0].id, sem: samname && samname[0]?.id, stream: viewRoutine.value.stream }"
                 >
                   edit
-                </i>
+                </i> -->
+              </td>
+              <td align="center" style="cursor: pointer;" *ngIf="filterRole.edit == 0"
+              > {{getDay(rutine.day)}} 
+              <!-- <i class="material-icons" [routerLink]="['/routine/edit']"
+                [queryParams]="{day:rutine.day,year: viewRoutine.value.year, dept: deptName && deptName[0].id, sem: samname && samname[0]?.id, stream: viewRoutine.value.stream }"
+                >
+                  edit
+                </i> -->
               </td>
               <td align="center" *ngFor="let priods of rutine?.priods">
                 <p *ngFor="let item of priods?.rutinedetails">
                   {{item.class.section.sec_name}} / {{item.teacher.short_name}} / {{item.room.name}}
-                  <small style="font-weight:bold; color:brown">{{item.cc_name}}</small>
+                  <small style="font-weight:bold; color:brown">{{item.cc_name}}</small> <br> 
+                  <small *ngIf="item.is_block == 1 && datecompare(item.block_date)" style="color:brown">Staff Shifted to Exam duty.</small>
                 </p>
               </td>
               <!-- <ng-container *ngFor="let priods of rutine?.priods; let i=index"> -->

@@ -1,5 +1,5 @@
 <div class="main-content">
-  <!-- <nav aria-label="breadcrumb">
+  <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a [routerLink]="['/dashboard']" class="text-success">
@@ -11,7 +11,9 @@
           Add User       
       </li>
     </ol>
-  </nav> -->
+  </nav>
+  <app-loader [show]="showloader"></app-loader>
+
   <div class="container-fluid">
     <div class="row page-title">
       <div class="col-md-12 col-md-offset-1">
@@ -19,15 +21,15 @@
           <div class="wizard-header">
             <h3 class="text-center">Build User Roll Management</h3>
             <h5 class="text-center" style="margin-top: 5px; padding: 0 20px;">
-              This is not an individual user this Role for every one.
+              Assign User access rights as per requirement
             </h5>
           </div>
           <div class="wizard-navigation">
             <ul class="nav nav-pills">
               <li class="text-uppercase text-center">Select Staff</li>
                
-              <li class="text-uppercase text-center">Permissions</li>
               <li class="text-uppercase text-center">Modules</li>
+              <li class="text-uppercase text-center">Permissions</li>
             </ul>
             <div class="move-tab text-center text-uppercase">About</div>
           </div>
@@ -37,39 +39,45 @@
                 <div class="col-md-12">
                   <div class="checkbox-container">
                     <h4>Set According to their Role Permissions</h4>
-                    <div class="form-check pb-3">                      
+
+                    <div class="col-md-12 pb-3">                      
                       <mat-form-field>
-                        <p></p>
                         <mat-select placeholder="Select a Possition" (change)="createLog($event)" [(ngModel)]="roleName">
-                          <mat-option value="option">Select One--</mat-option>
+                          <mat-option value="">Select One--</mat-option>
                           <mat-option *ngFor="let role of roles" value="{{role.id}}">{{role.role_name}}</mat-option>
                           
                         </mat-select>
                       </mat-form-field>
                     </div>
                   
-                    <div class="col-12 " *ngIf="roleName">
+                    <div class="col-md-12 d-flex" *ngIf="roleName">
                       <!-- <div class="example-header">
                         <mat-form-field>
                           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
                         </mat-form-field>
                       </div>                   -->
-                      <mat-form-field class="">
-                        <mat-select placeholder="Select Shift" (change)="onChooseShift($event)" [(ngModel)]="shift">
-                          <ng-container *ngFor="let shift of orgShiftLists">
-                            <mat-option [value]="shift.orgshift[0]?.id" *ngIf="shift.orgshift[0]?.id" class="shiftOptions">
-                              {{shift.name}}
+                      <div class="col-md-6">
+
+                        <mat-form-field class="">
+                          <mat-select placeholder="Select Shift" (change)="onChooseShift($event)" [(ngModel)]="shift">
+                            <ng-container *ngFor="let shift of orgShiftLists">
+                              <mat-option [value]="shift.orgshift[0]?.id" *ngIf="shift.orgshift[0]?.id" class="shiftOptions">
+                                {{shift.name}}
+                              </mat-option>
+                            </ng-container>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6">
+
+                        <mat-form-field>
+                          <mat-select placeholder="Select a Teacher" name="teacher" (change)="selectStaff($event.value)">
+                            <mat-option *ngFor="let itm of filteredStaff" [value]="itm.id" >
+                              {{ itm.name }}
                             </mat-option>
-                          </ng-container>
-                        </mat-select>
-                      </mat-form-field>
-                      <mat-form-field>
-                        <mat-select placeholder="Select a Teacher" name="teacher" (change)="selectStaff($event.value)">
-                          <mat-option *ngFor="let itm of filteredStaff" [value]="itm.id" >
-                            {{ itm.name }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
                       
                     </div>
                     <mat-card style="width:100%; margin-top: 20px;" *ngIf="logDetails?.user">
@@ -77,14 +85,14 @@
                         
                         <div class="col-md-3">
                           <mat-form-field class="example-full-width">
-                            <input matInput placeholder="First Name" name="fname" [(ngModel)]="fname">
+                            <input matInput placeholder="Staff Name" name="name" [(ngModel)]="name">
                           </mat-form-field>
                         </div>
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                           <mat-form-field class="example-full-width">
                             <input matInput placeholder="Last Name" name="lname" [(ngModel)]="lname">
                           </mat-form-field>
-                        </div>
+                        </div> -->
                         
                         <div class="col-md-3">
                           <mat-form-field class="example-full-width">
@@ -96,10 +104,10 @@
                         <div class="col-md-3">
                           <mat-form-field>
                             <mat-select placeholder="Select an Employee Types" (change)="techingtypechange($event)" name="techingtype" [(ngModel)]="techingtype">
-                              <mat-option value=0>---Select One--</mat-option>
+                              <mat-option value="">---Select One--</mat-option>
                               <ng-container *ngFor="let rolecat of rolecats" >
                                 
-                                <mat-option *ngIf="rolecat.parent_id == 0" value="{{rolecat.id}}">
+                                <mat-option *ngIf="rolecat.parent_id == 0" [value]="rolecat.id">
                                   {{ rolecat.name }}
                                 </mat-option>
                               </ng-container>
@@ -110,8 +118,8 @@
                         <div class="col-md-3">
                           <mat-form-field>
                             <mat-select placeholder="Select a Staff Roll" name="rolecattypes" [(ngModel)]="rolecattype">
-                                <mat-option value=0>---Select One--</mat-option>
-                                <mat-option *ngFor="let rolecat of roleSubcats" value="{{rolecat.id}}">
+                                <mat-option value="">---Select One--</mat-option>
+                                <mat-option *ngFor="let rolecat of roleSubcats"  [value]="rolecat.id">
                                   {{ rolecat.name }}
                                 </mat-option>                             
                         
@@ -122,7 +130,7 @@
                           <mat-form-field>
                             <mat-select placeholder="Select a Deperment" name="dept_id" [(ngModel)]="dept_id">
                           
-                              <mat-option *ngFor="let dept of depts" value="{{dept.id}}">
+                              <mat-option *ngFor="let dept of depts"  [value]="dept.id">
                                 {{ dept.name }}
                               </mat-option>
                           
@@ -133,7 +141,7 @@
                           <mat-form-field>
                             <mat-select placeholder="Select Rest-day of Employee" name="day_id" [(ngModel)]="day_id">
                           
-                              <mat-option *ngFor="let day of weak" value="{{day.id}}">
+                              <mat-option *ngFor="let day of weak" [value]="day.id">
                                 {{ day.name }}
                               </mat-option>
                           
@@ -146,7 +154,7 @@
                           </mat-form-field>
                         </div>
                       </div>
-                      <button mat-raised-button class="btn btn-light" (click)="updateData()">Save</button>
+                      <button mat-raised-button class="btn btn-primary" (click)="updateData()">Save</button>
                     </mat-card>
                   </div>
                 </div>
@@ -166,7 +174,7 @@
                   </mat-expansion-panel-header>
                   
                     <div class="form-check pb-3" *ngFor="let module of modules">
-                      <mat-checkbox (change)="checkModule($event,module.id)">{{module.module_name}}</mat-checkbox>
+                      <mat-checkbox [checked]= "checkedModel(module.id,module.module_name)" (change)="checkModule($event,module.id)">{{module.module_name}}</mat-checkbox>
                     </div>
                   
                 </mat-expansion-panel>
@@ -207,27 +215,27 @@
                     <div class="row">
                       <div class="form-check col-md-4 pl-2">
                         <mat-checkbox (change)="checkIfAllSelected($event,'add', i)" 
-                        [checked]="allPermisions"
+                        [checked]="allPermisions || item.permissions.add"
                         >Add</mat-checkbox>
                       </div>
                       <div class="form-check col-md-4 pl-2">
                         <mat-checkbox (change)="checkIfAllSelected($event, 'edit', i)"
-                        [checked]="allPermisions"
+                        [checked]="allPermisions || item.permissions.edit"
                         >Edit</mat-checkbox>
                       </div>
                       <div class="form-check col-md-4 pl-2">
                         <mat-checkbox (change)="checkIfAllSelected($event, 'view', i)"
-                        [checked]="allPermisions"
+                        [checked]="allPermisions || item.permissions.view"
                         >View</mat-checkbox>
                       </div>
                       <div class="form-check col-md-4 pl-2">
                         <mat-checkbox (change)="checkIfAllSelected($event, 'delete', i)"
-                        [checked]="allPermisions"
+                        [checked]="allPermisions || item.permissions.delete"
                         >Delete</mat-checkbox>
                       </div>
                       <div class="form-check col-md-4 pl-2">
                         <mat-checkbox (change)="checkIfAllSelected($event, 'all', i)"
-                        [checked]="allCheckButton[i]"
+                        [checked]="allCheckButton[i] || item.permissions.all"
                         >All</mat-checkbox>
                       </div>
                     </div>
@@ -247,10 +255,10 @@
           <div class="wizard-footer">            
             <button id="preBtn" class="btn btn-danger" (click)="preOnClick()">Previous</button>
             <button id="nextBtn" class="btn btn-success green-a200" 
-              *ngIf="tabIndex == 0 && result && result.f_name"
+              *ngIf="tabIndex == 0 && result && result.name"
               
             (click)="nextOnClick()">Next</button>
-            <button id="nextBtn" class="btn btn-success green-a200" *ngIf="tabIndex == 1" (click)="nextOnClick()">Next</button>
+            <button id="nextBtn" class="btn btn-success green-a200" *ngIf="tabIndex == 1 && this.logDetails['modules'].length > 0" (click)="nextOnClick()">Next</button>
             <button *ngIf="tabIndex == 2" class="btn btn-success float-right" (click)="finish()">Finish</button>
           </div>
         </div>

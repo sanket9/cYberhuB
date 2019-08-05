@@ -13,7 +13,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { NotificationService } from "../../services/notification.service";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import { Pipe, PipeTransform } from "@angular/core";
-
+import * as moment from 'moment'
 @Component({
   selector: "app-view-rutine",
   templateUrl: "./view-rutine.component.html",
@@ -36,7 +36,8 @@ export class ViewRutineComponent implements OnInit {
   org_priods;
   samname;
   deptName;
-
+  modele_id = 6;
+  filterRole;
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -49,6 +50,7 @@ export class ViewRutineComponent implements OnInit {
     this.createFormGroup();
     this.getClass();
     this.nexttenYear();
+    this.getRole()
   }
 
   createFormGroup() {
@@ -60,7 +62,16 @@ export class ViewRutineComponent implements OnInit {
       dept_id: new FormControl("", [Validators.required])
     });
   }
+  getRole() {
+    var role = this.SessionStore.retrieve('user-role');
+    // console.log(role);
 
+    // role = JSON.parse(role);
+    let filterRole = role.filter(ele => ele.module_id == this.modele_id);
+    if (filterRole.length > 0) {
+      this.filterRole = filterRole[0]
+    }
+  }
   getClass() {
     this.showloader = true;
     var status = this.SessionStore.retrieve("user-data");
@@ -172,42 +183,59 @@ export class ViewRutineComponent implements OnInit {
       .post(`${environment.apiUrl}routine/getroutineforDept`, values, options)
       .map(res => res.json())
       .subscribe(data => {
-        console.log(data);
+        // console.log(data);
         this.showloader = false;
-        // this.allsems = data.data;
-        let new_arry = [];
-        data.data.forEach((element, i) => {
-          let pos = new_arry
-            .map(function(e) {
-              return e.day;
-            })
-            .indexOf(element.day);
-          // console.log(new_arry.indexOf(element.day));
-          if (pos < 0) {
-            let new_data = {
-              id: element.id,
-              day: element.day,
-              priods: [
-                {
-                  priod_id: element.priod_id,
-                  rutinedetails: element.rutinedetails
-                }
-              ]
-            };
-            new_arry.push(new_data);
-          } else {
-            let exsisting_data = {
-              priod_id: element.priod_id,
-              rutinedetails: element.rutinedetails
-            };
-            new_arry[pos].priods.push(exsisting_data);
-          }
-        });
-        this.rutineDetails = new_arry;
-        console.log(this.rutineDetails);
+        if (data.data) {
+          
+          // this.allsems = data.data;
+          let new_arry = [];
+          data.data.forEach((element, i) => {
+            let pos = new_arry
+              .map(function(e) {
+                return e.day;
+              })
+              .indexOf(element.day);
+            // console.log(new_arry.indexOf(element.day));
+            if (pos < 0) {
+              let new_data = {
+                id: element.id,
+                day: element.day,
+                priods: [
+                  {
+                    priod_id: element.priod_id,
+                    rutinedetails: element.rutinedetails
+                  }
+                ]
+              };
+              new_arry.push(new_data);
+            } else {
+              let exsisting_data = {
+                priod_id: element.priod_id,
+                rutinedetails: element.rutinedetails
+              };
+              new_arry[pos].priods.push(exsisting_data);
+            }
+          });
+          this.rutineDetails = new_arry;
+          console.log(this.rutineDetails);
+        }
+        
       });
   }
+  datecompare(date) {
+    var examdate = moment(date)
+    var now = moment();
 
+    if (now > examdate) {
+      console.log("here");
+      
+      // date is past
+      return false
+    } else {
+      // date is future
+      return true
+    }
+  }
   printit() {
     let divToPrint = document.getElementById("printtable").innerHTML;
     let newWindow = window.open(

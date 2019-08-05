@@ -82,10 +82,9 @@ export class LoginComponent implements OnInit {
         if (data.data.length == 0) {
           this.showErrors = true;
           this.loading = false;
-          this.errMsg = "Email or Password Not Match"
+          this.errMsg = "Username or Password Not Match"
         } else if (data.data.length > 0) {
           if (data.data[0].user_type_id == 2 || data.data[0].user_type_id == 1) {
-            
             this.router.navigate(["dashboard"]);
             this.SessionStore.store("user-data", data.data);
           }else{

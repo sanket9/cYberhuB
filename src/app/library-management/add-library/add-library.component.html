@@ -107,6 +107,46 @@
                       <small>This is <strong>required</strong></small>
                     </mat-error>
                   </div>
+                  <div class="col-md-6">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Place of Publication" type="text" formControlName="place_of_pub" 
+                      name="edition">
+                    </mat-form-field>
+                    <mat-error *ngIf="bookaddForm.controls.place_of_pub.hasError('required') && 
+                           bookaddForm.controls.place_of_pub.touched">
+                      <small>This is <strong>required</strong></small>
+                    </mat-error>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Year of Publication" type="number" formControlName="year_of_pub" 
+                      name="edition">
+                    </mat-form-field>
+                    <mat-error *ngIf="bookaddForm.controls.year_of_pub.hasError('required') && 
+                           bookaddForm.controls.year_of_pub.touched">
+                      <small>This is <strong>required</strong></small>
+                    </mat-error>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Accession No" type="text" formControlName="accession_no" 
+                      name="edition">
+                    </mat-form-field>
+                    <mat-error *ngIf="bookaddForm.controls.accession_no.hasError('required') && 
+                           bookaddForm.controls.accession_no.touched">
+                      <small>This is <strong>required</strong></small>
+                    </mat-error>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Call No" type="text" formControlName="call_no" 
+                      name="edition">
+                    </mat-form-field>
+                    <mat-error *ngIf="bookaddForm.controls.call_no.hasError('required') && 
+                           bookaddForm.controls.call_no.touched">
+                      <small>This is <strong>required</strong></small>
+                    </mat-error>
+                  </div>
                 </div>
                 <button mat-raised-button class="btn btn-light" type="submit" [disabled]="!bookaddForm.valid"
                   [ngClass]="{'btn-success': bookaddForm.valid}"

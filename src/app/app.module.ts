@@ -63,7 +63,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     AppComponent,
     AdminLayoutComponent,
     LoginComponent,
-    ViewExamComponent,    
+    ViewExamComponent,
   ],
   exports: [],
   providers: [AuthGuard],

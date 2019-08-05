@@ -7,13 +7,13 @@
           Dashboard
         </a>
       </li>
-      <li class="breadcrumb-item active" aria-current="page">
-        <a [routerLink]="['/routine/index']" class="text-gray">
+      <li class="breadcrumb-item" aria-current="page">
+        <a [routerLink]="['/routine/index']" class="text-success">
           Routine
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        Add
+        Create Routine
       </li>
     </ol>
   </nav>
@@ -23,10 +23,11 @@
     <app-loader [show]="showloader"></app-loader>
     <div class="card">
       <div class="card-header card-header-danger">
-        <h4 class="card-title">Routine</h4>
+        <h4 class="card-title">Create Routine</h4>
         <!-- <p class="card-category">Add a Notice</p> -->
       </div>
       <div class="card-body mt-2">
+        <p *ngIf="showError" class="text-danger text-center">The Room is booked in another class at same-time.</p>
         <form class="pt-2" [formGroup]="routineForm" (submit)="submitForm(routineForm.value)">
 
           <div class="row">
@@ -70,7 +71,7 @@
               <mat-form-field>
                 <mat-select placeholder="Choose a Sem" formControlName="sem" name="sem" (change)="onSemselect($event)">
                   <mat-option *ngFor="let sem of allsems" [value]="sem.id">
-                    {{ sem.sem_no }}
+                    Sem {{ sem.sem_no }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -91,7 +92,7 @@
               <mat-form-field>
                 <mat-select placeholder="Choose a Priod" formControlName="priod_id" name="proid_id">
                   <mat-option *ngFor="let priod of org_priods" [value]="priod.id">
-                    {{ priod.priod_name }} ({{priod.from_time}} - {{priod.to_time}})
+                    {{ priod.period_name }} ({{priod.from_time}} - {{priod.to_time}})
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -132,7 +133,7 @@
               </div>
               <div class="col-md-3">
                 <mat-form-field>
-                  <mat-select placeholder="Choose a Room" formControlName="room_id" name="teacher_id" >
+                  <mat-select placeholder="Choose a Room" formControlName="room_id" name="room_id" (change)="onRoomSelect($event)">
                     <mat-option *ngFor="let room of org_rooms" [value]="room.id">
                       {{ room.name }}
                     </mat-option>
@@ -141,20 +142,21 @@
               </div>
             </div>
           </div>
-          <button type="submit" mat-button class="btn btn-primary pb-3">Submit</button>
+          <button [disabled]="!routineForm.valid && showError" 
+                  [ngClass]="{'btn-success': routineForm.valid && showError, 'btn-light': !routineForm.valid}" type="submit" mat-button class="btn pb-3">Submit</button>
         </form>
 
 
         <!-- formControlName="dept_id" -->
         <!-- formControlName="teacher_id" -->
 
-        <table border="2" cellspacing="3" align="center">
+        <table border="2" cellspacing="3" align="center" *ngIf="org_priods.length > 0">
           <tr>
             <td align="center">
-            <td *ngFor="let priod of org_priods">{{ priod.priod_name }} ({{priod.from_time}} - {{priod.to_time}}) 
+            <td *ngFor="let priod of org_priods">{{ priod.period_name }} ({{priod.from_time}} - {{priod.to_time}}) 
             </tr>
           <tr *ngFor="let rutine of rutineDetails">
-            <td align="center"> {{rutine.day}} </td>
+            <td align="center"> {{returnDayName(rutine.day)}} </td>
             <td align="center" *ngFor="let priods of rutine?.priods">
               <p *ngFor="let item of priods?.rutinedetails">
                 {{item.class.section.sec_name}} / {{item.teacher.short_name}} / {{item.room.name}}

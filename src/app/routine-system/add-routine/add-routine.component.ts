@@ -27,16 +27,16 @@ export class AddRoutineComponent implements OnInit {
   panelOpenState = false;
   showloader: boolean = false;
   createpriodForm: FormGroup;
-  no_of_preiod: FormControl;
+  no_of_period: FormControl;
   class_id: FormControl;
   from_time: FormControl;
   to_time: FormControl;
   priods: FormArray;
-  priod_name: any = [];
+  period_name: any = [];
   classList: any;
   shift: any;
   shifs: any;
-
+  showMssg: string = "";
   displayedColumns = [
     "id",
     "room_name",
@@ -91,7 +91,7 @@ export class AddRoutineComponent implements OnInit {
       .post(`${environment.apiUrl}shift/orgshiftlist`, data, options)
       .map(res => res.json())
       .subscribe(data => {
-        //console.log(data);
+        console.log(data);
         this.shifs = data.data;
         this.showloader =false;
       });
@@ -131,7 +131,7 @@ export class AddRoutineComponent implements OnInit {
 
   
   createFormControl() {
-    this.no_of_preiod = new FormControl("", [Validators.required]);
+    this.no_of_period = new FormControl("", [Validators.required]);
     this.shift = new FormControl("", [Validators.required]);
     this.priods = new FormArray([], [Validators.required]);
   }
@@ -142,7 +142,7 @@ export class AddRoutineComponent implements OnInit {
 
   createFormGroup() {
     this.createpriodForm = new FormGroup({
-      no_of_preiod: this.no_of_preiod,
+      no_of_period: this.no_of_period,
       shift: this.shift,
       priods: this.priods
       // file_url: this.file_url
@@ -153,7 +153,7 @@ export class AddRoutineComponent implements OnInit {
 
 
 
-  priodchange(e) {
+  periodchange(e) {
     //console.log(e.target.value);
     let data = this.createpriodForm.get("priods");
     if (e.target.value <= 9) {
@@ -162,7 +162,7 @@ export class AddRoutineComponent implements OnInit {
       } else {
         for (let index = 0; index < e.target.value; index++) {
           const newarry = new FormGroup({
-            priod_name: new FormControl("", [Validators.required]),
+            period_name: new FormControl("", [Validators.required]),
             from: new FormControl("", [Validators.required]),
             to: new FormControl("", [Validators.required])
           });
@@ -219,14 +219,23 @@ export class AddRoutineComponent implements OnInit {
       .post(`${environment.apiUrl}shift/orgshiftclass`, data, options)
       .map(res => res.json())
       .subscribe(data => {
-        //console.log(data);
+        console.log(data);
         this.showloader = false;
         // this.dataSource.data = data.data;
         this.shiftClass = data.data;
       });
   }
 
+  onShiftChange(e){
+    let selectedArray = this.shiftClass.filter(ele => ele.id == e.value);    
+    let selectedLength = selectedArray[0].routinehift.length;
 
+    if (selectedLength == 0) {
+      this.showMssg = "No Period found Against this Shift. Please Enter the bellow Field to add."
+    }else{
+      this.showMssg = `${selectedLength} Periods are there. To add more Enter the no in the bellow Field.`
+    }
+  }
 
 
 
@@ -237,7 +246,27 @@ export class AddRoutineComponent implements OnInit {
 
 
   onClickDeleteShiftClass(data) {
-    console.log(data);
+    // console.log(data);
+    if (confirm("Do you want to delete it?")) {
+      this.showloader = true;
+      var headers = new Headers();
+      headers.append("Content-Type", "application/json");
+
+      let options = new RequestOptions({ headers: headers });
+
+      let api_data = {
+        id: data.id
+      };
+
+      this.http
+        .post(`${environment.apiUrl}shift/deletetime`, api_data, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          console.log(data);
+          this.showloader = false;
+
+        });
+    }
     // this.router.navigate([`routine/edit-shift-class/${data.id}`]);
   }
 

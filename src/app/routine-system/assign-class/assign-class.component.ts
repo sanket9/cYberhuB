@@ -61,7 +61,7 @@ export class AssignClassComponent implements OnInit {
   routineForm: FormGroup;
   dept_teachers: FormArray;
   org_rooms: any;
-  org_priods: any;
+  org_priods: any = [];
   yearList: any;
   qtd = [];
   rutineDetails;
@@ -69,6 +69,7 @@ export class AssignClassComponent implements OnInit {
   Finaldepts;
   remainClass;
   SubjectComponent;
+  showError: boolean = false;
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -200,8 +201,14 @@ export class AssignClassComponent implements OnInit {
   }
 
   selectAllShifts(e) {
-    console.log(e);
+    // console.log(e);
+
     this.classlist = [];
+    this.routineForm.patchValue({
+      stream: "",
+      year:"",
+      sem: "",
+    })
     this.newclassList = this.classList.filter(data => {
       return data.org_shift_id == e.value;
     });
@@ -225,12 +232,16 @@ export class AssignClassComponent implements OnInit {
       });
   }
   classChange(e) {
+    this.routineForm.patchValue({
+      year: "",
+      sem: "",
+    })
     // console.log(e);
     let depts = this.newclassList.filter(
       itm => itm.class.class_name === e.value
     );
     this.depts = depts;
-    console.log(this.depts);
+    console.log("depts",this.depts);
   }
   // classChange(e) {
   //   // console.log(e.value);
@@ -312,7 +323,7 @@ export class AssignClassComponent implements OnInit {
             .post(`${environment.apiUrl}coursecat/getsubcource`, apidata, options)
             .map(res => res.json())
             .subscribe(data => {
-              // console.log("subjst",data);
+              console.log("subcource",data);
               this.SubjectComponent = data.data;
             });
           // return data.data;
@@ -321,12 +332,22 @@ export class AssignClassComponent implements OnInit {
       });
   }
   onSemselect($e) {
+    console.log("dets", this.depts);
     
     this.Finaldepts = this.depts.filter(
       itm =>
       itm.sem_id == $e.value && itm.year == this.routineForm.value.year
       );
-    console.log(this.Finaldepts);
+
+      if (this.Finaldepts.length == 0) {
+        this.notification.showNotification(
+          "top",
+          "right",
+          "warning",
+          "No Department Found."
+        );
+      }
+    //console.log(this.Finaldepts);
   }
 
   submitForm(values: any) {
@@ -371,11 +392,15 @@ export class AssignClassComponent implements OnInit {
   }
 
   getRoutine() {
+    this.routineForm.patchValue({
+      sem : ""
+    })
     var status = this.SessionStore.retrieve("user-data");
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
     let data = {
+      shift: this.routineForm.value.shift,  
       org_id: status[0].org_code,
       stream: this.routineForm.value.stream,
       year: this.routineForm.value.year
@@ -385,6 +410,7 @@ export class AssignClassComponent implements OnInit {
       .map(res => res.json())
       .subscribe(data => {
         console.log(data);
+        
         let new_arry = [];
         data.data.forEach((element, i) => {
           let pos = new_arry
@@ -418,6 +444,11 @@ export class AssignClassComponent implements OnInit {
       });
   }
 
+ returnDayName (day){
+    let filterday = this.weak.filter(e=> e.id == day);
+    return filterday[0].name
+ }
+
   teacherOnchange($e) {
     let teacher = this.teachers.filter(data => data.id == $e.value);
     let {
@@ -433,5 +464,32 @@ export class AssignClassComponent implements OnInit {
     }
   
     //console.log(week_total_count_class, assigned_week_total_count_class);
+  }
+
+
+  onRoomSelect(e) {
+    let day = this.routineForm.value.day
+    let period_id = this.routineForm.value.priod_id;
+    let room_id = e.value;
+    var status = this.SessionStore.retrieve("user-data");
+    let apiData =  {
+      org_id: status[0].org_code,
+      day,
+      period_id,
+      room_id,
+    }
+
+    this.http.post(`${environment.apiUrl}routine/checking`, apiData)
+    .map(res => res.json())
+    .subscribe(data => {
+      //console.log(data);
+      if (data.data[0].rutinedetails.length > 0) {
+        this.showError = true;
+        return false;
+      }else{
+        this.showError = false;
+        return true;
+      }
+    })
   }
 }

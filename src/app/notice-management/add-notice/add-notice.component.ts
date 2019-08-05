@@ -243,6 +243,8 @@ export class AddNoticeComponent implements OnInit {
   hasNull(target) {
     for (var member in target) {
       if (target[member] == null)
+        console.log(target[member]);
+        
         return true;
     }
     return false;
@@ -276,7 +278,12 @@ export class AddNoticeComponent implements OnInit {
 
 
 
-
+  deleteNotificationCount() {
+    if (confirm("Do you want to Delete this?")) {
+      let data = this.addNoticeForm.get("schedule");
+      (data as FormArray).removeAt(1);
+    }
+  }
 // ########################################################################
 // ----------- get full year method -----------
 // ########################################################################

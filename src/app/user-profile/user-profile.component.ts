@@ -100,7 +100,7 @@ export class UserProfileComponent implements OnInit {
       qualification: new FormControl(
         this.userDetail.stafftmaster.qualification
       ),
-      adhar: new FormControl(this.userDetail.stafftmaster.adhar),
+      adhar: new FormControl({ value: this.userDetail.stafftmaster.adhar_no, disabled: true },[Validators.required]),
       username: new FormControl(
         {
           value: this.userDetail.username,

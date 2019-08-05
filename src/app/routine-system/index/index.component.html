@@ -8,7 +8,7 @@
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        Routine Mangament
+        Routine
       </li>
     </ol>
   </nav>
@@ -23,20 +23,20 @@
       </div>
       <div class="card-body mt-2">
           <p>Shortcuts</p>
-          <button mat-raised-button class="btn btn-success mce-btn-large" [routerLink]="['/routine/create']">
+          <button mat-raised-button class="btn btn-success mce-btn-large" *ngIf="filterRole.add == 1" [routerLink]="['/routine/create']">
             <mat-icon style="padding: 3px;">add</mat-icon>Periods against Shift
           </button>
-          <button mat-raised-button class="btn btn-warning" [routerLink]="['/routine/subject-add']">
-            <mat-icon style="padding: 3px;">add</mat-icon> Sub Add Class Wise
+          <button mat-raised-button class="btn btn-warning" *ngIf="filterRole.add == 1" [routerLink]="['/routine/subject-add']">
+            <mat-icon style="padding: 3px;">add</mat-icon> Assign Class With SUB and DEPT
           </button>
-          <button mat-raised-button class="btn btn-warning" [routerLink]="['/routine/cource-subject']">
-            <mat-icon style="padding: 3px;">schedule</mat-icon> Course Subject
+          <button mat-raised-button class="btn btn-warning" *ngIf="filterRole.add == 1" [routerLink]="['/routine/cource-subject']">
+            <mat-icon style="padding: 3px;">schedule</mat-icon>Assign Class With Shift/Course
           </button>
           
-          <button mat-raised-button class="btn btn-primary" [routerLink]="['/routine/class-assign']">
+          <button mat-raised-button class="btn btn-primary" *ngIf="filterRole.add == 1" [routerLink]="['/routine/class-assign']">
             <mat-icon style="padding: 3px;">schedule</mat-icon> Create Routine
           </button>
-          <button mat-raised-button class="btn btn-primary" [routerLink]="['/routine/view']">
+          <button mat-raised-button *ngIf="filterRole.view == 1" class="btn btn-primary" [routerLink]="['/routine/view']">
             <mat-icon style="padding: 3px;">schedule</mat-icon> View Routine
           </button>
         <hr>

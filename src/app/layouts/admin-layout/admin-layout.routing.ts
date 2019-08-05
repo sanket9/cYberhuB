@@ -9,18 +9,24 @@ import { AddUserComponent } from '../../add-user/add-user.component';
 import { NoticeManagementComponent } from "../../notice-management/notice-management.component";
 import { AddDetailsComponent } from "../../add-details/add-details.component";
 import { ClassListComponent } from 'app/class-list/class-list.component';
+import { GalleryUploadComponent } from '../../gallery-upload/gallery-upload.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent,
         canActivate: [AuthGuard],
         data: { PageName: "Login Page" }
     },
-    { path: 'user-profile', component: UserProfileComponent },
-    { path: 'table-list', component: TableListComponent },
-    { path: 'add-user', component: AddUserComponent },
+    { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard]},
+    { path: 'table-list', component: TableListComponent, canActivate: [AuthGuard]},
+    { path: 'add-user', component: AddUserComponent, canActivate: [AuthGuard]},
     { path: 'notifications', component: NotificationsComponent },
     { path: 'notice', canActivate: [AuthGuard], component: NoticeManagementComponent },
-    { path: 'addClass', component: ClassListComponent },
+    { path: 'addClass', component: ClassListComponent, canActivate: [AuthGuard]},
+    {
+        path: "gallery",
+        canActivate: [AuthGuard],
+        component: GalleryUploadComponent
+    },
     {
       path: "notice-management",
       canActivate: [AuthGuard],
@@ -46,5 +52,10 @@ export const AdminLayoutRoutes: Routes = [
         canActivate: [AuthGuard],
         loadChildren: "../../routine-system/routine-system.module#RoutineSystemModule"
     },
-    { path: 'add-user-details', component: AddDetailsComponent },   
+    {
+        path: "school/module",
+        canActivate: [AuthGuard],
+        loadChildren: "../../school-modules/school-modules.module#SchoolModulesModule"
+    },
+    { path: 'add-user-details', component: AddDetailsComponent, canActivate: [AuthGuard] },   
 ];
