@@ -27,71 +27,90 @@ export class AddDetailsComponent implements OnInit {
     this.getShiftLists();
   }
 
-  uploadStudentFile(event) {        
-    this.showloader = true;
-    let elem = event.target;
-    if (elem.files.length > 0) {
-      let formData = new FormData();
-      formData.append("file", elem.files[0]);
-      var status = this.SessionStore.retrieve("user-data");
-      formData.append("org_id", status[0].org_code);
-      formData.append("shift", this.shift_stdnt);
-      this.http
-        .post(`${environment.apiUrl}student/addstudentexcel`, formData)
-        .map(res => res.json())
-        .subscribe(data => {
-          this.showloader = false;
-          if (data.status == 0) {
-            this.notification.showNotification(
-              "top",
-              "right",
-              "success",
-              "Student data Added SuccessFuly"
-            );
-            //this.router.navigate(["/library/index"]);
-          } else {
-            this.notification.showNotification(
-              "top",
-              "right",
-              "warning",
-              "Something Went Wrong"
-            );
-          }
-        });
-    }
+  uploadStudentFile(event) {    
+    if (this.shift_stdnt == undefined) {
+      this.notification.showNotification(
+        "top",
+        "right",
+        "danger",
+        "Please select Shift"
+      );
+    }else{
+
+      this.showloader = true;
+      let elem = event.target;
+      if (elem.files.length > 0) {
+        let formData = new FormData();
+        formData.append("file", elem.files[0]);
+        var status = this.SessionStore.retrieve("user-data");
+        formData.append("org_id", status[0].org_code);
+        formData.append("shift", this.shift_stdnt);
+        this.http
+          .post(`${environment.apiUrl}student/addstudentexcel`, formData)
+          .map(res => res.json())
+          .subscribe(data => {
+            this.showloader = false;
+            if (data.status == 0) {
+              this.notification.showNotification(
+                "top",
+                "right",
+                "success",
+                "Student data Added SuccessFuly"
+              );
+              //this.router.navigate(["/library/index"]);
+            } else {
+              this.notification.showNotification(
+                "top",
+                "right",
+                "warning",
+                "Something Went Wrong"
+              );
+            }
+          });
+      }
+    }    
   }
   uploadTeacherFile(event) {
-    
-    this.showloader = true;
-    let elem = event.target;
-    if (elem.files.length > 0) {
-      let formData = new FormData();
-      formData.append("file", elem.files[0]);
-      var status = this.SessionStore.retrieve("user-data");
-      formData.append("org_id", status[0].org_code);
-      formData.append("shift", this.shift_staff);
-      this.http
-        .post(`${environment.apiUrl}staff/addstaffexcel`, formData)
-        .map(res => res.json())
-        .subscribe(data => {
-          this.showloader = false;
-          if (data.status == 0) {
-            this.notification.showNotification(
-              "top",
-              "right",
-              "success",
-              "Staff Data Added SuccessFuly"
-            );
-            //this.router.navigate(["/library/index"]);
-          } else {
-            this.notification.showNotification(
-              "top",
-              "right",
-              "warning",
-              "Something Went Wrong"
-            );
-          }
-        });
+    if (this.shift_staff == undefined) {
+      this.notification.showNotification(
+        "top",
+        "right",
+        "danger",
+        "Please select Shift"
+      );
+    }else{
+
+      this.showloader = true;
+      let elem = event.target;
+      if (elem.files.length > 0) {
+        let formData = new FormData();
+        formData.append("file", elem.files[0]);
+        var status = this.SessionStore.retrieve("user-data");
+        formData.append("org_id", status[0].org_code);
+        formData.append("shift", this.shift_staff);
+        this.http
+          .post(`${environment.apiUrl}staff/addstaffexcel`, formData)
+          .map(res => res.json())
+          .subscribe(data => {
+            this.showloader = false;
+            if (data.status == 0) {
+              this.notification.showNotification(
+                "top",
+                "right",
+                "success",
+                "Staff Data Added SuccessFuly"
+              );
+              //this.router.navigate(["/library/index"]);
+            } else {
+              this.notification.showNotification(
+                "top",
+                "right",
+                "warning",
+                "Something Went Wrong"
+              );
+            }
+          });
+      }
     }
   }
 
