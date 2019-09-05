@@ -483,12 +483,15 @@ export class AssignClassComponent implements OnInit {
     .map(res => res.json())
     .subscribe(data => {
       //console.log(data);
-      if (data.data[0].rutinedetails.length > 0) {
-        this.showError = true;
-        return false;
-      }else{
-        this.showError = false;
-        return true;
+      if (data.length > 0) {
+        
+        if (data.data[0].rutinedetails.length > 0) {
+          this.showError = true;
+          return false;
+        }else{
+          this.showError = false;
+          return true;
+        }
       }
     })
   }

@@ -28,114 +28,41 @@
                                 </th> -->
                               </thead>
                               <tbody>
-                                  <tr>
+                                  <tr *ngFor="let item of userRolls">
                                       <td>
                                           1
                                       </td>
                                       <td>
-                                        Principal
+                                            {{item?.user?.user_name}}
                                       </td>
                                       <td>
-                                        Add,
-                                        Edit,
-                                        Delete                                          
+                                            <tr *ngFor="let itm of item?.roles" style="border-bottom: 1px solid #eee">
+                                                <td>
+
+                                                    {{itm.module_id}}
+                                                </td>
+                                            </tr>  
+                                            
+                                        
                                       </td>
                                       
                                       <td class="text-primary">
-                                        Exam, Notiece, Attdance
+                                            <tr *ngFor="let itm of item?.roles" style="border-bottom: 1px solid #eee">
+                                                <td>
+                                                    {{itm.permissions.add ? 'Add' : ''}}
+                                                </td>
+                                                <td>
+                                                    {{itm.permissions.edit ? 'Edit' : ''}}
+                                                </td>
+                                                <td>
+                                                    {{itm.permissions.delete ? 'Delete' : ''}}
+                                                </td>
+                                            </tr> 
+                                        
                                       </td>
                                         
                                   </tr>
-                                  <tr>
-                                      <td>
-                                          2
-                                      </td>
-                                        <td>
-                                            HODS
-                                        </td>
-                                        <td>
-                                            Add,
-                                            Edit,
-                                            Delete
-                                        </td>
-                                        
-                                        <td class="text-primary">
-                                            Exam, Notiece, Attdance
-                                        </td>
-                                    
-                                  </tr>
-                                  <tr>
-                                        <td>
-                                            3
-                                        </td>
-                                        <td>
-                                            Exam cell
-                                        </td>
-                                        <td>
-                                            Add,
-                                            Edit,
-                                            Delete
-                                        </td>
-                                        
-                                        <td class="text-primary">
-                                            Exam, Notiece, Attdance
-                                        </td>
-                                    
-                                  </tr>
-                                  <tr>
-                                      <td>
-                                          4
-                                      </td>
-                                    <td>
-                                        Exam cell
-                                    </td>
-                                    <td>
-                                        Add,
-                                        Edit,
-                                        Delete
-                                    </td>
-                                    
-                                    <td class="text-primary">
-                                        Exam, Notiece, Attdance
-                                    </td>
-                                    
-                                  </tr>
-                                  <tr>
-                                        <td>
-                                            5
-                                        </td>
-                                        <td>
-                                            Exam cell
-                                        </td>
-                                        <td>
-                                            Add,
-                                            Edit,
-                                            Delete
-                                        </td>
-                                        
-                                        <td class="text-primary">
-                                            Exam, Notiece, Attdance
-                                        </td>
-                                    
-                                  </tr>
-                                  <tr>
-                                      <td>
-                                          6
-                                      </td>
-                                        <td>
-                                            Exam cell
-                                        </td>
-                                        <td>
-                                            Add,
-                                            Edit,
-                                            Delete
-                                        </td>
-                                        
-                                        <td class="text-primary">
-                                            Exam, Notiece, Attdance
-                                        </td>
-                                
-                                  </tr>
+                                  
                               </tbody>
                           </table>
                       </div>

@@ -194,7 +194,7 @@ export class AddRoutineComponent implements OnInit {
       .subscribe(data => {
         // console.log(data);
         this.showloader = false;
-
+        this.getClassList();this.getOrgShiftClass();
         //this.classList = data.data;
       });
   }
@@ -264,7 +264,8 @@ export class AddRoutineComponent implements OnInit {
         .subscribe(data => {
           console.log(data);
           this.showloader = false;
-
+          this.getClassList();
+          this.getOrgShiftClass();
         });
     }
     // this.router.navigate([`routine/edit-shift-class/${data.id}`]);

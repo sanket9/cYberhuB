@@ -172,7 +172,7 @@ export class MapingRoomsComponent implements OnInit {
               alert(`Already Student Assigned
                 Year: ${element.year}
                 Sem: ${element.sem}
-                Deperment: ${element.dept}
+                Department: ${element.dept}
                 Shift: ${element.shift}
                 Position in Row: ${element.exam_room[0].position + 1}
               `);

@@ -28,7 +28,7 @@ export class AddRoomComponent implements OnInit {
   no_of_bench: FormControl;
   total_no_of_student: FormControl;
   showErrors: boolean = false;
-  seating_types = [{ id: 1, name: "Table" }, { id: 2, name: "Banch" }];
+  seating_types = [{ id: 1, name: "Table" }, { id: 2, name: "Bench" }];
   banch_types: any = [];
   bench_capacity: any = [];
   disabaleBanchType: boolean = true;

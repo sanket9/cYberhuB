@@ -76,25 +76,38 @@
               </mat-form-field>
             </div>
 
-            <div class="col-sm-12" *ngIf="showFileUpload">
-              <div class="custom-file example-full-width">                  
-                <input type="file" class="custom-file-input" name="file" (change)="onSelectFile($event)">
-                <label class="custom-file-label" for="customFile">Choose File</label>
+            <div class="col-md-9" *ngIf="showFileUpload">
+              <!-- <label class="custom-file-label" for="customFile">Choose File</label> -->
+              <div class="custom-file example-full-width">      
+                  <button type="button" mat-icon-button color="primary" (click)="fileInput.click()" >
+                      <i class="material-icons">
+                          attach_file
+                          </i>
+                   </button> <span> Browse File</span>
+                      <input type="file" hidden #fileInput name="file" (change)="onSelectFile($event)">            
+                       
+                <!-- <input type="file" class="custom-file-input" name="file" (change)="onSelectFile($event)"> -->
               </div>
             </div>
-            
-            <!-- <div class="col-sm-12">
+            <div class="col-md-3" *ngIf="file?.name">
+              <small>{{file?.name}} ({{(file?.size)/1000 }} KB)</small>
+            </div>
+            <div class="col-sm-12">
               <div class="">
-                <button mat-raised-button type="submit" class="btn btn-success pull-right">{{buttonName}}</button>
+                <button mat-raised-button type="button" *ngIf="!showNotificationPanel"
+                [disabled]="!addNoticeForm.valid" 
+                [ngClass]="{'btn-success': addNoticeForm.valid, 'btn-light': !addNoticeForm.valid }"
+                (click)="goNext()"
+                class="btn btn-success pull-right" >Next</button>
               </div>
-            </div> -->
+            </div>
 
           </div>
         </form>
       </div>
     </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6" *ngIf="showNotificationPanel">
       <div class="card">
         <div class="card-header card-header-danger">
           <h4 class="card-title">Schedule Notification</h4>
@@ -103,10 +116,10 @@
     
         <div class="card-body mt-4">
           <button mat-raised-button type="button" class="btn btn-primay btn-sm pull-right" (click)="addSchedule()" >Add New</button>
-          <form id="add-notice-form" [formGroup]="addNoticeForm" (ngSubmit)="onAddNoticeSubmit()">
+          <form id="add-notice-form" [formGroup]="schedulenotiForm" (ngSubmit)="onAddNoticeSubmit()">
             <div class="row">
               <div formArrayName="schedule" style="width: 100%">
-                <div *ngFor="let list of addNoticeForm.controls.schedule['controls']; let i=index" [formGroupName]="i" style="border-bottom: 1px solid #b3b3b3;">
+                <div *ngFor="let list of schedulenotiForm.controls.schedule['controls']; let i=index" [formGroupName]="i" style="border-bottom: 1px solid #b3b3b3;">
                   <button mat-icon-button type="button" *ngIf="i == 1"	style="float: right; margin-right: -53px;" (click)="deleteNotificationCount()">
                     <i class="material-icons">
                       close
@@ -138,14 +151,21 @@
                   </div>
                 </div>
               </div>
-    
-              <div class="col-sm-12">
-                <div class="">
-                  <button mat-raised-button type="submit" class="btn btn-success pull-right">{{buttonName}}</button>
-                </div>
-              </div>
-    
             </div>
+              <div class="row">
+                  <div class="col-sm-12 col-md-6">
+                    <button mat-raised-button type="button" 
+                      [disabled]="!addNoticeForm.valid" 
+                      class="btn btn-success w-100" (click)="onAddNoticeSubmit()">Skip & Save</button>
+                    </div>
+                <div class="col-sm-12 col-md-6">
+                  <button mat-raised-button type="submit" 
+                  [disabled]="!schedulenotiForm.valid" 
+                  [ngClass]="{'btn-success': schedulenotiForm.valid, 'btn-light': !schedulenotiForm.valid }"
+                  class="btn btn-success w-100">{{buttonName}}</button>
+                </div>
+                
+              </div>
           </form>
         </div>
       </div>

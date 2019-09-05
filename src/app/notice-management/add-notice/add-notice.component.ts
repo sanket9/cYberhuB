@@ -43,7 +43,9 @@ export class AddNoticeComponent implements OnInit {
   noti_time: FormControl
   noti_title: FormControl
   noti_body: FormControl;
-  scheduleNotice: FormGroup;
+  // sscheduleNotice: FormGroup;
+  schedulenotiForm: FormGroup;
+  showNotificationPanel: boolean = false;
   // get data() {
   //   return this.apiServ.serviceData;
   // }
@@ -85,20 +87,13 @@ export class AddNoticeComponent implements OnInit {
     this.startDate = new FormControl("", [Validators.required]);
     this.endDate = new FormControl("", [Validators.required]);
     this.text = new FormControl("", [Validators.required]);
-    this.schedule = new FormArray([
-      new FormGroup({
-        noti_date: new FormControl("", [Validators.required]),
-        noti_time: new FormControl("", [Validators.required]),
-        noti_title: new FormControl("", [Validators.required]),
-        noti_body: new FormControl("", [Validators.required]),
-      })  
-    ])
-    // this.file_url = new FormControl("", []);
+    // this.schedule =
+    this.file_url = new FormControl("", []);
     // console.log(this.addNoticeForm.controls);
   }
 
   addSchedule(){
-    let data = this.addNoticeForm.get("schedule");
+    let data = this.schedulenotiForm.get("schedule");
     if ((data as FormArray).length < 2) {
       
       const newarry = new FormGroup({
@@ -110,7 +105,12 @@ export class AddNoticeComponent implements OnInit {
       });
       (data as FormArray).push(newarry);
     }else{
-      alert('Maximum Number Scheduled Notification are Set.');
+      this.notification.showNotification(
+        "top",
+        "right",
+        "danger",
+        "Maximum Number Scheduled Notification are Set."
+      );
     }
     // console.log(this.addNoticeForm);
     
@@ -128,11 +128,25 @@ export class AddNoticeComponent implements OnInit {
       startDate: this.startDate,
       endDate: this.endDate,
       text: this.text,
-      schedule: this.schedule
-      // file_url: this.file_url
+      // schedule: this.schedule
+      file_url: this.file_url
     });
+    let notiFrm =  new FormArray([
+      new FormGroup({
+        noti_date: new FormControl("", [Validators.required]),
+        noti_time: new FormControl("", [Validators.required]),
+        noti_title: new FormControl("", [Validators.required]),
+        noti_body: new FormControl("", [Validators.required]),
+      })  
+    ]);
+    this.schedulenotiForm = new FormGroup({
+      schedule: notiFrm
+    })
+    // console.log(this.schedulenotiForm.controls);
   }
-
+  goNext(){
+    this.showNotificationPanel = true;
+  }
 
   publishDate(e){
     // console.log();
@@ -184,33 +198,42 @@ export class AddNoticeComponent implements OnInit {
       .subscribe(data => {
         
         if(data){
-          
-            let apiData = {
-              org_id: this.sessionValue[0].org_code,
-              type_id: data.data.id,
-              shedule_type: 1,
-              shedule_arry: this.addNoticeForm.value.schedule
-            };
-            console.log(apiData);
+            if (this.schedulenotiForm.value.schedule.length > 0) {
+              let apiData = {
+                org_id: this.sessionValue[0].org_code,
+                type_id: data.data.id,
+                shedule_type: 1,
+                shedule_arry: this.schedulenotiForm.value.schedule
+              };
+              // console.log(apiData);
+              
+              this.http
+                .post(`${environment.apiUrl}schedule/add`, apiData)
+                .map(res => res.json())
+                .subscribe(retundata => {
+                  console.log(
+                    "Got some data from backend ",
+                    retundata
+                  );
+                  this.showloader = false;
+                  this.notification.showNotification(
+                    "top",
+                    "right",
+                    "success",
+                    "Success, Notice Added Successfully."
+                  );
+                  this.addNoticeForm.reset();
+                  this.router.navigate(['/notice']);
+                });
+              }
+              this.notification.showNotification(
+                "top",
+                "right",
+                "success",
+                "Success, Notice Added Successfully."
+              );
+              this.router.navigate(['/notice']);
             
-            this.http
-              .post(`${environment.apiUrl}schedule/add`, apiData)
-              .map(res => res.json())
-              .subscribe(retundata => {
-                console.log(
-                  "Got some data from backend ",
-                  retundata
-                );
-                this.showloader = false;
-                this.notification.showNotification(
-                  "top",
-                  "right",
-                  "success",
-                  "Success, Notice Added Successfully."
-                );
-                this.addNoticeForm.reset();
-                this.router.navigate(['/notice']);
-              });
         }else{
           this.showloader = false;
           this.notification.showNotification(
@@ -257,7 +280,7 @@ export class AddNoticeComponent implements OnInit {
   onSelectFile($event): void {
     var inputValue = $event.target;
     this.file = inputValue.files[0];
-    // console.debug("Input File name: " + this.file.name + " type:" + this.file.type + " size:" + this.file.size);
+    console.log(this.file);
   }
 
 
@@ -280,7 +303,7 @@ export class AddNoticeComponent implements OnInit {
 
   deleteNotificationCount() {
     if (confirm("Do you want to Delete this?")) {
-      let data = this.addNoticeForm.get("schedule");
+      let data = this.schedulenotiForm.get("schedule");
       (data as FormArray).removeAt(1);
     }
   }

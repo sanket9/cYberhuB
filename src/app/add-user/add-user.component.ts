@@ -318,9 +318,12 @@ export class AddUserComponent implements OnInit {
       this.day_id = this.result.week_rest_day
       let rolecats = this.rolecats.find(ele => ele.id == this.rolecattype);
       // console.log("rolecats",rolecats);
-      rolecats.parent_id
-        ? (this.techingtype = rolecats.parent_id)
-        : (this.techingtype = 0);
+      if (rolecats != null) {
+        
+        rolecats.parent_id
+          ? (this.techingtype = rolecats.parent_id)
+          : (this.techingtype = 0);
+      }
 
       // this.techingtype = rolecats.parent_id;
       this.techingtypefilter(this.techingtype);

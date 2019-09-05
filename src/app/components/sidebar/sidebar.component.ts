@@ -16,15 +16,15 @@ declare interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
     { path: '/dashboard/', title: 'Dashboard',  icon: 'dashboard', class: '0', },
     { path: '/user-profile/', title: 'User Profile',  icon:'person', class: '0' },
-    { path: '/gallery/', title: 'Gallery', icon:'photo_library', class: '1' },
-    { path: '/add-user-details/', title: 'Upload Details',  icon:'notifications', class: '1' },
+    { path: '/gallery/', title: 'Gallery', icon:'photo_library', class: '0' },
+    { path: '/add-user-details/', title: 'Upload Details',  icon:'notifications', class: '0' },
     { path: '/add-user/', title: 'Add User Role', icon: 'person', class: '3' },
     { path: '/notice/', title: 'Notice', icon: 'notes', class: '2' },
     { path: '/library/index/', title: 'Library', icon: 'library_books', class: '4' },
     { path: '/event/index/', title: 'Events', icon: 'speaker', class: '5' },
     { path: '/routine/index/', title: 'Routine', icon: 'event_available', class: '6' },
     { path: '/exam/index/', title: 'Exam System', icon: 'event_available', class: '7' },
-    { path: '/school/module/index/', title: 'More', icon: 'settings_remote', class: '1' },
+    // { path: '/school/module/index/', title: 'More', icon: 'settings_remote', class: '0' },
 ];
 
 @Component({
@@ -33,7 +33,7 @@ export const ROUTES: RouteInfo[] = [
   styleUrls: ["./sidebar.component.css"]
 })
 export class SidebarComponent implements OnInit {
-  menuItems: any[];
+  menuItems: any = [];
   org_code;
   orgDetails;
   user_id;
@@ -68,6 +68,11 @@ export class SidebarComponent implements OnInit {
         data => {
           // console.log(data);
           this.orgDetails = data.data;
+          // if (this.sessionStore.retrieve("user-data")[0].user_type_id == 1) {
+          //   //this.menuItems = ROUTES;
+          // }else{
+
+          // }
           this.getRollList();
           
         }
@@ -95,7 +100,7 @@ export class SidebarComponent implements OnInit {
             let searchroutes = ROUTES.filter(menuItem => {
               return menuItem.class == "0" || menuItem.class == "1"
             });
-            // console.log(searchroutes);
+            console.log(searchroutes);
 
             routes = searchroutes;
           } else if (this.sessionStore.retrieve("user-data")[0].user_type_id == 2) {
@@ -106,7 +111,7 @@ export class SidebarComponent implements OnInit {
           }
           // console.log(routes);
           
-          if (data.data.length > 0) {
+          if (data.data.length > 0 || routes.length > 0) {
             this.sessionStore.store("user-role", data.data);
             data.data.forEach(ele => {
   

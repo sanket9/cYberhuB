@@ -322,6 +322,7 @@ getClassList(){
       //   });
       // }      
     }else{
+
       this.selectedData.selectedStuff = e.value;
     }  
 
@@ -434,6 +435,16 @@ getClassList(){
       }      
     }else{
       this.selectedData.selectedSections = e.value;
+      console.log(e.value);
+      
+      if (this.selectedData.noticeType == "5") {
+        let filterd= this.getAllStuff.filter(element => 
+          element.role_cat_id == this.selectedData.selectedStuff && element.dept_id == e.value
+        );
+
+        console.log("fdfdf",filterd);
+        
+      }
     }        
   }
 

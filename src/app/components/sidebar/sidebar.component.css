@@ -1,0 +1,16 @@
+.simple-text{
+    font-size: 15px;
+    display: inline-block !important;
+    margin-left: 51px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 160px;
+    white-space: nowrap;
+}
+
+@media (max-width: 991px) {
+
+    .sidebar, .off-canvas-sidebar nav .navbar-collapse {
+        width: 277px !important;
+    }
+}

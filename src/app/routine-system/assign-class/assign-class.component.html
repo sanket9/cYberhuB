@@ -90,7 +90,7 @@
             
             <div class="col-md-3">
               <mat-form-field>
-                <mat-select placeholder="Choose a Priod" formControlName="priod_id" name="proid_id">
+                <mat-select placeholder="Choose a Period" formControlName="priod_id" name="proid_id">
                   <mat-option *ngFor="let priod of org_priods" [value]="priod.id">
                     {{ priod.period_name }} ({{priod.from_time}} - {{priod.to_time}})
                   </mat-option>
@@ -108,6 +108,7 @@
                   name="dept_id" (change)="onDeptselect($event)">
                     <mat-option *ngFor="let dept of Finaldepts" [value]="dept.id">
                       {{ dept.section.sec_name }}
+                      
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -126,6 +127,7 @@
                   <mat-select placeholder="Choose a Teacher" name="teacher_id" formControlName="teacher_id" (change)="teacherOnchange($event)">
                     <mat-option *ngFor="let techer of teachers" [value]="techer.id">
                       {{ techer.short_name }}
+                      <small style="color: brown; float: right; font-size: 30px;" *ngIf="techer?.week_rest_day == routineForm.value.day">!</small>
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -143,7 +145,7 @@
             </div>
           </div>
           <button [disabled]="!routineForm.valid && showError" 
-                  [ngClass]="{'btn-success': routineForm.valid && showError, 'btn-light': !routineForm.valid}" type="submit" mat-button class="btn pb-3">Submit</button>
+                  [ngClass]="{'btn-success': routineForm.valid, 'btn-light': !routineForm.valid && showError}" type="submit" mat-button class="btn pb-3">Submit</button>
         </form>
 
 

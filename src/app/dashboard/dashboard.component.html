@@ -234,7 +234,7 @@
                                                     <td>{{obj.section?.sec_name}}</td>
                                                     <td>{{obj.year}}</td>
                                                     <td class="text-danger">
-                                                        <a (click)="onDeleteSection(obj.id)">
+                                                        <a href="javascript:void(0)" (click)="onDeleteSection(obj.id)">
                                                             <i class="material-icons">
                                                             delete_forever
                                                             </i>
@@ -333,6 +333,7 @@
                                 </mat-form-field>
                             </div>
                             <button mat-raised-button color="primary" (click)="addCategory()">Save</button>
+                            <button mat-raised-button color="warn" (click)="cc_parent= ''; cc_name= ''; cc_short_name='';showBox = false">Cancel</button>
                         </form>
                     </div>
                 </div>
@@ -360,6 +361,8 @@
                                 </mat-form-field>
                             </div>
                             <button mat-raised-button color="primary" (click)="editCategory(cc_edit_id)">Save</button>
+                            <button mat-raised-button color="warn" (click)="cc_parent_edit= ''; cc_name_edit= ''; cc_short_name_edit='';editshowBox = false">Cancel</button>
+                            
                         </form>
                     </div>
                 </div>

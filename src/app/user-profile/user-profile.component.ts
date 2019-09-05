@@ -85,14 +85,14 @@ export class UserProfileComponent implements OnInit {
 
   createFormGroup() {
     this.userdetailsFrm = new FormGroup({
-      f_name: new FormControl( // { value: this.userDetail["staffmaster"].f_name, disabled: true },
-        this.userDetail.stafftmaster.f_name,
+      name: new FormControl( // { value: this.userDetail["staffmaster"].f_name, disabled: true },
+        this.userDetail.stafftmaster.name,
         // "aaa",
         [Validators.required]
       ),
-      l_name: new FormControl(this.userDetail.stafftmaster.l_name, [
-        Validators.required
-      ]),
+      // l_name: new FormControl(this.userDetail.stafftmaster.l_name, [
+      //   Validators.required
+      // ]),
       phone: new FormControl(this.userDetail.phone, [Validators.required]),
       email: new FormControl(this.userDetail.stafftmaster.email, [
         Validators.required
@@ -143,7 +143,8 @@ export class UserProfileComponent implements OnInit {
       ),
 
       collg_country: new FormControl(
-        this.userDetail.stafftmaster.orgmaster.org_country,
+        // this.userDetail.stafftmaster.orgmaster.org_country,
+        "India",
         [Validators.required]
       ),
 
@@ -216,8 +217,10 @@ export class UserProfileComponent implements OnInit {
       });
   }
 
-  editProfile(values) {
-    console.log(values);
+  editProfile() {
+    // console.log(values);
+    let values = this.userdetailsFrm.getRawValue()
+    console.log();
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
@@ -239,8 +242,9 @@ export class UserProfileComponent implements OnInit {
       });
     
   }
-  editOrg(values) {
+  editOrg() {
     // console.log(values);
+    let values = this.schooldetailsFrm.getRawValue();
     this.showloader = true;
     var headers = new Headers();
     headers.append("Content-Type", "application/json");

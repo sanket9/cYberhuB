@@ -12,6 +12,7 @@ import { NotificationService } from '../services/notification.service';
 })
 export class TableListComponent implements OnInit {
   org_id: any;
+  userRolls: any[];
   constructor(
     public router: Router,
     public http: Http,
@@ -37,12 +38,25 @@ export class TableListComponent implements OnInit {
           data.data.forEach(element => {
             let isPresentUser = newArry.filter(ele => ele.user.id == element.master_id);
             if (isPresentUser.length > 0) {
+              let pos = newArry.map(function(e) { return e.user.id }).indexOf(element.master_id);
+              // console.log(pos);
               
+              let newpushdata= {
+                module_id: element.module_id,
+                permissions : {
+                  add: element.add == 1 ? true : false,
+                  edit: element.edit == 1 ? true : false,
+                  delete: element.delete == 1 ? true : false,
+                  view: element.view == 1 ? true : false,
+                  all: element.all == 1 ? true : false,
+                }
+              }
+              newArry[pos].roles.push(newpushdata);
             }else{
               let pushData = {
                 user : {
                   id: element.master_id,
-                  name: element.staff.name
+                  user_name: element.staff.user_name
                 },
                 roles : [
                   {
@@ -52,14 +66,14 @@ export class TableListComponent implements OnInit {
                       edit: element.edit == 1 ? true : false,
                       delete: element.delete == 1 ? true : false,
                       view: element.view == 1 ? true : false,
-                      all: element.all == 1 ? true : false,
+                      all: element.is_all == 1 ? true : false,
                     }
                   }
                 ]
               }
               newArry.push(pushData);
               console.log(newArry);
-              
+              this.userRolls = newArry
             }
           });
         }

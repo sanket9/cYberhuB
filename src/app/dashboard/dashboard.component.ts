@@ -444,23 +444,26 @@ export class DashboardComponent implements OnInit {
 
   onDeleteSection(id) {
     // console.log(id);
-    let header = new Headers();
-    header.set("Content-Type", "application/json");
-
-    let data = { id };
-
-    this.http
-      .post(`${environment.apiUrl}classsection/delete`, data)
-      .map(res => res.json())
-      .subscribe(
-        data => {
-          //console.log("After Class/Stream delete success :", data);
-          this.getClassSection();
-        },
-        error => {
-          console.log("Error! ", error);
-        }
-      );
+    if (confirm("Do you want to Delete it?")) {
+      
+      let header = new Headers();
+      header.set("Content-Type", "application/json");
+  
+      let data = { id };
+  
+      this.http
+        .post(`${environment.apiUrl}classsection/delete`, data)
+        .map(res => res.json())
+        .subscribe(
+          data => {
+            //console.log("After Class/Stream delete success :", data);
+            this.getClassSection();
+          },
+          error => {
+            console.log("Error! ", error);
+          }
+        );
+    }
   }
 
   getAllCoursecat() {
