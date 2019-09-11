@@ -406,7 +406,7 @@ getClassList(){
       // this.filteredArrayForSectionList.unshift({ sec_id: "all", section_name: "All"});
     }  
 
-    // console.log('filter section array : ', this.filteredArrayForSectionList);
+    console.log('filter section array : ', this.filteredArrayForSectionList);
   }
 
 
@@ -435,16 +435,41 @@ getClassList(){
       }      
     }else{
       this.selectedData.selectedSections = e.value;
-      console.log(e.value);
+      console.log(this.selectedData.selectedStuff);
       
-      if (this.selectedData.noticeType == "5") {
-        let filterd= this.getAllStuff.filter(element => 
-          element.role_cat_id == this.selectedData.selectedStuff && element.dept_id == e.value
-        );
-
-        console.log("fdfdf",filterd);
-        
+      this.showloader = true;
+      let apidata = {
+        org_id: this.org_code,
+        dept_id: this.selectedData.selectedSections
       }
+      this.http.post(`${environment.apiUrl}staff/teacherforNotiece`, apidata).map((res) => res.json())
+        .subscribe(data => {
+          console.log(data);
+          this.showloader = false;
+          if (data.data) {
+            let filterd_array = []
+            data.data.forEach(element => {
+              if (element.role_cat_id == this.selectedData.selectedStuff) {
+                filterd_array.push(element.id)
+              }
+              
+            });
+            this.selectedData.selectedStuff = filterd_array;
+            // console.log(filterd_array);
+            
+          }
+        })
+      // console.log(e.value);
+      // console.log(this.getAllStuff);
+      
+      // if (this.selectedData.noticeType == "5") {
+      //   let filterd= this.getAllStuff.filter(element => 
+      //      element.dept_id == e.value[0]
+      //   );
+
+      //   console.log("fdfdf",filterd);
+        
+      // }
     }        
   }
 
@@ -577,7 +602,8 @@ getClassList(){
               section_name: ele.section.sec_name,
               sec_id: ele.sec_id,
               sem: ele.sem.sem_no,
-              classSectionIndexId: ele.id
+              classSectionIndexId: ele.id,
+              dept: ele.section.dept_id
             }
           ]
         }
@@ -595,7 +621,8 @@ getClassList(){
             section_name: ele.section.sec_name,
             sec_id: ele.sec_id,
             sem: ele.sem.sem_no,
-            classSectionIndexId: ele.id
+            classSectionIndexId: ele.id,
+            dept: ele.section.dept_id
           });
 
           this.sortArray.push(check_exist[0]);

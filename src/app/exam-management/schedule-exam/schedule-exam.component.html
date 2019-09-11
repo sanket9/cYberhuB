@@ -28,6 +28,8 @@
             <p class="card-category">Add Exam Room Details</p>
           </div>
           <div class="card-body">
+            <button mat-raised-button style="float: right;" type="button" color="primary" (click)="downloadDemo('assets/demofiles/demo-exam.csv')" >
+                  Download File</button>
             <form class="pt-2" [formGroup]="examForm" (submit)="FormSubmit(examForm.value)" >
               <div class="col-md-6">
                 <mat-form-field class="example-full-width">

@@ -76,7 +76,7 @@
                   <div class="col-md-5">
                     <mat-form-field>
                       <mat-select [placeholder]="!disabaleBanchType ? 'Choose Per Bench Capacity..' : 'Choose Per Table Capacity..'" name="perbenchCapacity"
-                       formControlName="benchCapacity">
+                       formControlName="benchCapacity" (change)= "noofBenchChange()">
                         <mat-option *ngFor="let item of bench_capacity" [value]="item">
                           {{item}}
                         </mat-option>                        
@@ -95,7 +95,7 @@
                   <div class="col-md-2">
                     <mat-form-field class="example-full-width">
                       <input matInput  [placeholder]="bench_capacity.length >1 ? 'No of Bench' : 'No of Table'" placeholder="No of Bench"  type="number"
-                       name="no_of_bench" formControlName="no_of_bench" (keyup)="noofBenchChange($event)">
+                       name="no_of_bench" formControlName="no_of_bench" (keyup)="noofBenchChange()">
                     </mat-form-field>
                     <mat-error *ngIf="roomaddForm.controls.no_of_bench.hasError('required') && 
                                                                 roomaddForm.controls.no_of_bench.touched">

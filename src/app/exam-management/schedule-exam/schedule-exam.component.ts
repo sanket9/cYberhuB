@@ -7,7 +7,7 @@ import {
   FormGroupDirective,
   FormArray
 } from "@angular/forms";
-import { Http, RequestOptions, Headers } from "@angular/http";
+import { Http, RequestOptions, Headers, ResponseContentType } from "@angular/http";
 import { environment } from "../../../environments/environment.prod";
 import { Router, ActivatedRoute } from "@angular/router";
 import { NotificationService } from "../../services/notification.service";
@@ -100,5 +100,36 @@ export class ScheduleExamComponent implements OnInit {
           this.router.navigateByUrl("exam/room-select");
         }
       });
+  }
+
+  downloadDemo(url){
+    return this.http
+      .get(url, {
+        responseType: ResponseContentType.Blob
+        //search: // query string if have
+      })
+      .map(res => {
+        return { filename: "demo-exam.csv", data: res.blob() };
+      })
+      .subscribe(
+        res => {
+          // console.log("start download:", res);
+          var url = window.URL.createObjectURL(res.data);
+          var a = document.createElement("a");
+          document.body.appendChild(a);
+          a.setAttribute("style", "display: none");
+          a.href = url;
+          a.download = res.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove(); // remove the element
+        },
+        error => {
+          console.log("download error:", JSON.stringify(error));
+        },
+        () => {
+          console.log("Completed file download.");
+        }
+      );
   }
 }

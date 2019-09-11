@@ -71,7 +71,7 @@ export class AddNoticeComponent implements OnInit {
     this.multipartItem.formData = null;
     this.shareData = this.data;
     this.shareDataArrayObject = {};
-    // console.log("sent from filter page : ", this.shareData);
+    console.log("sent from filter page : ", this.shareData);
     // console.log("session value : ", this.sessionValue);
   }
 
