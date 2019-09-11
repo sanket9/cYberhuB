@@ -26,6 +26,17 @@ export class SubjectAddComponent implements OnInit {
   subject_name;
   subjectlist;
   depts: any;
+  classlist: any[];
+  defaultclass: number;
+  defaultsubject: number;
+  sortArray: any;
+  orgClassSectionList: any;
+  org_code: any;
+  orgShiftLists: any;
+  newsortArray: any;
+  sortedSubjectList: any;
+  semList: any;
+  selectedClass_id: any;
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -34,14 +45,18 @@ export class SubjectAddComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.org_code = this.SessionStore.retrieve("user-data")[0].org_code;
     this.createFormControl();
     this.createFormGroup();
     this.getClass();
+    this.getshift();
+    this.getClassList();
+    this.getAllSem();
   }
 
   createFormControl() {
     this.subjects = new FormArray([new FormGroup({
-          class_id: new FormControl("", [Validators.required]),
+          // class_id: new FormControl("", [Validators.required]),
           subject_name: new FormControl("", [Validators.required]),
           dept_id: new FormControl("", [Validators.required])
         })], [Validators.required]);
@@ -158,38 +173,43 @@ export class SubjectAddComponent implements OnInit {
   }
   addSubject(values) {
     console.log(values);
-    
-    this.showloader = true;
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    let options = new RequestOptions({ headers: headers });
-    var status = this.SessionStore.retrieve("user-data");
-    values.org_id = status[0].org_code;
-    this.http
-      .post(`${environment.apiUrl}subject/add`, values, options)
-      .map(res => res.json())
-      .subscribe(data => {
-        // console.log(data);
-        if (!data.error && data.data) {
-          this.notification.showNotification(
-            "top",
-            "right",
-            "success",
-            "Subjects Added SuccessFuly"
-          );
-          this.getClass();
-          this.addSubjectForm.reset();
-          //this.router.navigate(["/library/index"]);
-        } else {
-          this.notification.showNotification(
-            "top",
-            "right",
-            "warning",
-            "Something Went Wrong"
-          );
-        }
-        this.showloader = false;
-      });
+    if (this.sortedSubjectList && this.sortedSubjectList[0].id) {
+      values.class_id = this.selectedClass_id;
+      this.showloader = true;
+      var headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      let options = new RequestOptions({ headers: headers });
+      var status = this.SessionStore.retrieve("user-data");
+      values.org_id = status[0].org_code;
+      
+      this.http
+        .post(`${environment.apiUrl}subject/add`, values, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          // console.log(data);
+          if (!data.error && data.data) {
+            this.notification.showNotification(
+              "top",
+              "right",
+              "success",
+              "Subjects Added SuccessFuly"
+            );
+            this.getClass();
+            this.addSubjectForm.reset();
+            //this.router.navigate(["/library/index"]);
+          } else {
+            this.notification.showNotification(
+              "top",
+              "right",
+              "warning",
+              "Something Went Wrong"
+            );
+          }
+          this.showloader = false;
+        });
+    }else{
+      alert('Complete the Above Selection Fields.')
+    }
   }
   deleteClass(id){
     if (confirm("Are want to Delete this")){
@@ -216,4 +236,131 @@ export class SubjectAddComponent implements OnInit {
         });
     }    
   }
+
+
+
+
+
+  getshift() {
+    this.showloader = true;
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+    let data = {
+      org_id: this.org_code
+    };
+    // this.checkshift = [];
+    this.http
+      .post(`${environment.apiUrl}shift/orgshiftlist`, data)
+      .map(res => res.json())
+      .subscribe(data => {
+        this.showloader = false;
+        this.orgShiftLists = data.data;
+      });
+  }
+
+
+
+
+
+  onChooseShift(e) {
+    this.classlist = [];
+    // this.class = "";
+    this.defaultclass = -1;
+    this.defaultsubject = -1;
+    // console.log(e);
+    this.sortArray = this.orgClassSectionList.filter(
+      itm => itm.org_shift.id == e.value
+    );
+    console.log(this.sortArray);
+    this.sortArray.forEach(element => {
+      if (this.classlist.indexOf(element.class.class_name) < 0) {
+        this.classlist.push(element.class.class_name);
+      }
+    });
+    console.log(this.classlist);
+  }
+
+
+
+
+  onChooseClass(e) {
+    console.log(this.sortArray);
+    this.newsortArray = this.sortArray.filter(
+      itm => itm.class.class_name === e.value
+    );
+  }
+
+
+
+
+  getClassList() {
+    this.showloader = true;
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
+
+    let data = {
+      org_id: this.org_code
+    };
+
+    this.http
+      .post(`${environment.apiUrl}classsection/getall`, data)
+      .map(res => res.json())
+      .subscribe(data => {
+        this.showloader = false;
+        this.orgClassSectionList = data.data;
+      });
+  }
+
+
+
+
+
+  onChooseSem(e: any) {
+    var d = new Date();
+    this.sortedSubjectList = this.newsortArray.filter(item => item.sem_id == e.value && item.year == d.getFullYear());
+    console.log(this.sortedSubjectList);
+    
+  }
+
+
+
+
+
+  getAllSem() {
+    let data = {
+      org_id: this.org_code
+    };
+    this.http
+      .post(`${environment.apiUrl}classsection/getallsem`, data)
+      .map(res => res.json())
+      .subscribe(data => {
+        console.log('sem list : .....', data);        
+        this.semList = data.data;
+      });
+  }
+
+
+
+
+
+  getCurrentYear() {
+    var d = new Date();
+    return d.getFullYear();
+  }
+
+
+
+
+
+
+  onChooseClassStream(e) {
+    console.log(e);
+    // let subs = this.subjectFrm.get("subject");
+    // this.clearFormArray(subs as FormArray);
+    this.selectedClass_id = e.value;    
+  }
+
+
+
+
 }

@@ -87,6 +87,8 @@ export class CoursesSubjectComponent implements OnInit {
       });
   }
 
+
+
   getAllSem() {
     let data = {
       org_id: this.org_code
@@ -119,6 +121,10 @@ export class CoursesSubjectComponent implements OnInit {
     });
     console.log(this.classlist);
   }
+
+
+
+
   onChooseClass(e) {
     //
     console.log(this.sortArray);
@@ -177,6 +183,8 @@ export class CoursesSubjectComponent implements OnInit {
                 Validators.required
               ]),
             });
+
+
             //console.log(this.subjectFrm.value);
             let subs = this.subjectFrm.get("subject");
             (subs as FormArray).push(frm_data);
@@ -187,6 +195,10 @@ export class CoursesSubjectComponent implements OnInit {
         // console.log(this.subjectFrm.value)
       });
   }
+
+
+
+  
   clearFormArray = (formArray: FormArray) => {
     while (formArray.length !== 0) {
       formArray.removeAt(0);

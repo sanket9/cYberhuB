@@ -483,9 +483,11 @@ export class AssignClassComponent implements OnInit {
     .map(res => res.json())
     .subscribe(data => {
       //console.log(data);
-      if (data.length > 0) {
+      if (data.data.length > 0) {
         
         if (data.data[0].rutinedetails.length > 0) {
+          // console.log("here");
+          // this.routineForm.invalid
           this.showError = true;
           return false;
         }else{
@@ -494,5 +496,19 @@ export class AssignClassComponent implements OnInit {
         }
       }
     })
+  }
+
+
+
+
+
+  submitBtnDisabled() {
+    // routineForm.invalid && !showError
+    // [ngClass]="{'btn-success': routineForm.valid && !showError, 'btn-light': !routineForm.valid && !showError}"
+    if(!this.showError && this.routineForm.valid) {
+      return false;
+    }else{
+      return true;
+    }
   }
 }
