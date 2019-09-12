@@ -3,8 +3,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a [routerLink]="['/dashboard']" class="text-success">
-                    <i class="material-icons">home</i>
-                    Dashboard
+                    <i class="material-icons">home</i> Dashboard
                 </a>
             </li>
 
@@ -136,7 +135,7 @@
         <app-loader [show]="showloader"></app-loader>
 
         <div class="row" *ngIf="user_type_id == 1">
-            <div class="col-lg-6 col-md-12">
+            <div class="col-lg-10 col-md-12">
                 <div class="card">
                     <div class="card-header card-header-tabs card-header-primary">
                         <div class="nav-tabs-navigation">
@@ -199,8 +198,7 @@
                             <div class="tab-pane" id="examType">
                                 <div class="row">
                                     <div class="col-md-6 pb-3" *ngFor="let examPattern of orgExamPatList; let i = index">
-                                        <mat-slide-toggle [id]="examPattern.id" [checked]="examPattern.orgexam[0]?.id" (change)="examTypeChange($event, examPattern.orgexam[0]?.id)">{{examPattern.name}}
-                                            ({{examPattern.description}})
+                                        <mat-slide-toggle [id]="examPattern.id" [checked]="examPattern.orgexam[0]?.id" (change)="examTypeChange($event, examPattern.orgexam[0]?.id)">{{examPattern.name}} ({{examPattern.description}})
                                         </mat-slide-toggle>
                                     </div>
                                 </div>
@@ -219,11 +217,12 @@
                                                     <th scope="col">Sl</th>
                                                     <th scope="col">Shift</th>
                                                     <th scope="col">Class/stream</th>
+                                                    <th scope="col">Semester</th>
                                                     <th scope="col">Section/Department</th>
                                                     <th scope="col">Year</th>
                                                     <th scope="col">Action</th>
                                                 </tr>
-                                            
+
                                             </thead>
 
                                             <tbody class="">
@@ -231,6 +230,7 @@
                                                     <td>{{i+1}}</td>
                                                     <td>{{obj.org_shift?.shifts?.name}}</td>
                                                     <td>{{obj.class?.class_name}}</td>
+                                                    <td class="text-center">Sem {{obj.sem?.sem_no}}</td>
                                                     <td>{{obj.section?.sec_name}}</td>
                                                     <td>{{obj.year}}</td>
                                                     <td class="text-danger">
@@ -239,11 +239,11 @@
                                                             delete_forever
                                                             </i>
                                                         </a>
-                                                    </td>                                 
+                                                    </td>
                                                 </tr>
                                             </tbody>
 
-                                        </table>                                                  
+                                        </table>
                                     </div>
                                 </div>
 
@@ -252,9 +252,9 @@
                                 ################################################# -->
 
                                 <div class="row">
-                                        <div class="col-sm-12">
-                                          <button mat-raised-button color="primary" class="pull-right mt-4" [routerLink]="['/addClass']">Add New</button>
-                                        </div>
+                                    <div class="col-sm-12">
+                                        <button mat-raised-button color="primary" class="pull-right mt-4" [routerLink]="['/addClass']">Add New</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -264,7 +264,7 @@
             </div>
         </div>
         <div class="row" *ngIf="user_type_id == 1">
-            <div class="col-lg-6 col-md-12">
+            <div class="col-lg-10 col-md-12">
                 <div class="card">
                     <div class="card-header card-header-warning">
                         Course
@@ -283,10 +283,10 @@
                                                 <th scope="col">Sort Name</th>
                                                 <th scope="col">Action</th>
                                             </tr>
-                        
+
                                         </thead>
-                        
-                                        <tbody >
+
+                                        <tbody>
                                             <tr *ngFor="let item of courseCats; let i = index;">
                                                 <th>{{i+1}}</th>
                                                 <th *ngIf="item.parent_id == 0">None</th>
@@ -308,7 +308,7 @@
                             </div>
                         </div>
                     </div>
-            
+
                 </div>
             </div>
             <div class="col-lg-6 col-md-12" *ngIf="showBox">
@@ -320,7 +320,7 @@
                         <form>
                             <div class="example-container">
                                 <mat-form-field>
-                                    <mat-select placeholder="Parent Component" name="cc_parent" [(ngModel)]="cc_parent" >
+                                    <mat-select placeholder="Parent Component" name="cc_parent" [(ngModel)]="cc_parent">
                                         <mat-option value="0">--None--</mat-option>
                                         <mat-option *ngFor="let item of courseCats;" value="{{item.id}}">{{item.name}}</mat-option>
                                     </mat-select>
@@ -329,7 +329,7 @@
                                     <input matInput name="cc_name" [(ngModel)]="cc_name" placeholder="Component Name">
                                 </mat-form-field>
                                 <mat-form-field>
-                                    <input matInput name="cc_short_name" [(ngModel)]="cc_short_name"placeholder="Short Name">
+                                    <input matInput name="cc_short_name" [(ngModel)]="cc_short_name" placeholder="Short Name">
                                 </mat-form-field>
                             </div>
                             <button mat-raised-button color="primary" (click)="addCategory()">Save</button>
@@ -362,7 +362,7 @@
                             </div>
                             <button mat-raised-button color="primary" (click)="editCategory(cc_edit_id)">Save</button>
                             <button mat-raised-button color="warn" (click)="cc_parent_edit= ''; cc_name_edit= ''; cc_short_name_edit='';editshowBox = false">Cancel</button>
-                            
+
                         </form>
                     </div>
                 </div>

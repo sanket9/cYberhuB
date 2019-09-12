@@ -372,7 +372,7 @@ export class DashboardComponent implements OnInit {
       .post(`${environment.apiUrl}classsection/getall`, data)
       .map(res => res.json())
       .subscribe(data => {
-        // console.log("Org class/stream list ", data.data);
+        console.log("data :.............", data.data);
         this.orgClassSectionList = data.data;
         this.createSortArray(this.orgClassSectionList);
       });
@@ -466,6 +466,10 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+
+
+
+
   getAllCoursecat() {
     let header = new Headers();
     header.set("Content-Type", "application/json");
@@ -485,6 +489,10 @@ export class DashboardComponent implements OnInit {
         }
       });
   }
+
+
+
+
 
   editboxShow(id) {
     this.showBox = false;

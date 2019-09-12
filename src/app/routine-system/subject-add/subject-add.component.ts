@@ -28,6 +28,7 @@ export class SubjectAddComponent implements OnInit {
   depts: any;
   classlist: any[];
   defaultclass: number;
+  semId: any;
   defaultsubject: number;
   sortArray: any;
   orgClassSectionList: any;
@@ -95,6 +96,7 @@ export class SubjectAddComponent implements OnInit {
 
         //console.log('my data : ', data.data);
         this.subjectlist = [];
+
         data.data.forEach(ele => {
 
           if(this.subjectlist.length > 0){
@@ -123,6 +125,8 @@ export class SubjectAddComponent implements OnInit {
                 shift: ele.class.org_shift.shifts.name,
                 class_id: ele.class_id,
                 class: ele.class.section.sec_name,
+                year: ele.class.year,
+                sem: ele.class.sem.sem_no,
                 subjectname: [{
                   sub_name: ele.subject_name,
                   id: ele.id
@@ -139,6 +143,8 @@ export class SubjectAddComponent implements OnInit {
               shift: ele.class.org_shift.shifts.name,
               class_id: ele.class_id,
               class: ele.class.section.sec_name,
+              year: ele.class.year,
+              sem: ele.class.sem.sem_no,
               subjectname: [{
                 sub_name: ele.subject_name,
                 id: ele.id
@@ -149,7 +155,7 @@ export class SubjectAddComponent implements OnInit {
           }
         });
 
-        //console.log('subject list : ', this.subjectlist);
+        console.log('subject list : ', this.subjectlist);
       });
   }
   increaseField() {
@@ -264,6 +270,10 @@ export class SubjectAddComponent implements OnInit {
 
 
   onChooseShift(e) {
+    this.defaultclass = -1;
+    this.semId = -1;
+    this.defaultsubject = -1;
+
     this.classlist = [];
     // this.class = "";
     this.defaultclass = -1;
@@ -285,6 +295,9 @@ export class SubjectAddComponent implements OnInit {
 
 
   onChooseClass(e) {
+    // this.defaultclass = -1;
+    this.semId = -1;
+    this.defaultsubject = -1;
     console.log(this.sortArray);
     this.newsortArray = this.sortArray.filter(
       itm => itm.class.class_name === e.value
@@ -317,6 +330,9 @@ export class SubjectAddComponent implements OnInit {
 
 
   onChooseSem(e: any) {
+    // this.defaultclass = -1;
+    // this.semId = -1;
+    this.defaultsubject = -1;
     var d = new Date();
     this.sortedSubjectList = this.newsortArray.filter(item => item.sem_id == e.value && item.year == d.getFullYear());
     console.log(this.sortedSubjectList);
