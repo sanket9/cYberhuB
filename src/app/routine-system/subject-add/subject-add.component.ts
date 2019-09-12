@@ -37,6 +37,7 @@ export class SubjectAddComponent implements OnInit {
   sortedSubjectList: any;
   semList: any;
   selectedClass_id: any;
+  defaultyear: any;
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -153,7 +154,7 @@ export class SubjectAddComponent implements OnInit {
   }
   increaseField() {
     const newarry = new FormGroup({
-      class_id: new FormControl("", [Validators.required]),
+      // class_id: new FormControl("", [Validators.required]),
       subject_name: new FormControl("", [Validators.required]),
       dept_id: new FormControl("", [Validators.required])
     });

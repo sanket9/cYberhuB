@@ -86,7 +86,7 @@ export class AddNoticeComponent implements OnInit {
     this.subject = new FormControl("", [Validators.required]);
     this.startDate = new FormControl("", [Validators.required]);
     this.endDate = new FormControl("", [Validators.required]);
-    this.text = new FormControl("", [Validators.required]);
+    this.text = new FormControl("", []);
     // this.schedule =
     this.file_url = new FormControl("", []);
     // console.log(this.addNoticeForm.controls);
@@ -293,6 +293,8 @@ export class AddNoticeComponent implements OnInit {
     if(e.value == "1"){
       this.showDescription = true;
       this.showFileUpload = false;
+      this.file = null
+      // this.addNoticeForm.controls['file'].setValue('');
     } else {
       this.showFileUpload = true;
       this.showDescription = false;
