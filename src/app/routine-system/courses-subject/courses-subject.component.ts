@@ -34,6 +34,7 @@ export class CoursesSubjectComponent implements OnInit {
   defaultclass = -1;
   semList: any;
   sortedSubjectList: any;
+  semId: number;
 
 
   constructor(
@@ -105,6 +106,10 @@ export class CoursesSubjectComponent implements OnInit {
   
 
   onChooseShift(e) {
+    this.defaultclass = -1;
+    this.semId = -1;
+    this.defaultsubject = -1;
+    
     this.classlist = [];
     // this.class = "";
     this.defaultclass = -1;
@@ -126,7 +131,10 @@ export class CoursesSubjectComponent implements OnInit {
 
 
   onChooseClass(e) {
-    //
+    // this.defaultclass = -1;
+    this.semId = -1;
+    this.defaultsubject = -1;
+
     console.log(this.sortArray);
     this.newsortArray = this.sortArray.filter(
       itm => itm.class.class_name === e.value
@@ -134,6 +142,9 @@ export class CoursesSubjectComponent implements OnInit {
   }
 
   onChooseSem(e: any) {
+    // this.defaultclass = -1;
+    // this.semId = -1;
+    this.defaultsubject = -1;
     var d = new Date();
     this.sortedSubjectList = this.newsortArray.filter(item => item.sem_id == e.value && item.year == d.getFullYear())
   }
