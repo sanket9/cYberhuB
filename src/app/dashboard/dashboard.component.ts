@@ -185,6 +185,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getShiftsNames() {
+    this.showloader = true;
     let header = new Headers();
     header.set("Content-Type", "application/json");
     let data = {
@@ -196,6 +197,7 @@ export class DashboardComponent implements OnInit {
       .map(res => res.json())
       .subscribe(
         data => {
+          this.showloader = false;
           // let jsonResponse = data.json();
           // console.log("Org shift list ", data.data);
           this.orgShiftLists = data.data;
@@ -216,8 +218,9 @@ export class DashboardComponent implements OnInit {
   
   // shift change function
   shiftchange(e, id) {
+    
     // console.log(this.checkedBtn);
-    // console.log('check value :', e.checked);
+    // console.log('check value :', e);
     let header = new Headers();
     header.set("Content-Type", "application/json");
 
@@ -248,23 +251,29 @@ export class DashboardComponent implements OnInit {
     if (!e.checked) {
       // console.log("delete function called");
       // console.log(eleid);
+      if (window.confirm("This Change will Delete all created Depets and Stream. Do you want to delete It? ")) {
 
-      let data = {
-        id
-      };
+        let data = {
+          id
+        };
+  
+        this.http
+          .post(`${environment.apiUrl}shift/orgshiftdelete`, data)
+          .map(res => res.json())
+          .subscribe(
+            data => {
+              // console.log("After delete shift success :", data);
+              this.getShiftsNames();
+            },
+            error => {
+              console.log("Error! ", error);
+            }
+          );
+      }else{
+        // e.preventDefault();
+        this.getShiftsNames();
+      }
 
-      this.http
-        .post(`${environment.apiUrl}shift/orgshiftdelete`, data)
-        .map(res => res.json())
-        .subscribe(
-          data => {
-            // console.log("After delete shift success :", data);
-            this.getShiftsNames();
-          },
-          error => {
-            console.log("Error! ", error);
-          }
-        );
     }
 
     // this.getShiftsNames();

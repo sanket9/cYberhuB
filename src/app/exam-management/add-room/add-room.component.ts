@@ -36,6 +36,7 @@ export class AddRoomComponent implements OnInit {
   perBenchCapacity: number;
   total_no_student: number;
   seatingType: any;
+  allFloors: any;
 
   constructor(
     public http: Http,
@@ -47,6 +48,7 @@ export class AddRoomComponent implements OnInit {
   ngOnInit() {
     this.createFormControl();
     this.createFormGroup();
+    this.getallFloors();
     //this.seatingType = JSON.stringify([{ id: 1, name: "Table" }, { id: 2, name: "Banch" }]);
   }
 
@@ -112,6 +114,17 @@ export class AddRoomComponent implements OnInit {
     } else {
       this.bench_capacity = [1, 2];
     }
+  }
+
+  getallFloors() {
+    this.http.get(`${environment.apiUrl}floor/getall`)
+    .map(res => res.json()).subscribe((data: any) =>{
+      // console.log(data);
+      if (data.data) {
+        this.allFloors = data.data
+      }
+      
+    })
   }
 
   roomadd(values) {

@@ -119,7 +119,8 @@ export class SubjectAddComponent implements OnInit {
               this.subjectlist.push(filterData[0]);
 
             } else {
-
+              // console.log(ele);
+              
               let data = {
                 id: ele.id,
                 shift: ele.class.org_shift.shifts.name,
@@ -138,7 +139,7 @@ export class SubjectAddComponent implements OnInit {
 
           }else {
 
-          let data = {
+            let data = {
               id: ele.id,
               shift: ele.class.org_shift.shifts.name,
               class_id: ele.class_id,
@@ -284,6 +285,8 @@ export class SubjectAddComponent implements OnInit {
     );
     console.log(this.sortArray);
     this.sortArray.forEach(element => {
+      console.log(element);
+      
       if (this.classlist.indexOf(element.class.class_name) < 0) {
         this.classlist.push(element.class.class_name);
       }

@@ -318,6 +318,8 @@ export class CoursesSubjectComponent implements OnInit {
                 shift: ele.class.org_shift.shifts.name,
                 class_id: ele.class_id,
                 class: ele.class.section.sec_name,
+                sem: ele.class.sem.sem_no,
+                year: ele.class.year,
                 subjectname: [
                   {
                     sub_name: ele.subject_name,
