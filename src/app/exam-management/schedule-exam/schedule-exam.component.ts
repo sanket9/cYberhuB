@@ -25,6 +25,7 @@ export class ScheduleExamComponent implements OnInit {
   org_id: string;
   master_id;
   showloader: boolean = false
+  exam_list: any;
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -38,6 +39,17 @@ export class ScheduleExamComponent implements OnInit {
     var status = this.SessionStore.retrieve("user-data");
     this.org_id = status[0].org_code;
     this.master_id = status[0].master_id;
+
+    this.getExamName();
+  }
+
+  getExamName() {
+    this.http.get(`${environment.apiUrl}exam/getexamname`).map(resp => resp.json()).subscribe((data: any) => {
+      console.log('data....', data);
+      if(data.data) {
+        this.exam_list = data.data;
+      }
+    });
   }
 
   handleFileSelect(fileInput: any) {
