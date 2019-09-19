@@ -1,0 +1,57 @@
+<div class="main-content">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a [routerLink]="['/dashboard']" class="text-success">
+                    <i class="material-icons">home</i> Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Videos
+            </li>
+
+            <li class="float-right">
+
+            </li>
+        </ol>
+    </nav>
+
+    <div class="container-fluid">
+        <app-loader [show]="showloader"></app-loader>
+
+        <div class="row row-margin-bottom">
+            <div *ngFor="let video of video_details" class="col-md-8 no-padding lib-item" data-category="view">
+                <div class="lib-panel">
+                    <div class="row box-shadow">
+                        <div class="col-md-6">
+                            <img class="lib-img-show" src="{{video.snippet.thumbnails.medium.url}}">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="lib-row lib-header">
+                                {{video.snippet.title}}
+                                <div class="lib-header-seperator"></div>
+                            </div>
+                            <p class="lib-row lib-desc">{{video.snippet.publishedAt | date: 'MMMM d, y h:mm:ss a'}}</p>
+                            <button type="button" class="btn btn-primary">Share</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="row page-title">
+            <div class="col-md-10 col-md-offset-1">
+
+                <mat-list *ngFor="let video of video_details">
+                    <mat-list-item>
+                        <img matListAvatar src="{{video.snippet.thumbnails.default.url}}" alt="" srcset="">
+                        <h3 matLine>{{video.snippet.title}}</h3>
+                        <p matLine>{{video.snippet.publishedAt | date: 'MMMM d, y h:mm:ss a'}}</p>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                </mat-list>
+
+            </div>
+        </div>
+    </div> -->
+    </div>

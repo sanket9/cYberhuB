@@ -17,6 +17,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/dashboard/', title: 'Dashboard',  icon: 'dashboard', class: '0', },
     { path: '/user-profile/', title: 'User Profile',  icon:'person', class: '0' },
     { path: '/gallery/', title: 'Gallery', icon:'photo_library', class: '0' },
+    { path: '/videos/', title: 'Videos', icon:'video_library', class: '0' },
     { path: '/add-user-details/', title: 'Upload Details',  icon:'notifications', class: '0' },
     { path: '/add-user/', title: 'Add User Role', icon: 'person', class: '3' },
     { path: '/notice/', title: 'Notice', icon: 'notes', class: '2' },

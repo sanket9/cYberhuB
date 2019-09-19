@@ -13,11 +13,13 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { NotificationService } from "../../services/notification.service";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import * as csv from "csvtojson";
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: "app-schedule-exam",
   templateUrl: "./schedule-exam.component.html",
-  styleUrls: ["./schedule-exam.component.scss"]
+  styleUrls: ["./schedule-exam.component.scss"],
+  providers: [DatePipe]
 })
 export class ScheduleExamComponent implements OnInit {
   fileReaded: any;
@@ -26,12 +28,14 @@ export class ScheduleExamComponent implements OnInit {
   master_id;
   showloader: boolean = false
   exam_list: any;
+
   constructor(
     public http: Http,
     public notification: NotificationService,
     public router: Router,
     public activeroute: ActivatedRoute,
-    public SessionStore: SessionStorageService
+    public SessionStore: SessionStorageService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -89,19 +93,27 @@ export class ScheduleExamComponent implements OnInit {
   createFormGroup() {
     this.examForm = new FormGroup({
       exam_name: new FormControl("", [Validators.required]),
+      exam_date: new FormControl("", [Validators.required]),
       exam_file: new FormControl(null, [Validators.required])
     });
   }
+
   FormSubmit(values) {
     let header = new Headers();
     header.append("Content-Type", "multipart/form-data");
     values.org_id = this.org_id;
+
+    if(this.examForm.value.exam_date)
+      this.examForm.value.exam_date = this.datePipe.transform(this.examForm.value.exam_date, 'dd/MM/yyyy');
+
     let fd = new FormData();
     fd.append("exam_name", this.examForm.value.exam_name);
+    fd.append("exam_date", this.examForm.value.exam_date);
     fd.append("exam_file", this.fileReaded);
     fd.append("org_id", this.org_id);
     fd.append("master_id", this.master_id);
-    console.log(values);
+    //console.log('this.examForm.value.exam_date............', this.examForm.value.exam_date);
+
     this.http
       .post(`${environment.apiUrl}exam/create`, fd)
       .map(res => res.json())
@@ -143,5 +155,13 @@ export class ScheduleExamComponent implements OnInit {
           console.log("Completed file download.");
         }
       );
+  }
+  
+  submitBtnDisabled() {
+    if(this.examForm.valid) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

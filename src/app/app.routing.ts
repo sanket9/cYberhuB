@@ -7,6 +7,7 @@ import { Ng2Webstorage } from "ngx-webstorage";
 
 import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
 import { LoginComponent } from "./login/login.component";
+import { VideosComponent } from "./videos/videos.component";
 const routes: Routes = [
   {
     path: "",
@@ -21,6 +22,10 @@ const routes: Routes = [
         path: "",
         loadChildren:
           "./layouts/admin-layout/admin-layout.module#AdminLayoutModule"
+      },
+      {
+        path: "videos",
+        component: VideosComponent
       }
     ]
   }
