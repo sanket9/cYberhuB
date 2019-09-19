@@ -157,6 +157,12 @@ export class ViewRutineComponent implements OnInit {
         // console.log(data);
         this.org_priods = data.data;
       });
+    this.viewRoutine.patchValue({
+      stream: '',
+      year: '',
+      sem: '',
+      dept_id: ''
+    })
   }
   classChange(e) {
     // console.log(e);
@@ -164,12 +170,21 @@ export class ViewRutineComponent implements OnInit {
       itm => itm.class.class_name === e.value
     );
     this.depts = depts;
+    this.viewRoutine.patchValue({
+      year: '',
+      sem: '',
+      dept_id: ''
+    })
     // console.log(this.depts);
   }
   onSemselect($e) {
     this.Finaldepts = this.depts.filter(itm => itm.sem_id == $e.value);
     this.samname = this.allsems.filter(itm => itm.id == $e.value);
     console.log(this.samname);
+    this.viewRoutine.patchValue({
+
+      dept_id: ''
+    })
   }
   submitForm(values) {
     console.log(values);

@@ -16,6 +16,8 @@ import {
   MatProgressSpinnerModule,
   MatDatepickerModule,
   MatNativeDateModule,
+  MatListModule,
+  MatDividerModule,
 } from "@angular/material";
 
 import { AppRoutingModule } from "./app.routing";
@@ -30,6 +32,7 @@ import { Ng2Webstorage } from "ngx-webstorage";
 import { ClassListComponent } from './class-list/class-list.component';
 import { ViewExamComponent } from './view-exam/view-exam.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { VideosComponent } from './videos/videos.component';
 
 @NgModule({
   imports: [
@@ -48,6 +51,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     MatTooltipModule,
     MatIconModule,
     MatSlideToggleModule,
+    MatListModule,
+    MatDividerModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -64,6 +69,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     AdminLayoutComponent,
     LoginComponent,
     ViewExamComponent,
+    VideosComponent,
   ],
   exports: [],
   providers: [AuthGuard],

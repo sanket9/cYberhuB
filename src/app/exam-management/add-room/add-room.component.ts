@@ -36,6 +36,7 @@ export class AddRoomComponent implements OnInit {
   perBenchCapacity: number;
   total_no_student: number;
   seatingType: any;
+  allFloors: any;
 
   constructor(
     public http: Http,
@@ -47,6 +48,7 @@ export class AddRoomComponent implements OnInit {
   ngOnInit() {
     this.createFormControl();
     this.createFormGroup();
+    this.getallFloors();
     //this.seatingType = JSON.stringify([{ id: 1, name: "Table" }, { id: 2, name: "Banch" }]);
   }
 
@@ -84,6 +86,9 @@ export class AddRoomComponent implements OnInit {
   onChangeSheattingtype(e) {
     // console.log(e);
     if (e.value === 1) {
+      this.roomaddForm.patchValue({
+        banchtypes: ''
+      })
       this.roomaddForm.controls["banchtypes"].disable();
       this.bench_capacity = [1];
       this.roomaddForm.controls["no_of_rows"].enable();
@@ -93,10 +98,15 @@ export class AddRoomComponent implements OnInit {
       this.roomaddForm.controls["banchtypes"].enable();
       this.banch_types = [{ id: 1, name: "Long" }, { id: 2, name: "Short" }];
     }
+    this.roomaddForm.patchValue({
+      no_of_bench: '',
+      no_of_rows: '',
+      total_no_student : ''
+    })
   }
-  noofBenchChange(e) {
+  noofBenchChange() {
     this.total_no_student =
-      this.roomaddForm.value.benchCapacity * e.target.value;
+      this.roomaddForm.value.benchCapacity * this.roomaddForm.value.no_of_bench;
   }
   onChangeBanchtype(e) {
     if (e.value === 1) {
@@ -104,6 +114,17 @@ export class AddRoomComponent implements OnInit {
     } else {
       this.bench_capacity = [1, 2];
     }
+  }
+
+  getallFloors() {
+    this.http.get(`${environment.apiUrl}floor/getall`)
+    .map(res => res.json()).subscribe((data: any) =>{
+      // console.log(data);
+      if (data.data) {
+        this.allFloors = data.data
+      }
+      
+    })
   }
 
   roomadd(values) {
