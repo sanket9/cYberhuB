@@ -30,19 +30,6 @@ import { ScheduleExamComponent } from './schedule-exam/schedule-exam.component';
 import { MapingRoomsComponent } from './maping-rooms/maping-rooms.component';
 import { MyDateAdapter } from './schedule-exam/MyDateAdapter';
 
-const MY_DATE_FORMATS = {
-  parse: {
-      dateInput: {month: 'short', year: 'numeric', day: 'numeric'}
-  },
-  display: {
-      // dateInput: { month: 'short', year: 'numeric', day: 'numeric' },
-      dateInput: 'input',
-      monthYearLabel: {year: 'numeric', month: 'short'},
-      dateA11yLabel: {year: 'numeric', month: 'long', day: 'numeric'},
-      monthYearA11yLabel: {year: 'numeric', month: 'long'},
-  }
-};
-
 @NgModule({
   imports: [
     FormsModule,
@@ -69,8 +56,7 @@ const MY_DATE_FORMATS = {
   declarations: [AddRoomComponent, ListroomComponent, ScheduleExamComponent, MapingRoomsComponent],
   providers: [
     NotificationService,
-    {provide: DateAdapter, useClass: MyDateAdapter},
-    {provide: MY_DATE_FORMATS, useValue: MY_DATE_FORMATS},
+    {provide: DateAdapter, useClass: MyDateAdapter}
   ]
 })
 export class ExamManagementModule {}
