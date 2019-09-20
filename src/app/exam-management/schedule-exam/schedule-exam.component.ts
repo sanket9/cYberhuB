@@ -198,7 +198,7 @@ export class ScheduleExamComponent implements OnInit {
     this.examForm = new FormGroup({
       exam_name: new FormControl("", [Validators.required]),
       exam_date: new FormControl("", [Validators.required]),
-      org_code: new FormControl("", [Validators.required]),
+      org_code: new FormControl("", ),
       exam_file: new FormControl(null, [Validators.required]),
     });
   }
