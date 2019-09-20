@@ -21,7 +21,8 @@ import {
   MatPaginatorModule,
   MatProgressSpinnerModule,
   MatDatepickerModule,
-  DateAdapter
+  DateAdapter,
+  MatAutocompleteModule
 } from "@angular/material";
 
 import { ListroomComponent } from './listroom/listroom.component';
@@ -50,6 +51,7 @@ import { MyDateAdapter } from './schedule-exam/MyDateAdapter';
     MatTabsModule,
     MatPaginatorModule,
     MatDatepickerModule,
+    MatAutocompleteModule,
     MatProgressSpinnerModule,
     ExamManagementRoutingModule,    
   ],
