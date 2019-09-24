@@ -27,29 +27,59 @@
                         <p class="card-category">Add Exam Room Details</p>
                     </div>
                     <div class="card-body">
-                        <button mat-raised-button style="float: right;" type="button" color="primary" (click)="downloadDemo('assets/demofiles/demo-exam.csv')">
-                  Download File</button>
+                        <button mat-raised-button style="float: right;" type="button" color="primary" (click)="downloadDemo('assets/demofiles/demo-exam.csv')">Download File</button>
                         <form class="pt-2" [formGroup]="examForm" (submit)="FormSubmit(examForm.value)">
-                            <div class="col-md-6">
-                                <mat-form-field class="example-full-width">
-                                    <mat-select placeholder="Select Exam" name="exam_data_id" formControlName="exam_name">
-                                        <mat-option *ngFor="let exam of exam_list" [value]="exam.name">
-                                            {{ exam.name }}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                            <div class="row">
+                                <div class="col-md-6">
 
-                                <mat-form-field>
-                                    <input matInput formControlName="exam_date" [matDatepicker]="picker" placeholder="Choose a date">
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
+                                    <mat-form-field class="example-full-width">
+                                        <mat-select placeholder="Select Sem" name="exam_data_id" formControlName="exam_name">
+                                            <mat-option *ngFor="let sem of sem_list" [value]="sem.sem_no">
+                                                Sem {{ sem.sem_no }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
 
-                            </div>
-                            <div class="col-md-6">
-                                <button mat-raised-button type="button" color="primary" (click)="fileInput.click()">
-                  Add File</button>
-                                <input type="file" hidden accept=".csv" #fileInput name="file" (change)="handleFileSelect($event)">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="exam_date" [matDatepicker]="picker" placeholder="Choose a date">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                    <mat-error *ngIf="examForm.controls.exam_date.hasError('required') && 
+                                    examForm.controls.exam_date.touched">
+                                        <small>Exam date is <strong>required</strong></small>
+                                    </mat-error>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <mat-form-field class="example-full-width">
+                                        <input type="text" placeholder="Pick Organisation" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.org_name" (click)="getOrgDetails(option.id, option.org_reg)">
+                                                {{option.org_name}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+
+                                    <mat-form-field class="example-full-width">
+                                        <input *ngIf="selected_org_reg != null" formControlName="org_code" type="text" placeholder="Organisation Code No" matInput value="{{selected_org_reg}}" readonly>
+                                        <input *ngIf="selected_org_reg == null" formControlName="org_code" type="text" placeholder="Organisation Code No" matInput>
+                                    </mat-form-field>
+
+                                </div>
+                                <div class="col-md-2">
+                                    <button *ngIf="selected_org_reg == null" mat-raised-button type="button" color="danger" (click)="saveOrgCode()">Save</button>
+
+                                </div>
+
+                                <div class="col-md-6">
+                                    <button mat-raised-button type="button" color="primary" (click)="fileInput.click()">Add File</button>
+                                    <input type="file" hidden accept=".csv" #fileInput name="file" (change)="handleFileSelect($event)">
+                                </div>
                             </div>
                             <button [disabled]="submitBtnDisabled()" [ngClass]="{'btn-success': !submitBtnDisabled(), 'btn-light text-white': submitBtnDisabled()}" mat-raised-button class="btn pb-3" e="submit">Submit</button>
                         </form>

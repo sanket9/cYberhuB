@@ -14,6 +14,8 @@ import { NotificationService } from "../../services/notification.service";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import * as csv from "csvtojson";
 import { DatePipe } from '@angular/common';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: "app-schedule-exam",
@@ -22,12 +24,22 @@ import { DatePipe } from '@angular/common';
   providers: [DatePipe]
 })
 export class ScheduleExamComponent implements OnInit {
+  myControl = new FormControl();
+  // options: any = [
+  //   {id: '1111', value: 'One'}, 
+  //   {id: '2222', value: 'Two'}, 
+  //   {id: '3333', value: 'Three'}];
+  options: any = [];
+  filteredOptions: Observable<string[]>;
+  selected_org_id: string;
+  selected_org_reg: string;
+  
   fileReaded: any;
   examForm: FormGroup;
   org_id: string;
   master_id;
-  showloader: boolean = false
-  exam_list: any;
+  showloader: boolean = false;
+  sem_list: any;
 
   constructor(
     public http: Http,
@@ -35,10 +47,26 @@ export class ScheduleExamComponent implements OnInit {
     public router: Router,
     public activeroute: ActivatedRoute,
     public SessionStore: SessionStorageService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {}
 
   ngOnInit() {
+    this.showloader = true;
+    this.http.get(`${environment.apiUrl}org/alllist`).map(resp => resp.json()).subscribe((data: any) => {
+      //console.log('Org list data...........', data.data);
+      if(data.data) {
+        this.options = data.data;
+
+        this.filteredOptions = this.myControl.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
+
+        this.showloader = false;
+      }
+      //console.log('Org list data in options...........', this.options);
+    });
+
     this.createFormGroup();
     var status = this.SessionStore.retrieve("user-data");
     this.org_id = status[0].org_code;
@@ -47,13 +75,89 @@ export class ScheduleExamComponent implements OnInit {
     this.getExamName();
   }
 
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.org_name.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  getOrgDetails(org_id, org_reg) {
+    console.log('Org Details......', org_id, org_reg);
+    this.selected_org_id = org_id;
+    this.selected_org_reg = org_reg;
+
+    this.examForm.patchValue({    
+      "org_code": org_reg
+    }); 
+  }
+
+  saveOrgCode() {
+    let header = new Headers();
+    header.append("Content-Type", "application/json");
+
+    if(this.selected_org_id!=null && this.examForm.value.org_code!=null && this.examForm.value.org_code!="") {
+      // let fd = new FormData();
+      // fd.append("org_id", this.selected_org_id);
+      // fd.append("org_reg", this.examForm.value.org_code);
+      //console.log('this.examForm.value.org_code............', this.examForm.value.org_code);
+      // this.selected_org_reg = this.examForm.value.org_code;
+
+      //       this.notification.showNotification(
+      //         "top",
+      //         "right",
+      //         "success",
+      //         "Code saved successfully."
+      //       );
+      let senddata = {
+        "org_id": this.selected_org_id,
+        "org_reg": this.examForm.value.org_code
+      };
+
+      this.http
+        .post(`${environment.apiUrl}org/edit-code`, senddata)
+        .map(res => res.json())
+        .subscribe(data => {
+          // console.log(data);
+          if (data.status == 1) {
+            this.selected_org_reg = this.examForm.value.org_code;
+
+            this.notification.showNotification(
+              "top",
+              "right",
+              "success",
+              "Code saved successfully."
+            );
+          }
+        });
+    } else {
+      this.notification.showNotification(
+        "top",
+        "right",
+        "warning",
+        "Select an organization and enter organization code."
+      );
+    }
+  }
+
   getExamName() {
-    this.http.get(`${environment.apiUrl}exam/getexamname`).map(resp => resp.json()).subscribe((data: any) => {
-      console.log('data....', data);
-      if(data.data) {
-        this.exam_list = data.data;
-      }
-    });
+    // this.http.get(`${environment.apiUrl}exam/getexamname`).map(resp => resp.json()).subscribe((data: any) => {
+    //   console.log('data....', data);
+    //   if(data.data) {
+    //     this.sem_list = data.data;
+    //   }
+    // });
+    var status = this.SessionStore.retrieve("user-data");
+    var headers = new Headers();
+    let options = new RequestOptions({ headers: headers });
+    let data = { org_id: status[0].org_code };
+
+    this.http
+      .post(`${environment.apiUrl}classsection/getallsem`, data, options)
+      .map(res => res.json())
+      .subscribe(data => {
+        //console.log('data sem...............', data);
+        this.sem_list = data.data;
+      });
   }
 
   handleFileSelect(fileInput: any) {
@@ -94,7 +198,8 @@ export class ScheduleExamComponent implements OnInit {
     this.examForm = new FormGroup({
       exam_name: new FormControl("", [Validators.required]),
       exam_date: new FormControl("", [Validators.required]),
-      exam_file: new FormControl(null, [Validators.required])
+      org_code: new FormControl("", ),
+      exam_file: new FormControl(null, [Validators.required]),
     });
   }
 
@@ -107,12 +212,17 @@ export class ScheduleExamComponent implements OnInit {
       this.examForm.value.exam_date = this.datePipe.transform(this.examForm.value.exam_date, 'dd/MM/yyyy');
 
     let fd = new FormData();
-    fd.append("exam_name", this.examForm.value.exam_name);
+    fd.append("exam_name", "Sem " + this.examForm.value.exam_name);
     fd.append("exam_date", this.examForm.value.exam_date);
     fd.append("exam_file", this.fileReaded);
     fd.append("org_id", this.org_id);
     fd.append("master_id", this.master_id);
-    //console.log('this.examForm.value.exam_date............', this.examForm.value.exam_date);
+    fd.append("exam_centre_org_id", this.selected_org_id);
+    fd.append("org_reg", this.selected_org_reg);
+    // console.log('full submit - exam_name............', "Sem " + this.examForm.value.exam_name);
+    // console.log('full submit - exam_date............', this.examForm.value.exam_date);
+    // console.log('full submit - exam_centre_org_id............', this.selected_org_id);
+    // console.log('full submit - org_reg............', this.selected_org_reg);
 
     this.http
       .post(`${environment.apiUrl}exam/create`, fd)

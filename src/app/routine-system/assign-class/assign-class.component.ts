@@ -426,6 +426,7 @@ export class AssignClassComponent implements OnInit {
               priods: [
                 {
                   priod_id: element.priod_id,
+                  priod_name: element.priod.period_name,
                   rutinedetails: element.rutinedetails
                 }
               ]
@@ -434,6 +435,7 @@ export class AssignClassComponent implements OnInit {
           } else {
             let exsisting_data = {
               priod_id: element.priod_id,
+              priod_name: element.priod.period_name,
               rutinedetails: element.rutinedetails
             };
             new_arry[pos].priods.push(exsisting_data);

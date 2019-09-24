@@ -54,8 +54,8 @@
                                 </mat-select>
                             </mat-form-field>
                             <!-- <mat-error *ngIf="classassignForm.controls.class_id.hasError('required') && classassignForm.controls.class_id.touched">
-                <small>Class is <strong>required</strong></small>
-              </mat-error> -->
+                                <small>Class is <strong>required</strong></small>
+                            </mat-error> -->
                         </div>
                         <div class="col-md-3">
                             <mat-form-field>
@@ -156,21 +156,31 @@
                     </tr>
                     <tr *ngFor="let rutine of rutineDetails">
                         <td align="center"> {{returnDayName(rutine.day)}} </td>
-                        <td align="center" *ngFor="let priods of rutine?.priods">
+                        <td *ngFor="let priod of org_priods">
+                            <div *ngFor="let priods of rutine?.priods">
+                                <div *ngIf="priod.period_name == priods.priod_name">
+                                    <p *ngFor="let item of priods?.rutinedetails">
+                                        {{item.class.section.sec_name}} / {{item.teacher.short_name}} / {{item.room.name}}
+                                        <small style="font-weight:bold; color:brown">{{item?.class_sub?.subcourse[0]?.count_name}}</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <!-- <td align="center" *ngFor="let priods of rutine?.priods">
                             <p *ngFor="let item of priods?.rutinedetails">
                                 {{item.class.section.sec_name}} / {{item.teacher.short_name}} / {{item.room.name}}
                                 <small style="font-weight:bold; color:brown">{{item?.class_sub?.subcourse[0]?.count_name}}</small>
                             </p>
-                        </td>
+                        </td> -->
                         <!-- <ng-container *ngFor="let priods of rutine?.priods; let i=index">
-              <td align="center" *ngIf="org_priods[i].id == priods.priod_id">
-                {{org_priods[i].id}}
-                <p *ngFor="let item of priods?.rutinedetails">
-                  {{item.class.section.sec_name}} / {{item.teacher.short_name}} / {{item.room.name}}
-                  <small style="font-weight:bold; color:brown">{{item.cc_name}}</small>
-                </p>
-              </td>
-            </ng-container> -->
+                        <td align="center" *ngIf="org_priods[i].id == priods.priod_id">
+                            {{org_priods[i].id}}
+                            <p *ngFor="let item of priods?.rutinedetails">
+                            {{item.class.section.sec_name}} / {{item.teacher.short_name}} / {{item.room.name}}
+                            <small style="font-weight:bold; color:brown">{{item.cc_name}}</small>
+                            </p>
+                        </td>
+                        </ng-container> -->
                     </tr>
 
                 </table>
