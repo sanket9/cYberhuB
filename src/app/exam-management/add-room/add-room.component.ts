@@ -141,7 +141,7 @@ export class AddRoomComponent implements OnInit {
       values.seatingTypes = "Table";
       values.banchtypes = null;
     } else {
-      values.seatingTypes = "Banch";
+      values.seatingTypes = "Bench";
       values.no_of_rows = null;
     }
     values.org_id = status[0].org_code;
