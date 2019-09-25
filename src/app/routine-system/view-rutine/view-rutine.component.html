@@ -100,7 +100,7 @@
                         </tr>
                         <tr *ngFor="let rutine of rutineDetails;">
                             <td align="center" style="cursor: pointer;" *ngIf="filterRole.edit == 1" [routerLink]="['/routine/edit']" [queryParams]="{day:rutine.day,year: viewRoutine.value.year, dept: deptName && deptName[0].id, sem: samname && samname[0]?.id, stream: viewRoutine.value.stream }">
-                            {{getDay(rutine.day)}}
+                                {{getDay(rutine.day)}}
                                 <!-- <i class="material-icons" [routerLink]="['/routine/edit']"
                 [queryParams]="{day:rutine.day,year: viewRoutine.value.year, dept: deptName && deptName[0].id, sem: samname && samname[0]?.id, stream: viewRoutine.value.stream }"
                 >
@@ -114,12 +114,16 @@
                   edit
                 </i> -->
                             </td>
-                            <td align="center" *ngFor="let priods of rutine?.priods">
-                                <p *ngFor="let item of priods?.rutinedetails">
-                                    {{item.class.section.sec_name}} ({{item.class_sub?.subcourse[0]?.count_name}}) / {{item.teacher.short_name}} / {{item.room.name}}
-                                    <small style="font-weight:bold; color:brown">{{item.cc_name}}</small> <br>
-                                    <small *ngIf="item.is_block == 1 && datecompare(item.block_date)" style="color:brown">Staff Shifted to Exam duty.</small>
-                                </p>
+                            <td *ngFor="let priod of org_priods">
+                                <div *ngFor="let priods of rutine?.priods">
+                                    <div *ngIf="priod.period_name == priods.priod_name">
+                                        <p *ngFor="let item of priods?.rutinedetails">
+                                            {{item.class.section.sec_name}} ({{item.class_sub?.subcourse[0]?.count_name}}) / {{item.teacher.short_name}} / {{item.room.name}}
+                                            <small style="font-weight:bold; color:brown">{{item.cc_name}}</small> <br>
+                                            <small *ngIf="item.is_block == 1 && datecompare(item.block_date)" style="color:brown">Staff Shifted to Exam duty.</small>
+                                        </p>
+                                    </div>
+                                </div>
                             </td>
                             <!-- <ng-container *ngFor="let priods of rutine?.priods; let i=index"> -->
                             <!-- <ng-container >
@@ -132,9 +136,9 @@
                   </td>
               </ng-container> -->
 
-                            <ng-container *ngIf="rutine?.priods.length != org_priods.length">
+                            <!-- <ng-container *ngIf="rutine?.priods.length != org_priods.length">
                                 <td align="center" *ngFor="let n of [1,2]"></td>
-                            </ng-container>
+                            </ng-container> -->
                         </tr>
 
                     </table>
