@@ -435,30 +435,33 @@ getClassList(){
       }      
     }else{
       this.selectedData.selectedSections = e.value;
-      console.log(this.selectedData.selectedStuff);
-      
-      this.showloader = true;
-      let apidata = {
-        org_id: this.org_code,
-        dept_id: this.selectedData.selectedSections
-      }
-      this.http.post(`${environment.apiUrl}staff/teacherforNotiece`, apidata).map((res) => res.json())
-        .subscribe(data => {
-          console.log(data);
-          this.showloader = false;
-          if (data.data) {
-            let filterd_array = []
-            data.data.forEach(element => {
-              if (element.role_cat_id == this.selectedData.selectedStuff) {
-                filterd_array.push(element.id)
-              }
+      console.log(this.selectedData.selectedNoticeType);
+      if(this.selectedData.selectedNoticeType == 5) {
+        this.showloader = true;
+        let apidata = {
+          org_id: this.org_code,
+          dept_id: this.selectedData.selectedSections
+        }
+        this.http.post(`${environment.apiUrl}staff/teacherforNotiece`, apidata).map((res) => res.json())
+          .subscribe(data => {
+            console.log(data);
+            this.showloader = false;
+            if (data.data) {
+              let filterd_array = []
+              data.data.forEach(element => {
+                if (element.role_cat_id == this.selectedData.selectedStuff) {
+                  filterd_array.push(element.id)
+                }
+                
+              });
+              this.selectedData.selectedStuff = filterd_array;
+              console.log(this.selectedData.selectedStuff);
               
-            });
-            this.selectedData.selectedStuff = filterd_array;
-            // console.log(filterd_array);
-            
-          }
-        })
+            }
+          })
+      } else if (this.selectedData.selectedNoticeType == 1) {
+        this.selectedData.selectedStudent 
+      }
       // console.log(e.value);
       // console.log(this.getAllStuff);
       

@@ -225,14 +225,16 @@ export class AddNoticeComponent implements OnInit {
                   this.addNoticeForm.reset();
                   this.router.navigate(['/notice']);
                 });
-              }
+            }else{
+
               this.notification.showNotification(
                 "top",
                 "right",
-                "success",
-                "Success, Notice Added Successfully."
+                "warning",
+                "Try again After Some Time."
               );
               this.router.navigate(['/notice']);
+            }
             
         }else{
           this.showloader = false;

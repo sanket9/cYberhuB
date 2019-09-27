@@ -54,7 +54,7 @@
 
                     <div class="col-sm-6" *ngIf="showStuffTypeField">
                         <mat-form-field>                      
-                            <mat-select placeholder="Select Stuff Type" (change)="onChangeStuffType($event)" multiple>
+                            <mat-select placeholder="Select Staff Type" (change)="onChangeStuffType($event)" multiple>
                                 <!-- <mat-option [value]="3">
                                   All
                                 </mat-option>                                     -->
@@ -99,7 +99,7 @@
                               <!-- <mat-option [value]="all">All</mat-option> -->
                               <ng-container *ngFor="let sec of filteredArrayForSectionList">       
                                 <mat-option [value]="sec.dept">
-                                  {{sec.section_name}}
+                                  {{sec.section_name}} - Sem{{sec.sem}}
                                 </mat-option>
                               </ng-container>                              
                             </mat-select>
