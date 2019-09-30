@@ -63,6 +63,7 @@ export class SubjectAddComponent implements OnInit {
           dept_id: new FormControl("", [Validators.required])
         })], [Validators.required]);
   }
+  
   createFormGroup() {
     this.addSubjectForm = new FormGroup({ subjects: this.subjects });
   }
