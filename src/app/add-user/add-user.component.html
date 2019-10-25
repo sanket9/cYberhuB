@@ -40,17 +40,9 @@
                   <div class="checkbox-container">
                     <h4>Set According to their Role Permissions</h4>
 
-                    <div class="col-md-12 pb-3">                      
-                      <mat-form-field>
-                        <mat-select placeholder="Select a Possition" (change)="createLog($event)" [(ngModel)]="roleName">
-                          <mat-option value="">Select One--</mat-option>
-                          <mat-option *ngFor="let role of roles" value="{{role.id}}">{{role.role_name}}</mat-option>
-                          
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
+                    
                   
-                    <div class="col-md-12 d-flex" *ngIf="roleName">
+                    <div class="col-md-12 d-flex">
                       <!-- <div class="example-header">
                         <mat-form-field>
                           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
@@ -78,11 +70,23 @@
                           </mat-select>
                         </mat-form-field>
                       </div>
-                      
                     </div>
+                    <div class="col-md-6">
+                      <mat-form-field>
+                        <mat-select placeholder="Select a Possition" name="roleName" (change)="createLog($event)" [(ngModel)]="roleName">
+                          <mat-option value="">Select One--</mat-option>
+                          <mat-option *ngFor="let role of roles" value="{{role.id}}">{{role.role_name}}</mat-option>
+                    
+                        </mat-select>
+                      </mat-form-field>
+                      <small class="text-danger"> {{showError}}</small>
+                    </div>
+                   
                     <mat-card style="width:100%; margin-top: 20px;" *ngIf="logDetails?.user">
+
                       <div class="row">
                         
+
                         <div class="col-md-3">
                           <mat-form-field class="example-full-width">
                             <input matInput placeholder="Staff Name" name="name" [(ngModel)]="name">

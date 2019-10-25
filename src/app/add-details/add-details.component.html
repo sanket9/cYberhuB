@@ -130,7 +130,7 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <mat-form-field class="">
-                                                    <mat-select placeholder="Select Shift" name="shift" [(ngModel)]="shift_staff1" (change)="onChooseShift($event, 2)">
+                                                    <mat-select placeholder="Select Shift" name="shift" [(ngModel)]="shift_staff1" (change)="onChooseShift($event)">
                                                         <ng-container *ngFor="let shift of orgShiftLists">
                                                             <mat-option [value]="shift.orgshift[0]?.id" *ngIf="shift.orgshift[0]?.id" class="shiftOptions">
                                                                 {{shift.name}}

@@ -47,6 +47,7 @@ export class AddUserComponent implements OnInit {
   class_taken;
   showloader: boolean = false;
   useModelList: any = [];
+  showError: string;
   constructor(
     public router: Router,
     public http: Http,
@@ -127,11 +128,17 @@ export class AddUserComponent implements OnInit {
       (<HTMLElement>tabs[i]).style.display = "none";
     }
     if (this.tabIndex === 0) {
-      this.tabIndex++;
-      moveTab.style.left = screenWidth > 990 ? "22vw" : "30vw";
-      preBtn.style.visibility = "visible";
-      moveTab.innerHTML = "Modules"; 
-      this.getSeclectStaffRoll();
+      if (this.logDetails.role.id && this.logDetails.user) {
+        this.tabIndex++;
+        moveTab.style.left = screenWidth > 990 ? "22vw" : "30vw";
+        preBtn.style.visibility = "visible";
+        moveTab.innerHTML = "Modules"; 
+        
+      } else {
+        alert('Please select a Rolefor this User')
+      }
+      // this.getSeclectStaffRoll();
+      
     } else if (this.tabIndex === 1) {
       this.tabIndex++;
       moveTab.style.left = screenWidth > 990 ? "49vw" : "61.5vw";
@@ -251,13 +258,21 @@ export class AddUserComponent implements OnInit {
         this.roles = data.data;
       });
   }
+  
   createLog(event) {
-    this.logDetails = {
-      role: {
+    if (this.logDetails.role.name != '') {
+      this.showError = `The User's Role has been Updated by current role.`;
+      setTimeout(() => {
+        this.showError = ""
+      }, 10000);
+    }
+
+    this.logDetails.role = {
         id: this.roleName,
         name: event.source.triggerValue
-      }
     };
+    console.log( "log",this.logDetails);
+    
   }
   getValue() {
     
@@ -306,7 +321,13 @@ export class AddUserComponent implements OnInit {
     );
   }
   selectStaff(id) {
-    if (this.logDetails) {
+    this.logDetails = {
+      role: {
+        id: "",
+        name: ""
+      }
+    };
+    // if (this.logDetails) {
       this.result = this.filteredStaff.find(item => item.id === id);
       console.log(this.result);
       this.name = this.result.name
@@ -328,17 +349,17 @@ export class AddUserComponent implements OnInit {
       // this.techingtype = rolecats.parent_id;
       this.techingtypefilter(this.techingtype);
       // console.log("teaching types",this.techingtype);
-
+      this.getSeclectStaffRoll();
       this.logDetails.user = {
         id: this.result.id,
         name: this.result.name,
         user_type_id: 2
       };
       this.logDetails.modules = [];
-    } else {
-      alert("Please Choose a Possition");
-      return false;
-    }
+    // } else {
+    //   alert("Please Choose a Possition");
+    //   return false;
+    // }
   }
 
   techingtypefilter(value: number) {
@@ -505,29 +526,41 @@ export class AddUserComponent implements OnInit {
       .post(`${environment.apiUrl}role/roledetails`, apiData)
       .map(res => res.json())
       .subscribe(data => {
-        //console.log("user roll",data);
-        data.data.forEach(element => {
-          let isPresent = this.logDetails["modules"].filter(ele => ele.id == element.module_id);
-          // console.log("find length", isPresent);
-          // console.log("find length", this.logDetails);
+        if (data.data.length > 0) {
           
-          if (isPresent.length == 0){
+          this.logDetails.role.id = data.data[0].role.id;
+          this.logDetails.role.name = data.data[0].role.role_name;
+          this.roleName = data.data[0].role.id.toString();
+          console.log("user roll", this.roleName);
+  
+          data.data.forEach(element => {
+            let isPresent = this.logDetails["modules"].filter(ele => ele.id == element.module_id);
+            // console.log("find length", isPresent);
+            // console.log("find length", this.logDetails);
+            
+            if (isPresent.length == 0){
+  
+              this.useModelList.push(element.module_id)
+              let data = {
+                id: element.module_id,
+                name: element.module.module_name,
+                permissions: {
+                  add: element.add == 1 ? true : false,
+                  edit: element.edit == 1 ? true : false,
+                  view: element.view == 1 ? true : false,
+                  delete: element.delete == 1 ? true : false,
+                  all: element.add == 1 && element.edit == 1 && element.view == 1 && element.delete == 1 ? true : false
+                }
+              }; 
+              this.logDetails["modules"].push(data);
+            }
+          });
+        }else{
+          this.logDetails.role.id ="";
+          this.logDetails.role.name = "";
+          this.roleName = ""; this.logDetails["modules"] = [];
 
-            this.useModelList.push(element.module_id)
-            let data = {
-              id: element.module_id,
-              name: element.module.module_name,
-              permissions: {
-                add: element.add == 1 ? true : false,
-                edit: element.edit == 1 ? true : false,
-                view: element.view == 1 ? true : false,
-                delete: element.delete == 1 ? true : false,
-                all: element.add == 1 && element.edit == 1 && element.view == 1 && element.delete == 1 ? true : false
-              }
-            }; 
-            this.logDetails["modules"].push(data);
-          }
-        });
+        }
         this.showloader = false;
       })
 

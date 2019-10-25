@@ -3,6 +3,7 @@ import { Http, RequestOptions, Headers } from "@angular/http";
 import { environment } from "../../environments/environment.prod";
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import { Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -31,6 +32,8 @@ export class ClassListComponent implements OnInit {
   orgClassSectionList: any;
   sortArray: any = [];
   showSameasPreviousButton: boolean;
+  orgYearList: any;
+  courseScructureType: any;
   
 
   // @ViewChild('shiftOption') private shifts: ElementRef;
@@ -189,10 +192,11 @@ getSemList() {
     .post(`${environment.apiUrl}classsection/getallsem`, data, {headers: header})
     .map(res => res.json())
     .subscribe(data => {
-      console.log("sem list ", data.data);
+      // console.log("sem list ", data.data);
       if(data.data){
-        this.semList = data.data;
-        console.log("sem list ", this.semList);
+        this.semList = data.data.filter(ele => ele.sem_no );
+        this.orgYearList = data.data.filter(ele => ele.year_no);
+        // console.log("sem list ", this.semList);
       }      
   });
 }
@@ -212,7 +216,7 @@ getSemList() {
 
     if(check_exist.length > 0){
       let i = this.finalClassSeclistArr.indexOf(check_exist[0]);
-      this.finalClassSeclistArr.splice(i,1);
+      // this.finalClassSeclistArr.splice(i,1);
       this.finalClassSeclistArr.push(
         {
           row: f,
@@ -297,6 +301,7 @@ getSemList() {
         year: this.year, 
         sem: this.semester,
         shift: this.shift,
+        courseScructureType: this.courseScructureType,
         org_id: this.sessionStore.retrieve('user-data')[0].org_code,
     };    
 
@@ -317,10 +322,10 @@ getSemList() {
   generateYearList(yearRange) {
     let currentYear = new Date().getFullYear();
     this.yearList.push(currentYear);
-    for (let index = 0; index < yearRange; index++) {
-      currentYear++;
-      this.yearList.push(currentYear);      
-    }   
+    // for (let index = 0; index < yearRange; index++) {
+    //   currentYear++;
+    //   this.yearList.push(currentYear);      
+    // }   
   }
 
 

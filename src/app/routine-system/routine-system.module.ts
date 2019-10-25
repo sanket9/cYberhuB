@@ -40,13 +40,16 @@ import {
   MatPaginatorModule,
   MatProgressSpinnerModule,
   MatExpansionModule,
-  MatGridListModule
+  MatGridListModule,
+  MatDialogModule,
+  MatDatepickerModule,
+  MatRadioModule
 } from "@angular/material";
 import { AssignClassComponent } from './assign-class/assign-class.component';
 import { SubjectAddComponent } from './subject-add/subject-add.component';
 import { CoursesSubjectComponent } from './courses-subject/courses-subject.component';
 import { ViewRutineComponent } from './view-rutine/view-rutine.component';
-import { EditRoutineComponent } from './edit-routine/edit-routine.component';
+import { EditRoutineComponent, DialogOverviewExampleDialog  } from './edit-routine/edit-routine.component';
 import { EditShiftClassComponent } from './edit-shift-class/edit-shift-class.component';
 @NgModule({
   imports: [
@@ -73,7 +76,10 @@ import { EditShiftClassComponent } from './edit-shift-class/edit-shift-class.com
     RoutineSystemRoutingModule,
     MatTabsModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatRadioModule
   ],
   providers: [NotificationService],
   declarations: [
@@ -84,7 +90,12 @@ import { EditShiftClassComponent } from './edit-shift-class/edit-shift-class.com
     CoursesSubjectComponent,
     ViewRutineComponent,
     EditRoutineComponent,
-    EditShiftClassComponent
+    EditShiftClassComponent,
+    DialogOverviewExampleDialog 
+  ],
+  entryComponents: [
+    EditRoutineComponent,
+    DialogOverviewExampleDialog
   ]
 })
 export class RoutineSystemModule {}

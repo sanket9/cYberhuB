@@ -349,7 +349,7 @@
                             <div class="example-container">
                                 <mat-form-field>
                                     <mat-select placeholder="Parent Component" name="cc_parent_edit" [(ngModel)]="cc_parent_edit">
-                                        <mat-option value="">--None--</mat-option>
+                                        <mat-option value="0">--None--</mat-option>
                                         <mat-option *ngFor="let item of courseCats;" value="{{item.id}}">{{item.name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>

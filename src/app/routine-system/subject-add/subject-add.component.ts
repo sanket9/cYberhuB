@@ -39,6 +39,8 @@ export class SubjectAddComponent implements OnInit {
   semList: any;
   selectedClass_id: any;
   defaultyear: any;
+  orgYearList: any;
+  courseScructureType: any;
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -128,7 +130,7 @@ export class SubjectAddComponent implements OnInit {
                 class_id: ele.class_id,
                 class: ele.class.section.sec_name,
                 year: ele.class.year,
-                sem: ele.class.sem.sem_no,
+                sem: ele.class.sem,
                 subjectname: [{
                   sub_name: ele.subject_name,
                   id: ele.id
@@ -146,7 +148,7 @@ export class SubjectAddComponent implements OnInit {
               class_id: ele.class_id,
               class: ele.class.section.sec_name,
               year: ele.class.year,
-              sem: ele.class.sem.sem_no,
+              sem: ele.class.sem,
               subjectname: [{
                 sub_name: ele.subject_name,
                 id: ele.id
@@ -286,7 +288,7 @@ export class SubjectAddComponent implements OnInit {
     );
     console.log(this.sortArray);
     this.sortArray.forEach(element => {
-      console.log(element);
+      // console.log(element);
       
       if (this.classlist.indexOf(element.class.class_name) < 0) {
         this.classlist.push(element.class.class_name);
@@ -339,7 +341,7 @@ export class SubjectAddComponent implements OnInit {
     this.defaultsubject = -1;
     var d = new Date();
     this.sortedSubjectList = this.newsortArray.filter(item => item.sem_id == e.value && item.year == d.getFullYear());
-    console.log(this.sortedSubjectList);
+    // console.log(this.sortedSubjectList);
     
   }
 
@@ -356,7 +358,9 @@ export class SubjectAddComponent implements OnInit {
       .map(res => res.json())
       .subscribe(data => {
         console.log('sem list : .....', data);        
-        this.semList = data.data;
+        // this.semList = data.data;
+        this.semList = data.data.filter(ele => ele.sem_no);
+        this.orgYearList = data.data.filter(ele => ele.year_no);
       });
   }
 

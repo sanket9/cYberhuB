@@ -118,9 +118,18 @@
                                 <div *ngFor="let priods of rutine?.priods">
                                     <div *ngIf="priod.period_name == priods.priod_name">
                                         <p *ngFor="let item of priods?.rutinedetails">
-                                            {{item.class.section.sec_name}} ({{item.class_sub?.subcourse[0]?.count_name}}) / {{item.teacher.short_name}} / {{item.room.name}}
-                                            <small style="font-weight:bold; color:brown">{{item.cc_name}}</small> <br>
-                                            <small *ngIf="item.is_block == 1 && datecompare(item.block_date)" style="color:brown">Staff Shifted to Exam duty.</small>
+                                            <ng-container *ngIf="priods?.rutinedetails[0]?.update_routine.length == 0">
+                                                {{item.class.section.sec_name}} ({{item.class_sub?.subcourse[0]?.count_name}}) / {{item.teacher.short_name}} / {{item.room.name}}
+                                                <small style="font-weight:bold; color:brown">{{item.cc_name}}</small> <br>
+                                                <small *ngIf="item.is_block == 1 && datecompare(item.block_date)" style="color:brown">Staff Shifted to Exam duty.</small>
+
+                                            </ng-container>
+                                            <ng-container *ngIf="priods?.rutinedetails[0]?.update_routine.length > 0">
+                                                {{item?.class.section.sec_name}} ({{item?.update_routine[0]?.class_sub?.subcourse[0]?.count_name}}) / {{item?.update_routine[0]?.teacher.short_name}} / {{item?.update_routine[0]?.room.name}}
+                                                <small style="font-weight:bold; color:brown">{{item.cc_name}}</small> <br>
+                                                <small *ngIf="item.is_block == 1 && datecompare(item.block_date)" style="color:brown">Staff Shifted to Exam duty.</small>
+
+                                            </ng-container>
                                         </p>
                                     </div>
                                 </div>

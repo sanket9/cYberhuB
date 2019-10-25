@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -12,6 +12,7 @@ import { environment } from "../../../environments/environment.prod";
 import { Router, ActivatedRoute } from "@angular/router";
 import { NotificationService } from "../../services/notification.service";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: "app-edit-routine",
@@ -38,7 +39,8 @@ export class EditRoutineComponent implements OnInit {
     public notification: NotificationService,
     public router: Router,
     public activeroute: ActivatedRoute,
-    public SessionStore: SessionStorageService
+    public SessionStore: SessionStorageService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -223,6 +225,11 @@ export class EditRoutineComponent implements OnInit {
       room_id: this.dayRoutine[i].rutinedetails[0].room.id,
       teacher_id: this.dayRoutine[i].rutinedetails[0].teacher.id
     };
+    this.openDialog(data);
+    
+  }
+
+  updateRutineData(data) {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     let options = new RequestOptions({ headers: headers });
@@ -248,4 +255,34 @@ export class EditRoutineComponent implements OnInit {
         }
       });
   }
+  openDialog(data): void {
+    let dialogRef = this.dialog.open(DialogOverviewExampleDialog , {
+      width: '300px',
+      data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.updateRutineData(result)
+      }
+      console.log('The dialog was closed', result);
+    });
+  }
+}
+
+
+@Component({
+  selector: 'popup-saveRoutine',
+  templateUrl: 'popup-saveRoutine.html',
+})
+export class DialogOverviewExampleDialog  {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog >,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
 }

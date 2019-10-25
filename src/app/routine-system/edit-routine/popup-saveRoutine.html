@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Set the Effective Date </h1>
+<div mat-dialog-content>
+    <!-- <p>What's your favorite animal?</p> -->
+    <div class="row">
+        <div class="col-md-12">
+            <mat-radio-group [(ngModel)]="data.chnagetype">
+                <mat-radio-button value="1">Permanent Change</mat-radio-button>
+                <mat-radio-button value="2">Temporary Change</mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </div>
+    <div class="row" *ngIf="data.chnagetype == 2">
+        <div class="col-md-12">
+            <mat-form-field>
+                <input matInput [matDatepicker]="from_date" [(ngModel)]="data.fromDate" placeholder="From Date">
+                <mat-datepicker-toggle matSuffix [for]="from_date"></mat-datepicker-toggle>
+                <mat-datepicker #from_date></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="col-md-12">
+            <mat-form-field>
+                <input matInput [matDatepicker]="to_date" [(ngModel)]="data.toDate" placeholder="To date">
+                <mat-datepicker-toggle matSuffix [for]="to_date"></mat-datepicker-toggle>
+                <mat-datepicker #to_date></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <!-- <button mat-button (click)="onNoClick()">No Thanks</button> -->
+    <button mat-button color="primary" [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+</div>

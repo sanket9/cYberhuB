@@ -417,9 +417,7 @@ getClassList(){
 //     ------------------ After choose section -----------------
 // ########################################################################
   onChooseSection(e){
-    if(e.value){
-      // this.routes.navigate(['/notice-management/add-notice']);
-    }   
+
     
     let ifAllSelect = e.value.filter((ele)=>{
       return ele == "all";

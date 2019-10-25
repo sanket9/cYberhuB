@@ -35,8 +35,9 @@ export class CoursesSubjectComponent implements OnInit {
   semList: any;
   sortedSubjectList: any;
   semId: number;
+  orgYearList: any;
 
-
+  courseScructureType: any;
   constructor(
     public router: Router,
     public http: Http,
@@ -99,7 +100,8 @@ export class CoursesSubjectComponent implements OnInit {
       .map(res => res.json())
       .subscribe(data => {
       
-        this.semList = data.data;
+        this.semList = data.data.filter(ele => ele.sem_no);
+        this.orgYearList = data.data.filter(ele => ele.year_no);
       });
   }
 
@@ -318,7 +320,7 @@ export class CoursesSubjectComponent implements OnInit {
                 shift: ele.class.org_shift.shifts.name,
                 class_id: ele.class_id,
                 class: ele.class.section.sec_name,
-                sem: ele.class.sem.sem_no,
+                sem: ele.class.sem,
                 year: ele.class.year,
                 subjectname: [
                   {

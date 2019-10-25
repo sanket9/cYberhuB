@@ -12,7 +12,24 @@
             --------------  class and section list generating  ---------------
             ################################################################### -->
             <div class="row">                 
-
+                  <div class="col-sm-6">
+                    <mat-form-field class="">
+                      <mat-select placeholder="Select Course Scructure Type" (change)="onChooseShift($event)" [(ngModel)]="courseScructureType"
+                      >
+                        <!-- <ng-container *ngFor="let shift of orgShiftLists"> -->
+                          <mat-option value="1" class="shiftOptions">
+                            Sem-Wise
+                          </mat-option>
+                          <mat-option value="2" class="shiftOptions">
+                            Year-Wise
+                          </mat-option>
+                          <!-- <mat-option value="1" class="shiftOptions">
+                            Sem-Wise
+                          </mat-option> -->
+                        <!-- </ng-container> -->
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
                   <div class="col-sm-6">
                     <mat-form-field class="">                      
                         <mat-select placeholder="Select Shift" (change)="onChooseShift($event)" [(ngModel)]="shift" (change)="showSameAsPreviousBtn()">
@@ -24,8 +41,18 @@
                         </mat-select>
                     </mat-form-field> 
                   </div>
-
-                  <div class="col-sm-6"> 
+                  <div class="col-sm-6">
+                    <mat-form-field class="">
+                      <mat-select placeholder="Choose Year" [(ngModel)]="year" (change)="showSameAsPreviousBtn()">
+                        <ng-container *ngFor="let year of yearList">
+                          <mat-option [value]="year" class="shiftOptions">
+                            {{year}}
+                          </mat-option>
+                        </ng-container>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-6" *ngIf="courseScructureType == 1"> 
                     <mat-form-field class="">                      
                       <mat-select placeholder="Select Semister" [(ngModel)]="semester" (change)="showSameAsPreviousBtn()">
                         <ng-container *ngFor="let sem of semList">                   
@@ -36,22 +63,23 @@
                       </mat-select>
                     </mat-form-field>
                   </div>
-
-                  <div class="col-sm-6">
+                  <div class="col-sm-6" *ngIf="courseScructureType == 2"> 
                     <mat-form-field class="">                      
-                      <mat-select placeholder="Choose Year" [(ngModel)]="year" (change)="showSameAsPreviousBtn()">
-                        <ng-container *ngFor="let year of yearList">                   
-                          <mat-option [value]="year" class="shiftOptions">
-                              {{year}}
+                      <mat-select placeholder="Select Year" [(ngModel)]="semester" (change)="showSameAsPreviousBtn()">
+                        <ng-container *ngFor="let sem of orgYearList">                   
+                          <mat-option [value]="sem.id" class="shiftOptions">
+                              Year {{sem.year_no}}
                           </mat-option>
                         </ng-container>
                       </mat-select>
                     </mat-form-field>
                   </div>
 
+                  
+
                   <div class="col-sm-12">
                       <button mat-raised-button color="primary" class="" (click)="increaseField()">Add Stream with Subject +</button>
-                      <button mat-raised-button color="primary" class="ml-3" (click)="sameAsPrevious()" *ngIf="showSameasPreviousButton">Add Details with Same as Previous Year</button>
+                      <button mat-raised-button color="primary" class="ml-3" (click)="sameAsPrevious()" *ngIf="showSameasPreviousButton && courseScructureType == 1">Add Details with Same as Previous Year</button>
                   </div>
             </div>
 
@@ -68,7 +96,7 @@
                   </mat-form-field>
               </div>
 
-              <div class="col-sm-6" *ngIf="typeId == 2">                
+              <div class="col-sm-6" *ngIf="typeId == 5 || typeId == 4 ">                
                 <mat-form-field>                      
                     <mat-select placeholder="Select Stream" (change)="onChangeClass($event, field)">
                       <mat-option *ngFor="let class of classList" [value]="class.id">
@@ -88,7 +116,7 @@
                   </mat-form-field>
               </div>
 
-              <div class="col-sm-6" *ngIf="typeId == 2">
+              <div class="col-sm-6" *ngIf="typeId == 5 || typeId == 4 ">
                 <mat-form-field>
                     <mat-select placeholder="Select Subject" (change)="onChangeSection($event, field)">
                       <mat-option *ngFor="let section of sectionList" [value]="section.id">

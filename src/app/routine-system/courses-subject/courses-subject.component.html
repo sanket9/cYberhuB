@@ -29,7 +29,7 @@
         </div> -->
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <app-loader [show]="showloader"></app-loader>
                 <div class="card">
                     <div class="card-header card-header-danger">
@@ -39,7 +39,24 @@
                     <div class="card-body">
                         <form>
                             <div class="row">
-
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                    
+                                        <mat-select placeholder="Select Course Scructure Type" name='courseScructureType' [(ngModel)]="courseScructureType">
+                                            <!-- <ng-container *ngFor="let shift of orgShiftLists"> -->
+                                            <mat-option value="1" class="shiftOptions">
+                                                Sem-Wise
+                                            </mat-option>
+                                            <mat-option value="2" class="shiftOptions">
+                                                Year-Wise
+                                            </mat-option>
+                                            <!-- <mat-option value="1" class="shiftOptions">
+                                                                    Sem-Wise
+                                                                    </mat-option> -->
+                                            <!-- </ng-container> -->
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
                                 <div class="col-md-3">
                                     <mat-form-field>
                                         <mat-select name="shift" placeholder="Select Shift" (change)="onChooseShift($event)">
@@ -64,13 +81,26 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-3" *ngIf="courseScructureType == 1">
                                     <mat-form-field class="example-full-width">
                                         <mat-select placeholder="Select Sem" name="class" (change)="onChooseSem($event)" [(ngModel)]="semId">
                                             <mat-option value="-1" selected>--Select One--</mat-option>
                                             <ng-container *ngFor="let sem of semList">
                                                 <mat-option [value]="sem.id">
                                                     Sem {{sem.sem_no}}
+                                                </mat-option>
+                                            </ng-container>
+
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3" *ngIf="courseScructureType == 2">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-select placeholder="Select Academic Yaer" name="class" (change)="onChooseSem($event)" [(ngModel)]="semId">
+                                            <mat-option value="-1" selected>--Select One--</mat-option>
+                                            <ng-container *ngFor="let sem of orgYearList">
+                                                <mat-option [value]="sem.id">
+                                                    Year {{sem.year_no}}
                                                 </mat-option>
                                             </ng-container>
 
@@ -145,7 +175,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Shift</th>
                                 <th scope="col">Class/Dept.</th>
-                                <th scope="col">Sem</th>
+                                <th scope="col">Sem/Year</th>
                                 <th scope="col">Year</th>
                                 <th scope="col">Subjects</th>
                                 <th scope="col">Actions</th>
@@ -156,7 +186,7 @@
                                 <th scope="row">{{i}} </th>
                                 <td>{{item.shift}}</td>
                                 <td>{{item.class}}</td>
-                                <td>{{item.sem}}</td>
+                                <td>{{item?.sem?.sem_no ? 'Sem' : 'Year'}} {{item?.sem?.sem_no ? item?.sem?.sem_no : item?.sem?.year_no}}</td>
                                 <td>{{item.year}}</td>
                                 <td>
                                     <p class="border-bottom clearfix" *ngFor="let it of item.subjectname"> {{it.sub_name}}
