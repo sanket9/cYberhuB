@@ -34,6 +34,7 @@ export class ClassListComponent implements OnInit {
   showSameasPreviousButton: boolean;
   orgYearList: any;
   courseScructureType: any;
+  orgExamPatList: any;
   
 
   // @ViewChild('shiftOption') private shifts: ElementRef;
@@ -45,8 +46,9 @@ export class ClassListComponent implements OnInit {
     this.getOrgDetails();
     this.getShiftLists();
     this.getSemList();
-    this.generateYearList(10);
+    this.generateYearList(5);
     this.getClassSection();
+    this.getExamTypeNames()
     this.fieldCountArr = [1];
     this.choosenClassAndSectionArr = [];
     this.finalClassSeclistArr = [];
@@ -76,7 +78,27 @@ export class ClassListComponent implements OnInit {
 
 
 
+  getExamTypeNames() {
+    // this.showloader = true;
+    let header = new Headers();
+    header.set("Content-Type", "application/json");
 
+    let data = {
+      org_id: this.org_code
+    };
+
+    this.http
+      .post(`${environment.apiUrl}exampattern/OrgExampatternlist`, data)
+      .map(res => res.json())
+      .subscribe(data => {
+        // let jsonResponse = data.json();
+        // console.log("Org exam pattern list ", data.data);
+        this.orgExamPatList =  data.data.filter(ele => ele.orgexam.length > 0)
+        console.log(this.orgExamPatList);
+        
+      });
+
+  }
 
 // ########################################################################
 //       ------------------ getting all shifts here -----------------
@@ -322,10 +344,10 @@ getSemList() {
   generateYearList(yearRange) {
     let currentYear = new Date().getFullYear();
     this.yearList.push(currentYear);
-    // for (let index = 0; index < yearRange; index++) {
-    //   currentYear++;
-    //   this.yearList.push(currentYear);      
-    // }   
+    for (let index = 0; index < yearRange; index++) {
+      currentYear++;
+      this.yearList.push(currentYear);      
+    }   
   }
 
 

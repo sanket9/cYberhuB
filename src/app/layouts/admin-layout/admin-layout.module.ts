@@ -13,6 +13,7 @@ import { NoticeManagementComponent, ModalDialog } from "../../notice-management/
 import { AddDetailsComponent } from '../../add-details/add-details.component';
 import { ClassListComponent } from "app/class-list/class-list.component";
 import { GalleryUploadComponent } from "../../gallery-upload/gallery-upload.component";
+import { SearchUserComponent } from "../../search-user/search-user.component";
 import { NotificationService } from '../../services/notification.service';
 // import { BrowserModule } from '@angular/platform-browser';
 import { ComponentsModule } from "../../components/components.module";
@@ -80,7 +81,9 @@ import {
     AddDetailsComponent,
     ClassListComponent,
     ModalDialog,
-    GalleryUploadComponent
+    GalleryUploadComponent,
+    SearchUserComponent,
+    
   ],
 
   entryComponents: [ModalDialog],

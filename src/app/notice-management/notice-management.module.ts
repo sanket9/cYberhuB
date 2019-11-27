@@ -27,6 +27,7 @@ import {
 } from "@angular/material";
 
 import { ChooseNoticeTypeComponent } from './choose-notice-type/choose-notice-type.component';
+import { EditComponent } from './edit/edit.component';
 
 @NgModule({
   imports: [
@@ -53,7 +54,7 @@ import { ChooseNoticeTypeComponent } from './choose-notice-type/choose-notice-ty
     FlatpickrModule.forRoot()
   ],
 
-  declarations: [AddNoticeComponent, ChooseNoticeTypeComponent],
+  declarations: [AddNoticeComponent, ChooseNoticeTypeComponent, EditComponent],
 
   providers: [ApiService]
 })

@@ -30,7 +30,7 @@
         <!-- <form class="pt-2" [formGroup]="" (submit)="submitForm(viewRoutine.value)"> -->
 
           <mat-accordion>
-            <mat-expansion-panel *ngFor="let routine of dayRoutine; let i = index;" [expanded]="i === 0">
+            <mat-expansion-panel *ngFor="let routine of dayRoutine; let ind = index;" [expanded]="ind === 0">
               <mat-expansion-panel-header>
                 <mat-panel-title>
                   Period : {{routine.priod.period_name}}
@@ -39,21 +39,21 @@
                  Update Routine
                 </mat-panel-description>
               </mat-expansion-panel-header>
-              <form class="pt-2" *ngIf="routine.rutinedetails.length > 0 && routine.rutinedetails[0].update_routine.length == 0">
-                <div class="row">
+              <form class="pt-2" *ngFor="let item of routine.rutinedetails; let i = index">
+                <div class="row" *ngIf="item?.update_routine.length == 0">
                   <div class="col-md-6">
-                    {{routine.rutinedetails[0].class_sub_id}} 
+                    <!-- {{item.id}}  -->
                     <mat-form-field>
-                      <mat-select placeholder="Select Component with Subject" [(ngModel)]="routine.rutinedetails[0].class_sub_id" name="component">
+                      <mat-select placeholder="Select Component with Subject" [(ngModel)]="item.class_sub_id" name="component">
                         <mat-option *ngFor="let sub of SubjectComponent" [value]="sub.id" >
-                          {{ sub?.subcourse[0]?.count_name }} - ({{sub.subject_name}})
+                          {{ sub?.subcourse[ind]?.count_name }} - ({{sub.subject_name}})
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
                   <div class="col-md-6">
                     <mat-form-field>
-                      <mat-select placeholder="Select Teacher" [(ngModel)]="routine.rutinedetails[0].teacher.id" name="tech_id">
+                      <mat-select placeholder="Select Teacher" [(ngModel)]="item.teacher.id" name="tech_id">
                         <mat-option *ngFor="let tech of teachers" [value]="tech.id">
                           {{ tech.short_name }}
                         </mat-option>
@@ -62,7 +62,7 @@
                   </div>
                   <div class="col-md-6">
                     <mat-form-field>
-                      <mat-select placeholder="Select Room" [(ngModel)]="routine.rutinedetails[0].room.id" name="room_id">
+                      <mat-select placeholder="Select Room" [(ngModel)]="item.room.id" name="room_id">
                         <mat-option *ngFor="let room of org_rooms" [value]="room.id">
                           {{ room.name }}
                         </mat-option>
@@ -70,11 +70,42 @@
                     </mat-form-field>
                   </div>
                 </div>
-                
-                <button mat-button type="button" class="btn btn-primary" (click)="update(i, routine.rutinedetails[0].id)">Update</button>
+                <div class="row" *ngIf="item?.update_routine.length > 0">
+                    <div class="col-md-6">
+                        {{item.class_sub_id}} 
+                        <mat-form-field>
+                          <mat-select placeholder="Select Component with Subject" [(ngModel)]="item.update_routine[0].class_sub_id" name="component">
+                            <mat-option *ngFor="let sub of SubjectComponent" [value]="sub.id" >
+                              {{ sub?.subcourse[ind]?.count_name }} - ({{sub.subject_name}})
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field>
+                          <mat-select placeholder="Select Teacher" [(ngModel)]="item.update_routine[0].teacher.id" name="tech_id">
+                            <mat-option *ngFor="let tech of teachers" [value]="tech.id">
+                              {{ tech.short_name }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field>
+                          <mat-select placeholder="Select Room" [(ngModel)]="item.update_routine[0].room.id" name="room_id">
+                            <mat-option *ngFor="let room of org_rooms" [value]="room.id">
+                              {{ room.name }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                </div>
+
+
+                <button mat-button type="button" class="btn btn-primary" (click)="update(ind, item.id, routine.priod.id)">Update</button>
 
               </form>
-              <form class="pt-2" *ngIf="routine.rutinedetails.length > 0 && routine.rutinedetails[0].update_routine.length > 0">
+              <!-- <form class="pt-2" *ngIf="routine.rutinedetails.length > 0 && routine.rutinedetails[0].update_routine.length > 0">
                 <div class="row">
                   <div class="col-md-6">
                     {{routine.rutinedetails[0].class_sub_id}} 
@@ -108,7 +139,7 @@
                 
                 <button mat-button type="button" class="btn btn-primary" (click)="update(i, routine.rutinedetails[0].id)">Update</button>
 
-              </form>
+              </form> -->
               <div *ngIf="routine.rutinedetails.length == 0">
                 No Routine in this Shedule
               </div>

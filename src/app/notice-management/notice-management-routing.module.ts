@@ -21,6 +21,7 @@ import {
   MatExpansionModule,
   MatGridListModule
 } from "@angular/material";
+import { EditComponent } from './edit/edit.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
   {
     path: "add-notice",
     component: AddNoticeComponent
+  },
+  {
+    path: "edit/:id",
+    component: EditComponent
   },
   {
     path: "notice-type",

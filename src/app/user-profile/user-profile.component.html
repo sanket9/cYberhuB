@@ -200,30 +200,30 @@
                       </div>
                       <div class="card-body">
 
-                        <form *ngIf="schooldetailsFrm" [formGroup]="">
-                          <!-- <div class="row">
+                        <form *ngIf="schooldetailsFrm">
+                          <div class="row">
 
                               <div class="col-md-6">
                                   <mat-form-field class="example-full-width">
-                                      <input matInput placeholder="Affiliations Name" type="text" name="name">
+                                      <input matInput placeholder="Affiliations Name" type="text" name="affi_name" [(ngModel)]="affi_name" [ngModelOptions]="{standalone: true}">
                                   </mat-form-field>
                               </div>
                               <div class="col-md-6">
                                 <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Affiliations label" type="text" name="label">
+                                  <input matInput placeholder="Affiliations label" type="text" name="affi_type" [(ngModel)]="affi_type" [ngModelOptions]="{standalone: true}">
                                 </mat-form-field>
                               </div>
-                              <div class="col-md-12">
+                              <!-- <div class="col-md-12">
                                 <label>Choose file to upload</label>
                                 <button mat-raised-button color="primary" (click)="file_staff.click()">Add File</button>
                                   <input type="file" hidden #file_staff name="file_staff">
-                              </div>
+                              </div> -->
 
                               <div class="col-md-4">
-                                <button mat-raised-button class="btn btn-block btn-danger pull-right mt-4">Upload</button>
+                                <button type="button" mat-raised-button class="btn btn-block btn-danger pull-right mt-4" (click)="addaffiliates()">Save Details</button>
                               </div>
 
-                          </div> -->
+                          </div>
                           <div class="row">
                             <mat-table #table [dataSource]="dataSource" style="width: 100%">
                               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -237,13 +237,12 @@
                                 <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
                                 <mat-cell *matCellDef="let element"> {{element.affi_name}} </mat-cell>
                               </ng-container>
-                              <ng-container matColumnDef="image">
+                              <!-- <ng-container matColumnDef="image">
                                 <mat-header-cell *matHeaderCellDef> Image </mat-header-cell>
                                 <mat-cell *matCellDef="let element"> 
                                   <img src="{{element.affi_img}} " alt="{{element.affi_name}}" style="width: 100px">
-                                  <!-- {{element.affi_img}}  -->
                                 </mat-cell>
-                              </ng-container>
+                              </ng-container> -->
                               <ng-container matColumnDef="affi_type">
                                 <mat-header-cell *matHeaderCellDef> Affiliation Type </mat-header-cell>
                                 <mat-cell *matCellDef="let element">
@@ -252,10 +251,10 @@
                               <ng-container matColumnDef="actions">
                                 <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                                 <mat-cell *matCellDef="let element">
-                                  <!-- <button mat-icon-button type="button" matTooltip="Edit this" [matTooltipPosition]="'above'"
-                                    class="btn btn-link btn-sm btn-just-icon" (click)="selectStaff(element.id)">
-                                    <i class="material-icons">edit</i>
-                                  </button> -->
+                                  <button mat-icon-button type="button" matTooltip="delete this" [matTooltipPosition]="'above'"
+                                    class="btn btn-link btn-danger btn-sm btn-just-icon" (click)="deleteaffiliates(element.id)">
+                                    <i class="material-icons">delete</i>
+                                  </button>
                                   <!-- <button mat-icon-button >
                                               <mat-icon>remove_red_eye</mat-icon>
                                             </button> -->

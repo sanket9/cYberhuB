@@ -16,16 +16,17 @@ declare interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
     { path: '/dashboard/', title: 'Dashboard',  icon: 'dashboard', class: '0', },
     { path: '/user-profile/', title: 'User Profile',  icon:'person', class: '0' },
-    { path: '/gallery/', title: 'Gallery', icon:'photo_library', class: '1' },
-    { path: '/videos/', title: 'Videos', icon:'video_library', class: '1' },
-    { path: '/add-user-details/', title: 'Upload Details',  icon:'notifications', class: '1' },
+    { path: '/gallery/', title: 'Gallery', icon:'photo_library', class: '100A' },
+    { path: '/videos/', title: 'Videos', icon:'video_library', class: '100A' },
+    { path: '/add-user-details/', title: 'Upload Details',  icon:'notifications', class: '100A' },
+    { path: '/search-user', title: 'Search Student',  icon:'search', class: '100A' },
     { path: '/add-user/', title: 'Add User Role', icon: 'person', class: '3' },
     { path: '/notice/', title: 'Notice', icon: 'notes', class: '2' },
     { path: '/library/index/', title: 'Library', icon: 'library_books', class: '4' },
     { path: '/event/index/', title: 'Events', icon: 'speaker', class: '5' },
     { path: '/routine/index/', title: 'Routine', icon: 'event_available', class: '6' },
     { path: '/exam/index/', title: 'Exam System', icon: 'event_available', class: '7' },
-    // { path: '/school/module/index/', title: 'More', icon: 'settings_remote', class: '0' },
+    { path: '/school/module/index/', title: 'More', icon: 'settings_remote', class: '0' },
 ];
 
 @Component({
@@ -99,7 +100,7 @@ export class SidebarComponent implements OnInit {
           let routes = [];
           if (this.sessionStore.retrieve("user-data")[0].user_type_id == 1) {
             let searchroutes = ROUTES.filter(menuItem => {
-              return menuItem.class == "0" || menuItem.class == "1"
+              return menuItem.class == "0" || menuItem.class == "100A"
             });
             console.log(searchroutes);
 
@@ -120,13 +121,13 @@ export class SidebarComponent implements OnInit {
                 let searchroutes = ROUTES.filter(menuItem => {
                   return menuItem.class == ele.module_id
                 });
-                // console.log(routes);
+                // console.log(searchroutes);
                 if (searchroutes.length > 0) {
                   routes.push(searchroutes[0])
                 }       
               }
             });
-            // routes.splice(routes.length, 0, routes.splice(4, 1)[0]);
+            routes.splice(routes.length, 0, routes.splice(6, 1)[0]);
             this.menuItems = routes;
             // console.log(this.menuItems);
             

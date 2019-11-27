@@ -1,0 +1,238 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Search Student info
+      </li>
+
+    </ol>
+  </nav>
+  <div class="container-fluid">
+    <app-loader [show]="showloader"></app-loader>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h3 class="card-title">Search Details</h3>
+            <p class="card-category">
+              Search and Update Student info
+            </p>
+          </div>
+          <div class="card-body">
+            <form class="pt-2">
+              <div class="row">
+                <!-- <p>Hi</p> -->
+                <div class="col-md-8">
+                  <mat-form-field>
+                    <input matInput name="username" [(ngModel)]="username" placeholder="Search useing UserName Provided by Cyberhub" />
+                  </mat-form-field>
+                </div>
+              </div>
+              <button mat-raised-button class="btn btn-success mt-4" (click)="getUserDetails()">
+                <i class="material-icons">search</i>
+                Search</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" *ngIf="userData?.username">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h3 class="card-title">User Details</h3>
+            <p class="card-category">
+              User basic Details
+            </p>
+          </div>
+          <div class="card-body">
+              <form class="pt-2" [formGroup]="userdetailsFrm">
+                <div class="row">
+                  <div class="col-md-6">
+                      <mat-form-field>
+                        <input matInput name="username" formControlName="username" placeholder="Username" />
+                      </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                      <mat-form-field>
+                          <input type="text" matInput name="name" formControlName="name" placeholder="Name" />
+                        </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                      <mat-form-field>
+                          <input type="number" matInput name="phone" formControlName="phone" placeholder="Mobile No" />
+                        </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                      <mat-form-field>
+                          <input matInput name="email" formControlName="email" placeholder="Email" />
+                        </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                      <mat-form-field>
+                          <input matInput name="identity_no" formControlName="identity_no" placeholder="Govt ID no" />
+                        </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                      <mat-form-field>
+                          <input matInput name="std_postal_code" formControlName="std_postal_code" placeholder="Student Postal code" />
+                        </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                      <mat-form-field>
+                          <input matInput name="address" formControlName="address" placeholder="Student Address" />
+                        </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                      <mat-form-field>
+                          <input matInput name="dob" formControlName="dob" placeholder="DOB" />
+                        </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                      <mat-form-field>
+                          <mat-select placeholder="Gender" formControlName="gender">
+                            <mat-option value="M">
+                              Male
+                            </mat-option>
+                            <mat-option value="F">
+                              Female
+                            </mat-option>
+                            <mat-option value="T">
+                              Others
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                      <mat-form-field>
+                          <mat-select placeholder="Cast Category" formControlName="cast_category">
+                            <mat-option value="G">
+                              General
+                            </mat-option>
+                            <mat-option value="OBC">
+                              ObC
+                            </mat-option>
+                            <mat-option value="SC">
+                              SC
+                            </mat-option>
+                            <mat-option value="ST">
+                              ST
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                      <mat-form-field>
+                          <input matInput name="roll_no" formControlName="roll_no" placeholder="Roll NO" />
+                        </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                      <mat-form-field>
+                          <input matInput name="dob" formControlName="dob" placeholder="DOB" />
+                        </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                      <mat-form-field>
+                          <input matInput name="registration_no" formControlName="registration_no" placeholder="Registration no" />
+                        </mat-form-field>
+                  </div>
+                </div>
+                <button mat-raised-button class="btn btn-success mt-4" (click)="updateStudent()">
+                    <i class="material-icons">save</i>
+                    Save Details</button>
+              </form>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" *ngIf="userData?.username">
+          <div class="card">
+            <div class="card-header card-header-danger">
+              <h3 class="card-title">Student Dept/Class</h3>
+              <p class="card-category">
+                Student Class Details
+              </p>
+            </div>
+            <div class="card-body">
+                <form class="pt-2" [formGroup]="userdetailsFrm">
+                    <div class="row">
+                        <div class="col-md-3">
+                          <mat-form-field>
+                              <mat-select placeholder="Choose a Shift" name="shift_id" formControlName="shift_id" (change)="selectAllShifts($event.value, true)">
+                                  <ng-container *ngFor="let shift of shifs">
+                                      <mat-option [value]="shift.orgshift[0]?.id" *ngIf="shift.orgshift[0]?.id">
+                                          {{shift.name}}
+                                      </mat-option>
+                                  </ng-container>
+  
+                              </mat-select>
+                          </mat-form-field>
+
+                        </div>
+                        <div class="col-md-3">
+                          <mat-form-field>
+                              <mat-select placeholder="Choose a Class" name="class_id" formControlName="class_id" (change)="classChange($event.value, true)">
+                                  <mat-option *ngFor="let list of classlist" [value]="list">
+                                      {{ list }}
+                                  </mat-option>
+                              </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <mat-select placeholder="Choose a Year" formControlName="class_year" name="yearList">
+                                    <mat-option *ngFor="let year of yearList" [value]="year">
+                                        {{ year }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <mat-select placeholder="Choose a Sem" formControlName="sem" name="sem" (change)="onSemselect($event.value, true)">
+                                    <mat-option *ngFor="let sem of allsems" [value]="sem.id">
+                                        Sem {{ sem.sem_no }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <mat-select placeholder="Choose a Department" formControlName="dept_id" name="dept_id" (change)="deptChange($event.value, true)">
+                                    <mat-option *ngFor="let dept of Finaldepts" [value]="dept.id">
+                                        {{ dept.section.sec_name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                      </div>
+                          <button mat-raised-button class="btn btn-success mt-4" (click)="updateclass()">
+                            <i class="material-icons">save</i>
+                            Save Details</button>
+                </form>
+
+            </div>
+          </div>
+      </div>
+      <div class="col-md-8" *ngIf="userData?.username">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h3 class="card-title">Student Attdance</h3>
+            <p class="card-category">
+              Student Attdance
+            </p>
+          </div>
+          <div class="card-body">
+              <canvas #doughnutCanvas></canvas>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

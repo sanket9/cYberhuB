@@ -100,14 +100,15 @@
                         </tr>
                         <tr *ngFor="let rutine of rutineDetails;">
                             <td align="center" style="cursor: pointer;" *ngIf="filterRole.edit == 1" [routerLink]="['/routine/edit']" [queryParams]="{day:rutine.day,year: viewRoutine.value.year, dept: deptName && deptName[0].id, sem: samname && samname[0]?.id, stream: viewRoutine.value.stream }">
-                                {{getDay(rutine.day)}}
+                                <u>{{getDay(rutine.day)}}</u> 
                                 <!-- <i class="material-icons" [routerLink]="['/routine/edit']"
                 [queryParams]="{day:rutine.day,year: viewRoutine.value.year, dept: deptName && deptName[0].id, sem: samname && samname[0]?.id, stream: viewRoutine.value.stream }"
                 >
                   edit
                 </i> -->
                             </td>
-                            <td align="center" style="cursor: pointer;" *ngIf="filterRole.edit == 0"> {{getDay(rutine.day)}}
+                            <td align="center" style="cursor: pointer;" *ngIf="filterRole.edit == 0"> 
+                                <u> {{getDay(rutine.day)}} </u> 
                                 <!-- <i class="material-icons" [routerLink]="['/routine/edit']"
                 [queryParams]="{day:rutine.day,year: viewRoutine.value.year, dept: deptName && deptName[0].id, sem: samname && samname[0]?.id, stream: viewRoutine.value.stream }"
                 >

@@ -33,6 +33,7 @@ import { ClassListComponent } from './class-list/class-list.component';
 import { ViewExamComponent } from './view-exam/view-exam.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { VideosComponent } from './videos/videos.component';
+// import { SearchUserComponent } from './search-user/search-user.component';
 
 @NgModule({
   imports: [
@@ -70,6 +71,7 @@ import { VideosComponent } from './videos/videos.component';
     LoginComponent,
     ViewExamComponent,
     VideosComponent,
+    // SearchUserComponent,
   ],
   exports: [],
   providers: [AuthGuard],

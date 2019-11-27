@@ -17,12 +17,12 @@
                       <mat-select placeholder="Select Course Scructure Type" (change)="onChooseShift($event)" [(ngModel)]="courseScructureType"
                       >
                         <!-- <ng-container *ngFor="let shift of orgShiftLists"> -->
-                          <mat-option value="1" class="shiftOptions">
-                            Sem-Wise
+                          <mat-option *ngFor="let item of orgExamPatList" value="{{item.id}}"  class="shiftOptions">
+                            {{item.name}}-Wise
                           </mat-option>
-                          <mat-option value="2" class="shiftOptions">
+                          <!-- <mat-option value="2" class="shiftOptions">
                             Year-Wise
-                          </mat-option>
+                          </mat-option> -->
                           <!-- <mat-option value="1" class="shiftOptions">
                             Sem-Wise
                           </mat-option> -->
@@ -52,7 +52,7 @@
                       </mat-select>
                     </mat-form-field>
                   </div>
-                  <div class="col-sm-6" *ngIf="courseScructureType == 1"> 
+                  <div class="col-sm-6" *ngIf="courseScructureType == 2"> 
                     <mat-form-field class="">                      
                       <mat-select placeholder="Select Semister" [(ngModel)]="semester" (change)="showSameAsPreviousBtn()">
                         <ng-container *ngFor="let sem of semList">                   
@@ -63,7 +63,7 @@
                       </mat-select>
                     </mat-form-field>
                   </div>
-                  <div class="col-sm-6" *ngIf="courseScructureType == 2"> 
+                  <div class="col-sm-6" *ngIf="courseScructureType == 1"> 
                     <mat-form-field class="">                      
                       <mat-select placeholder="Select Year" [(ngModel)]="semester" (change)="showSameAsPreviousBtn()">
                         <ng-container *ngFor="let sem of orgYearList">                   

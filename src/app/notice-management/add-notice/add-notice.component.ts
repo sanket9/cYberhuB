@@ -198,7 +198,7 @@ export class AddNoticeComponent implements OnInit {
       .subscribe(data => {
         
         if(data){
-            if (this.schedulenotiForm.value.schedule.length > 0) {
+            if (this.schedulenotiForm.value.schedule[0].noti_time != '') {
               let apiData = {
                 org_id: this.sessionValue[0].org_code,
                 type_id: data.data.id,
@@ -320,7 +320,7 @@ export class AddNoticeComponent implements OnInit {
       
       var dd = today.getDate().toString();
       var mm = today.getMonth().toString();
-      var monthNum = mm + 1;
+      var monthNum = Number(mm) + 1;
       var yyyy = today.getFullYear();
       // var returnDate;
   
@@ -331,10 +331,10 @@ export class AddNoticeComponent implements OnInit {
       }
   
       // console.log('length : ', monthNum.length);
-      if (monthNum.length < 1) {
-        monthNum = '0' + monthNum;
-        // console.log(monthNum);
-      }
+      // if (monthNum < 10) {
+      //   var monthNum1 = '0' + monthNum;
+      //   // console.log(monthNum);
+      // }
   
       // console.log(yyyy + '-' + monthNum + '-' + dd);  
       return yyyy + '-' + monthNum + '-' + dd;    

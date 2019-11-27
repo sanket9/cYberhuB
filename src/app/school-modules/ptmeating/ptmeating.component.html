@@ -1,0 +1,142 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page" >
+        <a [routerLink]="['/school/module/index']" class="text-success">
+          <!-- <i class="material-icons">home</i> -->
+          More Options
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page" >
+        PT Meating
+      </li>
+    </ol>
+  </nav>
+  <div class="container-fluid">
+      <app-loader [show]="showloader"></app-loader>
+      <div class="card">
+        <div class="card-header card-header-danger">
+          <h4 class="card-title">PT Meating</h4>
+          <!-- <p class="card-category">Add a Notice</p> -->
+        </div>
+        <div class="card-body mt-2">
+            <div class="row">
+              <div class="col-md-6">
+                  <mat-form-field>
+
+                    <mat-select name="forall" placeholder="Select Meeting Type" [(ngModel)]="forallornot">
+                      <mat-option value = "all">
+                          For All Departments
+                      </mat-option>
+                      <mat-option value = "selected_dept">
+                          For selected Departments only
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+              </div>
+
+            </div>
+          <form id="add-notice-form" *ngIf="forallornot == 'selected_dept'" [formGroup]="shiftDept" style="border-bottom: 1px solid #b3b3b3;">
+            <div formArrayName="schedule" style="width: 100%; margin-bottom: 10px;">
+                <div class="pb-3" *ngFor="let list of shiftDept.controls.schedule.controls; let i=index" [formGroupName]="i">
+                  <div class="row">
+                          <div class="col-md-3">
+                              <mat-form-field>
+                                  <mat-select name="shift" placeholder="Select Shift" formControlName="shift" (change)="onChooseShift(i,$event)">
+                                      <ng-container *ngFor="let shift of dynamicArray[i]?.orgShiftLists">
+                                          <mat-option [value]="shift.orgshift[0]?.id" *ngIf="shift.orgshift[0]?.id">
+                                              {{shift.name}}
+                                          </mat-option>
+                                      </ng-container>
+              
+                                  </mat-select>
+                              </mat-form-field>
+                          </div>
+                          <div class="col-md-3">
+                              <mat-form-field class="example-full-width">
+                                  <mat-select placeholder="Select Class/Stream" formControlName="class" name="class" (change)="onChooseClass(i,$event)">
+                                      <mat-option value="-1" selected>--Select One--</mat-option>
+                                      <mat-option *ngFor="let class of dynamicArray[i]?.classlist" [value]="class">
+                                          {{class}}
+                                      </mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                          </div>
+                          <div class="col-md-3">
+                              <mat-form-field class="example-full-width">
+                                  <mat-select placeholder="Select Department" name="subject" formControlName="dept">
+                                      <mat-option value="-1" selected>--Select One--</mat-option>
+                                      <ng-container *ngFor="let classStream of dynamicArray[i]?.deptList">
+                                          <mat-option [value]="classStream.id">
+                                              {{classStream.section.sec_name}}
+                                          </mat-option>
+                                      </ng-container>
+                                  </mat-select>
+                              </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    <button mat-raised-button color="primary" type="button" (click)="addMore()">Add More Department +</button>
+                
+              </div>
+            </form>
+          <form id="add-notice-form" [formGroup]="ptmeetingInfo">
+            <div class="row">
+  
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Title" type="text" name="title" formControlName="title"/>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Date" formControlName="date" name="date" type="text" [matDatepicker]="picker3">
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3 disabled="false"></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Start Time(E.g. 07:00 pm)" formControlName="from_time" mwlFlatpickr [noCalendar]="true"
+                  [enableTime]="true"
+                  [dateFormat]="'h:i K'" name="noti_time" type="text">
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="End Time(E.g. 07:00 pm)" formControlName="to_time" mwlFlatpickr [noCalendar]="true"
+                  [enableTime]="true"
+                  [dateFormat]="'h:i K'" name="noti_time" type="text">
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Location" type="text" name="location" formControlName="location"/>
+                </mat-form-field>
+              </div>
+              <div class="col-md-12">
+                <h3>AGENDA</h3>
+                <ckeditor [editor]="Editor" formControlName="agenda"></ckeditor>
+              </div>
+            </div>
+            <button type="button" mat-raised-button class="btn" (click) = "savePtMeating()"
+            [ngClass]="{'btn-success': validFormCheck() }"
+            [disabled]="!validFormCheck()"
+            
+            >Save</button>
+          </form>
+
+
+        </div>
+      </div>
+
+  </div>
+</div>

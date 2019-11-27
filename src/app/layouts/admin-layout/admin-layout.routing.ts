@@ -10,6 +10,7 @@ import { NoticeManagementComponent } from "../../notice-management/notice-manage
 import { AddDetailsComponent } from "../../add-details/add-details.component";
 import { ClassListComponent } from 'app/class-list/class-list.component';
 import { GalleryUploadComponent } from '../../gallery-upload/gallery-upload.component';
+import { SearchUserComponent } from '../../search-user/search-user.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent,
@@ -26,6 +27,11 @@ export const AdminLayoutRoutes: Routes = [
         path: "gallery",
         canActivate: [AuthGuard],
         component: GalleryUploadComponent
+    },
+    {
+        path: "search-user",
+        canActivate: [AuthGuard],
+        component: SearchUserComponent
     },
     {
       path: "notice-management",

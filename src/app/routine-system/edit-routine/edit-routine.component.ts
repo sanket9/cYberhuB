@@ -217,18 +217,64 @@ export class EditRoutineComponent implements OnInit {
       });
   }
 
-  update(i, id) {
-    // console.log(id);
-    let data = {
-      id,
-      cc_name: this.dayRoutine[i].rutinedetails[0].class_sub_id,
-      room_id: this.dayRoutine[i].rutinedetails[0].room.id,
-      teacher_id: this.dayRoutine[i].rutinedetails[0].teacher.id
-    };
-    this.openDialog(data);
+  update(i, id, period_id) {
+    
+    this.checkRoutine(period_id, this.dayRoutine[i].rutinedetails[0].room.id).then(res=> {
+      // console.log(res);
+      if (res) {
+        let data = {
+          id,
+          cc_name: this.dayRoutine[i].rutinedetails[0].class_sub_id,
+          room_id: this.dayRoutine[i].rutinedetails[0].room.id,
+          teacher_id: this.dayRoutine[i].rutinedetails[0].teacher.id
+        };
+        this.openDialog(data);
+      }else{
+        this.notification.showNotification(
+          "top",
+          "right",
+          "warning",
+          "This Room and Teacher is booked for another class. Please check your Routine."
+        );
+      }
+    })
+    // console.log(check);
+    
+    
     
   }
 
+  checkRoutine(period_id, room_id) {
+    this.showloader = true;
+    let apiData =  {
+      org_id: this.org_id,
+      day: this.day,
+      period_id,
+      room_id,
+    }
+    var promise = new Promise((resolve, reject) => {
+
+      this.http.post(`${environment.apiUrl}routine/checking`, apiData)
+      .map(res => res.json())
+      .subscribe(data => {
+        this.showloader = false;
+        //console.log(data);
+        if (data.data.length > 0) {
+          
+          if (data.data[0].rutinedetails.length > 0) {
+            // console.log("here");
+            // this.routineForm.invalid
+            // this.showError = true;
+            resolve(false);
+          }else{
+            // this.showError = false;
+            resolve(true);
+          }
+        }
+      })
+    })
+    return promise;
+  }
   updateRutineData(data) {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");

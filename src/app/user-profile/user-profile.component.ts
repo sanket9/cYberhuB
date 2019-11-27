@@ -43,11 +43,13 @@ export class UserProfileComponent implements OnInit {
   displayedColumns = [
     "id",
     "title",
-    "image",
+    // "image",
     "affi_type",
     "actions"
   ];
   dataSource = new MatTableDataSource<Element>();
+  affi_name: any;
+  affi_type: any;
 
   constructor(
     public router: Router,
@@ -58,6 +60,7 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     this.getdetails();
+    this.listaffiliates();
     // console.log(this.Editor);
     
     // if (this.userDetail.stafftmaster) {
@@ -273,11 +276,77 @@ export class UserProfileComponent implements OnInit {
     this.showInfoEditSection = true;
     this.showOrgInfo = false;
   }
+
+  listaffiliates() {
+    this.showloader = true;
+    var headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    let options = new RequestOptions({ headers: headers });
+    var status = this.SessionStore.retrieve("user-data");
+    let data = {
+      org_id: status[0].org_code
+    }
+    this.http
+    .post(`${environment.apiUrl}org/affi/list`, data, options)
+    .map(res => res.json())
+    .subscribe(data => {
+      this.showloader = false
+      this.dataSource.data = data.data
+    })
+
+  }
+
+  addaffiliates() {
+    this.showloader = true
+    var headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    let options = new RequestOptions({ headers: headers });
+    var status = this.SessionStore.retrieve("user-data");
+    let data = {
+      org_id: status[0].org_code,
+      name: this.affi_name,
+      type: this.affi_type 
+    }
+    this.http
+    .post(`${environment.apiUrl}org/affi/add`, data, options)
+    .map(res => res.json())
+    .subscribe(data => {
+      this.showloader = false;
+      this.affi_name = '';
+      this.affi_type = '';
+      this.listaffiliates();
+    })
+
+
+  }
+
+  deleteaffiliates(id) {
+    if (confirm('Do you want to delete it ? ')) {
+      this.showloader = true
+      var headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      let options = new RequestOptions({ headers: headers });
+      var status = this.SessionStore.retrieve("user-data");
+      let data = {
+       id
+      }
+      this.http
+      .post(`${environment.apiUrl}org/affi/delete`, data, options)
+      .map(res => res.json())
+      .subscribe(data => {
+        this.showloader = false;
+        this.listaffiliates();
+      })
+      
+    }
+
+
+  }
 }
 export interface Element {
   id: number;
   title: string;
-  image: string;
+  // image: string;
   affi_type: string;
 
 }

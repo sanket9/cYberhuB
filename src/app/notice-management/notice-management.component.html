@@ -47,16 +47,16 @@
 
     <div class="row ml-3" *ngIf="filterRole.view == 1">
 
-        <mat-card class="col-md-4 m-1 example-card" style="height: 151px;" *ngFor="let notice of noticeList">
-          <div class="" *ngIf="filterRole.delete == 1">
+        <mat-card class="col-md-4 m-1 example-card" *ngFor="let notice of noticeList">
+          <!-- <div class="" *ngIf="filterRole.delete == 1">
             <i class="material-icons pull-right text-muted cursor" (click)="onClickDeleteNotice(notice.id)">close</i>
-          </div>
+          </div> -->
 
           <mat-card-header>
             <!-- <div mat-card-avatar class="example-header-image"></div> -->
             <mat-card-title class="m-0 p-0">
               <i class="fa fa-commenting-o" aria-hidden="true"></i>
-              {{notice.title}}
+              {{notice.title}} 
             </mat-card-title>
             <mat-card-subtitle class="m-0 p-0">{{notice.subject}}</mat-card-subtitle>
           </mat-card-header>
@@ -64,13 +64,26 @@
           <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
           <!-- <a [routerLink]="['/notice-management/notice-type']"> -->
           <mat-card-content>
-            <p class="ml-2">{{(notice.text.length > 20)? (notice.text | slice:0:20)+'..':(str)}}</p>
+            <!-- <p class="ml-2">{{(notice.text.length > 20)? (notice.text | slice:0:20)+'..':(str)}}</p> -->
+            <p class="ml-2">{{notice.text}}</p>
+            <p class="ml-2">
+              <b>Start date - </b> {{notice.start_date}}
+            </p>
+            <p class="ml-2">
+              <b>End date - </b> {{notice.end_date}}
+            </p>
           </mat-card-content>
           <!-- </a> -->
           <mat-card-actions>
-            <button class="btn btn-info btn-sm pull-right mr-4 mb-4" (click)="openDialog(notice)"
+              <button mat-button class="btn btn-info btn-sm ml-4" (click)="openDialog(notice)">Details</button>
+              <button mat-button class="btn btn-primary btn-sm ml-4" [routerLink]="['/notice-management/edit/',notice.id]" >Edit</button>
+              <button *ngIf="filterRole.delete == 1" mat-button class="btn btn-danger btn-sm ml-4" (click)="onClickDeleteNotice(notice.id)">Delete</button>
+            <!-- <button class="btn btn-info btn-sm pull-right mr-4 mb-4" (click)="openDialog(notice)"
               style="position: absolute; bottom: 0px; right: 0px;">Details</button>
+              <button class="btn btn-info btn-sm mr-4 mb-4" (click)="openDialog(notice)"
+              style="position: absolute; bottom: 0px; right: 0px;">Details</button> -->
           </mat-card-actions>
+    
         </mat-card>
 
     </div>
