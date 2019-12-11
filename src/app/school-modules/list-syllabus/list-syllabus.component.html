@@ -27,41 +27,33 @@
         </button>
         <div class="example-header mt-3">
           <mat-form-field>
-            <input matInput placeholder="Filter Data..">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter Data..">
           </mat-form-field>
         </div>
-        <mat-table #table>
-          <ng-container matColumnDef="id">
+        <mat-table #table [dataSource]="dataSource">
+          <ng-container matColumnDef="no">
             <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
-            <mat-cell> 1 </mat-cell>
+            <mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </mat-cell>
           </ng-container>
-          <ng-container matColumnDef="title">
-            <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
-            <mat-cell> ABCD </mat-cell>
+          <ng-container matColumnDef="class_id">
+            <mat-header-cell *matHeaderCellDef> Class Id </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;"> {{element.class_id}} </mat-cell>
           </ng-container>
-          <ng-container matColumnDef="date">
-            <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
-            <mat-cell> 09-12-2019 </mat-cell>
+          <ng-container matColumnDef="curriculum_year">
+            <mat-header-cell *matHeaderCellDef> Curriculum Year </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;"> {{element.curriculum_year}} </mat-cell>
           </ng-container>
-          <ng-container matColumnDef="time">
-            <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
-            <mat-cell> From 10 To 12
-            </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="location">
-            <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
-            <mat-cell> Room No 2 </mat-cell>
+          <ng-container matColumnDef="pdf_url">
+            <mat-header-cell *matHeaderCellDef> Syllabus </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;"> <a href="http://inunco.com/school_hub/uploads/Syllabus/{{element.pdf_url}}" target="_blank">Show Syllabus</a> </mat-cell>
           </ng-container>
           <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
             <mat-cell *matCellDef="let element">
               <button mat-icon-button type="button" matTooltip="Edit this" [matTooltipPosition]="'above'"
                 class="btn btn-link btn-sm btn-just-icon">
-                <i class="material-icons">edit</i>
+                <i class="material-icons">Edit</i>
               </button>
-              <!-- <button mat-icon-button >
-                              <mat-icon>remove_red_eye</mat-icon>
-                            </button> -->
             </mat-cell>
           </ng-container>
 
