@@ -21,7 +21,8 @@ import * as moment from 'moment'
   styleUrls: ['./add-syllabus.component.scss']
 })
 export class AddSyllabusComponent implements OnInit {
-    showloader: any;
+
+  showloader: any;
   classList: any;
   newclassList: any;
   shifs: any;
@@ -39,6 +40,14 @@ export class AddSyllabusComponent implements OnInit {
   deptName;
   modele_id = 6;
   filterRole;
+
+  org_id: string;
+  class_id: string;
+  //curriculum_year: any;
+  filename: string;
+  file;
+  pdf_file:any;
+  
   constructor(
     public http: Http,
     public notification: NotificationService,
@@ -48,6 +57,9 @@ export class AddSyllabusComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    var status = this.SessionStore.retrieve("user-data");
+    this.org_id = status[0].org_code;
+
     this.createFormGroup();
     this.getClass();
     this.nexttenYear();
@@ -60,9 +72,47 @@ export class AddSyllabusComponent implements OnInit {
       stream: new FormControl("", [Validators.required]),
       year: new FormControl("", [Validators.required]),
       sem: new FormControl("", [Validators.required]),
-      dept_id: new FormControl("", [Validators.required])
+      dept_id: new FormControl("", [Validators.required]),
+      curriculum_year: new FormControl("", [Validators.required]),
+      pdf_file: new FormControl("", [Validators.required])
     });
   }
+
+  selectImage(event) {
+    let elem = event.target;
+    if (elem.files.length > 0) {
+      this.filename = elem.files[0].name;
+      this.file = elem.files[0];
+
+      this.viewRoutine.controls['pdf_file'].setValue(this.filename);
+    }
+  }
+
+  uploadDetails() {
+
+    let formData = new FormData();
+    formData.append("org_id", this.org_id);
+    formData.append("class_id", this.class_id);
+    formData.append("curriculum_year", this.viewRoutine.controls['curriculum_year'].value);
+    formData.append("pdf_url", this.file);
+    console.log('formData...', this.org_id, this.class_id, this.viewRoutine.controls['curriculum_year'].value, this.file);
+    
+    this.http
+      .post(`${environment.apiUrl}syllabus/add`, formData).map(res => res.json())
+      .subscribe(data => {
+        // console.log(data);
+        if (data.data) {
+          this.file = "";
+          this.notification.showNotification(
+            "top",
+            "right",
+            "success",
+            "Syllabus Inserted SuccessFuly"
+          );
+        }
+      })
+  }
+
   getRole() {
     var role = this.SessionStore.retrieve('user-role');
     // console.log(role);
@@ -73,6 +123,7 @@ export class AddSyllabusComponent implements OnInit {
       this.filterRole = filterRole[0]
     }
   }
+
   getClass() {
     this.showloader = true;
     var status = this.SessionStore.retrieve("user-data");
@@ -131,10 +182,15 @@ export class AddSyllabusComponent implements OnInit {
       this.yearList.push(i);
     }
   }
+
   deptChange(e) {
     this.deptName = this.Finaldepts.filter(item => item.id == e.value);
-    console.log(this.deptName[0].section.sec_name);
+    //console.log(this.deptName[0]);
+
+    this.class_id = this.deptName[0].id;
+    console.log('Selected class id...', this.class_id);
   }
+
   selectAllShifts(e) {
     // console.log(e);
     this.classlist = [];
@@ -253,33 +309,6 @@ export class AddSyllabusComponent implements OnInit {
       // date is future
       return true
     }
-  }
-  printit() {
-    let divToPrint = document.getElementById("printtable").innerHTML;
-    let newWindow = window.open(
-      "",
-      "_blank",
-      "top=0,left=0,height=100%,width=auto"
-    );
-    newWindow.document.open();
-    newWindow.document.write(`
-      <html>
-        <head>
-          <title>Print tab</title>
-          <style>
-            @media print {
-                .routine {
-                    border-collapse: collapse;
-                }
-            }
-            @page { size: landscape; }
-          </style>
-        </head>
-        <body onload="window.print();window.close()">${divToPrint}   
-        </body>
-      </html>
-    `);
-    newWindow.document.close();
   }
 
   getDay = id => {

@@ -26,7 +26,7 @@
         <h4 class="card-title">Create Syllabus</h4>
         <!-- <p class="card-category">Add a Notice</p> -->
       </div><div class="card-body mt-2">
-        <form class="pt-2" [formGroup]="viewRoutine" (submit)="submitForm(viewRoutine.value)">
+        <form class="pt-2" [formGroup]="viewRoutine" (submit)="uploadDetails()">
       
           <div class="row">
             <div class="col-md-3">
@@ -86,24 +86,28 @@
                 </mat-select>
               </mat-form-field>
             </div>
+
             <div class="col-md-3">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Curriculum Year" type="text" name="curriculum_year">
+              <mat-form-field>
+                <input matInput placeholder="Curriculum Year" formControlName="curriculum_year" type="text" name="curriculum_year">
               </mat-form-field>
             </div>
+
             <div class="col-md-3">
-              <button mat-raised-button color="primary" (click)="fileInput.click()">
-                <i class="material-icons">attach_file</i>
-                Add File</button>
-              
-              <input type="file" accept="image/png, image/jpeg" hidden #fileInput name="file" (change)="selectImage($event)">
-              <small class="pl-1 text-gray">{{filename}}</small>
+                <button type="button" mat-raised-button color="primary" (click)="fileInput.click()">
+                  <i class="material-icons">attach_file</i>
+                  Add File</button>
+
+                <input type="file" accept="application/pdf" hidden #fileInput name="file"
+                  (change)="selectImage($event)">
+                <input type="hidden" name="fileHidden" formControlName="pdf_file" /> <!-- Validation Field -->
+                <small class="pl-1 text-gray">{{filename}}</small>
             </div>
           </div>
-      
+          
           <button mat-button [disabled]="!viewRoutine.valid"
-            [ngClass]="{'btn-success': viewRoutine.valid, 'btn-light': !viewRoutine.valid}" class="btn"
-            type="submit">Add Syllabus</button>
+            [ngClass]="{'btn-success': viewRoutine.valid, 'btn-light': !viewRoutine.valid}" class="btn" type="submit">Add
+            Syllabus</button>
         </form>
       
       </div>
