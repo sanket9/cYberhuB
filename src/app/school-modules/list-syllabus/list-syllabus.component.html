@@ -37,7 +37,7 @@
           </ng-container>
           <ng-container matColumnDef="class_id">
             <mat-header-cell *matHeaderCellDef> Class Name </mat-header-cell>
-            <mat-cell *matCellDef="let element; let i = index;"> {{element.class_id}} </mat-cell>
+            <mat-cell *matCellDef="let element; let i = index;"> {{element.class.section.sec_name}} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="curriculum_year">
             <mat-header-cell *matHeaderCellDef> Curriculum Year </mat-header-cell>
@@ -45,21 +45,21 @@
           </ng-container>
           <ng-container matColumnDef="pdf_url">
             <mat-header-cell *matHeaderCellDef> Syllabus </mat-header-cell>
-            <mat-cell *matCellDef="let element; let i = index;"> <a href="http://inunco.com/school_hub/uploads/Syllabus/{{element.pdf_url}}" target="_blank">Show Syllabus</a> </mat-cell>
+            <mat-cell *matCellDef="let element; let i = index;"> <a href="http://inunco.com/school_hub/public/uploads/Syllabus/{{element.pdf_url}}" target="_blank">Show Syllabus</a> </mat-cell>
           </ng-container>
           <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
             <mat-cell *matCellDef="let element">
               <button mat-icon-button type="button" matTooltip="Edit this" [matTooltipPosition]="'above'"
                 class="btn btn-link btn-sm btn-just-icon">
-                <i class="material-icons">Edit</i>
+                <i class="material-icons">edit</i>
               </button>
             </mat-cell>
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-          <mat-paginator #paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 25, 50,100]">
+          <mat-paginator #paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 25, 50, 100]">
           </mat-paginator>
         </mat-table>
       </div>

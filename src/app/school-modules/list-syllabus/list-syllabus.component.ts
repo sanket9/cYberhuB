@@ -50,7 +50,7 @@ export class ListSyllabusComponent implements OnInit {
       .subscribe(response => {
         this.showloader = false;
         console.log('Syllabus response...', response);
-        //this.dataSource.data = response.data;
+        this.dataSource.data = response.data;
       });
   }
 
