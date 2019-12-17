@@ -1,0 +1,73 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        <a [routerLink]="['/school/module/index']" class="text-success">
+          <!-- <i class="material-icons">home</i> -->
+          More Options
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Syllabus
+      </li>
+    </ol>
+  </nav>
+  <app-loader [show]="showloader"></app-loader>
+  <div class="container-fluid">
+    <div class="row page-title">
+      <div class="col-md-12 col-md-offset-1">
+        <button mat-raised-button class="btn btn-primary" [routerLink]="['../add']">
+          <mat-icon>add</mat-icon> create new syllabus
+        </button>
+        <div class="example-header mt-3">
+          <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter Data..">
+          </mat-form-field>
+        </div>
+        <mat-table #table [dataSource]="dataSource">
+          <ng-container matColumnDef="no">
+            <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="class_id">
+            <mat-header-cell *matHeaderCellDef> Class Name </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;"> {{element.class.section.sec_name}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="curriculum_year">
+            <mat-header-cell *matHeaderCellDef> Curriculum Year </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;"> {{element.curriculum_year}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="pdf_url">
+            <mat-header-cell *matHeaderCellDef> Syllabus </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;"> <a href="http://inunco.com/school_hub/public/uploads/Syllabus/{{element.pdf_url}}" target="_blank">Show Syllabus</a> </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <button mat-icon-button type="button" [routerLink]="['/school/module/syllabus/edit', element.id]"
+                class="btn btn-link btn-sm btn-just-icon">
+                <i class="material-icons">edit</i>
+              </button>
+              <button mat-icon-button type="button" (click)='onDeleteClick(element.id)'
+              class="btn btn-link btn-sm btn-just-icon">
+              <i class="material-icons">delete</i>
+            </button>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          <mat-paginator #paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 25, 50, 100]">
+          </mat-paginator>
+        </mat-table>
+      </div>
+
+    </div>
+  </div>
+</div>

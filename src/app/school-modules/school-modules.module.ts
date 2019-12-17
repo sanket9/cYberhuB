@@ -29,9 +29,14 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FormsModule , ReactiveFormsModule} from "@angular/forms";
 import { ListPtmeetingComponent } from './list-ptmeeting/list-ptmeeting.component';
 import { NotificationService } from 'app/services/notification.service';
+import { ListSyllabusComponent } from './list-syllabus/list-syllabus.component';
+import { AddSyllabusComponent } from './add-syllabus/add-syllabus.component';
+import { AmazingTimePickerModule } from 'amazing-time-picker';
+import { EditSyllabusComponent } from './edit-syllabus/edit-syllabus.component';
 
 @NgModule({
   imports: [
+    AmazingTimePickerModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -57,7 +62,7 @@ import { NotificationService } from 'app/services/notification.service';
     CKEditorModule,
     ComponentsModule
   ],
-  declarations: [IndexComponent, PtmeatingComponent, ListPtmeetingComponent],
+  declarations: [IndexComponent, PtmeatingComponent, ListPtmeetingComponent, ListSyllabusComponent, AddSyllabusComponent, EditSyllabusComponent],
   providers: [NotificationService],
 })
 export class SchoolModulesModule { }
