@@ -7,6 +7,7 @@ import { ListPtmeetingComponent } from './list-ptmeeting/list-ptmeeting.componen
 import { ListSyllabusComponent } from './list-syllabus/list-syllabus.component';
 import { AddSyllabusComponent } from './add-syllabus/add-syllabus.component';
 import { EditSyllabusComponent } from './edit-syllabus/edit-syllabus.component';
+import { HomeAssignmentComponent } from './home-assignment/home-assignment.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'syllabus/edit/:id',
     component: EditSyllabusComponent
+  },
+  {
+    path: 'homeassignment/add',
+    component: HomeAssignmentComponent
   }
 ];
 

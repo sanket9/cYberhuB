@@ -33,6 +33,7 @@ import { ListSyllabusComponent } from './list-syllabus/list-syllabus.component';
 import { AddSyllabusComponent } from './add-syllabus/add-syllabus.component';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { EditSyllabusComponent } from './edit-syllabus/edit-syllabus.component';
+import { HomeAssignmentComponent } from './home-assignment/home-assignment.component';
 
 @NgModule({
   imports: [
@@ -62,7 +63,7 @@ import { EditSyllabusComponent } from './edit-syllabus/edit-syllabus.component';
     CKEditorModule,
     ComponentsModule
   ],
-  declarations: [IndexComponent, PtmeatingComponent, ListPtmeetingComponent, ListSyllabusComponent, AddSyllabusComponent, EditSyllabusComponent],
+  declarations: [IndexComponent, PtmeatingComponent, ListPtmeetingComponent, ListSyllabusComponent, AddSyllabusComponent, EditSyllabusComponent, HomeAssignmentComponent],
   providers: [NotificationService],
 })
 export class SchoolModulesModule { }
