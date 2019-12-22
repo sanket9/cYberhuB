@@ -54,8 +54,7 @@
                       <ng-container matColumnDef="actions" >
                           <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                           <mat-cell *matCellDef="let element">
-                            <button mat-icon-button type="button" matTooltip="Edit this" 
-                            [matTooltipPosition]="'above'" 
+                            <button mat-icon-button type="button" [routerLink]="['../edit/',element.id]" routerLinkActive="router-link-active" 
                             class="btn btn-link btn-sm btn-just-icon" >
                               <i class="material-icons">edit</i>
                             </button>

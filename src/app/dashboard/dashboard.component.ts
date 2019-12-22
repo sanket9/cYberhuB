@@ -33,6 +33,7 @@ export class DashboardComponent implements OnInit {
   cc_short_name_edit;
   cc_edit_id;
   user_type_id;
+  allCount: any;
   constructor(
     public route: ActivatedRoute,
     public http: Http,
@@ -106,6 +107,7 @@ export class DashboardComponent implements OnInit {
     this.getExamTypeNames();
     this.getClassSection();
     this.getAllCoursecat();
+    this.getAllCount();
     this.sortArray = [];
 
     // console.log('org_id : ', this.org_code);
@@ -597,6 +599,22 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+
+  getAllCount(){
+    let data = {
+      id: this.org_code
+    };
+    this.http
+      .post(`${environment.apiUrl}org/get-count`, data)
+      .map(res => res.json())
+      .subscribe(data => {
+        console.log(data);
+        if (data.data) {
+          this.allCount = data.data;
+          this.showloader = false;
+        }
+      });
+  }
   // classsection/getallsem
 }
 

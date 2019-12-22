@@ -1,0 +1,36 @@
+<div class="main-content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/dashboard']" class="text-success">
+          <i class="material-icons">home</i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page" >
+        <a [routerLink]="['/school/module/index']" class="text-success">
+          <!-- <i class="material-icons">home</i> -->
+          More Options
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page" >
+        PT Meating
+      </li>
+    </ol>
+  </nav>
+  <div class="container-fluid">
+    <app-loader [show]="showloader"></app-loader>
+    <div class="card">
+      <div class="card-header card-header-danger">
+        <h4 class="card-title">PT Meating</h4>
+        <!-- <p class="card-category">Add a Notice</p> -->
+      </div>
+      <div class="card-body mt-2">
+        <div class="row">
+          <div class="col-md-6">
+          </div>
+        </div>   
+      </div>
+    </div>
+  </div>
+</div>
